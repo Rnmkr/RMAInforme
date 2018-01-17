@@ -32,7 +32,7 @@ namespace RMAInforme
         private void LoadStats()
         {
             PRDB context = new PRDB();
-
+            //muchos stats please
         }
     }
 }
