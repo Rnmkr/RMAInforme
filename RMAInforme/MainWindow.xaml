@@ -5,8 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RMAInforme"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Informe RMA" Height="768" Width="1366" MinHeight="240" MinWidth="1100" WindowStartupLocation="CenterScreen">
     <Grid>
-        
+
+        <StackPanel Background="LightSteelBlue"  Height="66" VerticalAlignment="Top"/>
+        <DataGrid x:Name="DataGrid" Margin="10,71,10,10" IsReadOnly="True"/>
+        <Button x:Name="ButtonSearch" Content="Buscar" VerticalAlignment="Top" Margin="275,10,0,0" Click="ButtonSearch_Click" Height="51" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="75"/>
+        <Button x:Name="ButtonResetDate" Content="Reset Fechas" VerticalAlignment="Top" Margin="0,10,126,0" Click="ButtonResetDate_Click" Height="23" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Right" Width="98" FontSize="10"/>
+        <TextBox x:Name="TextBoxSearchString" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="Buscar..."  VerticalAlignment="Top" Width="255" GotFocus="SearchBox_GotFocus" LostFocus="SearchBox_LostFocus" FontFamily="Consolas" FontWeight="Bold" VerticalContentAlignment="Center"/>
+        <ComboBox x:Name="ComboBoxTable" HorizontalAlignment="Left" Height="23" Margin="10,38,0,0" VerticalAlignment="Top" Width="255" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Label Content="Fecha inicial" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,405,0" FontFamily="Consolas" FontWeight="Bold" VerticalContentAlignment="Center" Height="23" HorizontalContentAlignment="Right"/>
+        <DatePicker x:Name="DateInit" Margin="0,10,229,0" VerticalAlignment="Top" Height="23" FontFamily="Consolas" FontWeight="Bold" Text="Seleccionar" HorizontalAlignment="Right" Width="171"/>
+        <Label Content="Fecha final" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,38,405,0" FontFamily="Consolas" FontWeight="Bold" VerticalContentAlignment="Center" Height="23" Width="96" HorizontalContentAlignment="Right"/>
+        <DatePicker x:Name="DateEnd" Margin="0,38,229,0" VerticalAlignment="Top" Height="23" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Right" Width="171"/>
+        <RadioButton x:Name="RadioLocal" Content="Buscar en la lista actual" Margin="361,41,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="191"/>
+        <RadioButton x:Name="RadioGlobal" Content="Buscar en la base de datos" Margin="361,17,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="191"/>
+        <Button x:Name="Export" Content="Exportar Excel" Margin="0,10,10,0" VerticalAlignment="Top" Height="23" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Right" Width="111"/>
+        <Button x:Name="Stats" Content="Estadisticas" Margin="0,38,10,0" VerticalAlignment="Top" Height="23" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Right" Width="111" Click="Stats_Click"/>
+
+
     </Grid>
 </Window>
