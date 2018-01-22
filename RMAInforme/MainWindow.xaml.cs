@@ -379,5 +379,10 @@ namespace RMAInforme
             StatsWindow statsw = new StatsWindow(List, keyword, table, init, end);
             statsw.ShowDialog();
         }
+
+        private void Export_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Funcion no implementada aun", ":(", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
 }

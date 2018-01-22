@@ -20,7 +20,7 @@
         <DatePicker x:Name="DateEnd" Margin="0,38,229,0" VerticalAlignment="Top" Height="23" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Right" Width="171"/>
         <RadioButton x:Name="RadioLocal" Content="Buscar en la lista actual" Margin="361,41,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="191"/>
         <RadioButton x:Name="RadioGlobal" Content="Buscar en la base de datos" Margin="361,17,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="191"/>
-        <Button x:Name="Export" Content="Exportar Excel" Margin="0,10,10,0" VerticalAlignment="Top" Height="23" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Right" Width="111"/>
+        <Button x:Name="Export" Content="Exportar Excel" Margin="0,10,10,0" VerticalAlignment="Top" Height="23" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Right" Width="111" Click="Export_Click"/>
         <Button x:Name="Stats" Content="Estadisticas" Margin="0,38,10,0" VerticalAlignment="Top" Height="23" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Right" Width="111" Click="Stats_Click"/>
 
 
