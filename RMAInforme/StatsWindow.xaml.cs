@@ -32,7 +32,25 @@ namespace RMAInforme
         private void LoadStats()
         {
             PRDB context = new PRDB();
-            //muchos stats please
+            int total = context.Cambio.Count();
+            int parcial = ListResult.Count();
+            LabelTotalCambios.Content = ("Total de cambios realizados: " + total);
+            LabelTotalItemsBusqueda.Content = ("Cantidad de items encontrados: " + parcial);
+
+            int PorcentajeSobreTotalCambios = (int)Math.Round((double)(100 * parcial) / total);
+            LabelPorcentajeSobreTotalCambios.Content = ("Porcentaje sobre total de cambios: %" + PorcentajeSobreTotalCambios);
+            ProgressTotal.Value = PorcentajeSobreTotalCambios;
+
+
+            if (Init == null)
+            {
+                ProgressPeriod.IsEnabled = false;
+            }
+            else
+            {
+
+            }
+
         }
     }
 }
