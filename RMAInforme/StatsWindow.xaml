@@ -7,18 +7,23 @@
         mc:Ignorable="d"
         Title="Estadisticas de la búsqueda" Height="600" Width="800" MaxHeight="768" MaxWidth="1366" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid Background="LightSteelBlue">
-        <Label x:Name="LabelTotalItemsBusqueda" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Consolas" FontWeight="Bold" Margin="10,10,0,0"/>
-        <Label x:Name="LabelTotalCambios" Content="" FontFamily="Consolas" FontWeight="Bold" Margin="0,10,10,0" HorizontalAlignment="Right" Height="24" VerticalAlignment="Top"/>
-        <ProgressBar x:Name="ProgressTotal" Margin="10,42,10,0" IsTabStop="False" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
-        <ProgressBar x:Name="ProgressPeriod" Margin="10,92,10,0" IsTabStop="False" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
-        <ProgressBar x:Name="ProgressSimilar" Margin="10,142,10,0" IsTabStop="False" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
-        <ProgressBar x:Name="ProgressSame" Margin="10,192,10,0" IsTabStop="False" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
-        <ProgressBar x:Name="ProgressMonth" Margin="10,242,10,0" IsTabStop="False" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
-        <Label x:Name="LabelPorcentajeSobreTotalCambios" Content="Porcentaje sobre el total: %0" FontFamily="Consolas" FontWeight="Bold" Margin="10,41,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="774" Height="31" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
-        <Label x:Name="LabelPorcentajeSobreRangoFecha" Content="Porcentaje sobre rango: %0" FontFamily="Consolas" FontWeight="Bold" Margin="10,94,0,0" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Width="774"/>
-        <Label x:Name="LabelPorcentajeCategoria" Content="Porcentaje misma categoria: %0" FontFamily="Consolas" FontWeight="Bold" Margin="10,144,0,0" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Width="774"/>
-        <Label x:Name="LabelPorcentajeSobreProducto" Content="Porcentaje mismo producto:%0" FontFamily="Consolas" FontWeight="Bold" Margin="10,194,0,0" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Width="774"/>
-        <Label x:Name="LabelPorcentajeSobreModelo" Content="Porcentaje mismo modelo:%0" FontFamily="Consolas" FontWeight="Bold" Margin="10,244,0,0" VerticalContentAlignment="Center" RenderTransformOrigin="1.598,-1.5" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Width="774"/>
+        <Label x:Name="LabelTotalItemsBusqueda" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Consolas" FontWeight="Bold" Margin="10,10,0,0">
+            <Label.Background>
+                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.InfoColorKey}}"/>
+            </Label.Background>
+        </Label>
+        <Label x:Name="LabelTotalCambios" Content="" FontFamily="Consolas" FontWeight="Bold" Margin="10,39,0,0" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Background="{x:Null}"/>
+        <Label x:Name="Title" Content="La búsqueda realizada representa:" FontFamily="Consolas" FontWeight="Bold" Margin="10,68,0,0" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top"/>
+        <ProgressBar x:Name="ProgressTotal" Margin="10,107,10,0" IsTabStop="False" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
+        <ProgressBar x:Name="ProgressPeriod" Margin="10,157,10,0" IsTabStop="False" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
+        <ProgressBar x:Name="ProgressSeMes" Margin="10,207,10,0" IsTabStop="False" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
+        <ProgressBar x:Name="ProgressTriMes" Margin="10,257,10,0" IsTabStop="False" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
+        <ProgressBar x:Name="ProgressMes" Margin="10,307,10,0" IsTabStop="False" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
+        <Label x:Name="LabelPorcentajeTotal" Content="Porcentaje sobre el total: %0" FontFamily="Consolas" FontWeight="Bold" Margin="10,106,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="774" Height="31" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
+        <Label x:Name="LabelPorcentajePeriodo" Content="Porcentaje sobre rango: %0" FontFamily="Consolas" FontWeight="Bold" Margin="10,159,0,0" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Width="774" HorizontalContentAlignment="Center"/>
+        <Label x:Name="LabelPorcentajeMes" Content="No implementado en esta versión" FontFamily="Consolas" FontWeight="Bold" Margin="10,209,0,0" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Width="774" HorizontalContentAlignment="Center"/>
+        <Label x:Name="LabelPorcentajeTriMes" Content="No implementado en esta versión" FontFamily="Consolas" FontWeight="Bold" Margin="10,259,0,0" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Width="774" HorizontalContentAlignment="Center"/>
+        <Label x:Name="LabelPorcentajeSeMes" Content="No implementado en esta versión" FontFamily="Consolas" FontWeight="Bold" Margin="10,309,0,0" VerticalContentAlignment="Center" RenderTransformOrigin="1.598,-1.5" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Width="774" HorizontalContentAlignment="Center"/>
 
     </Grid>
 </Window>
