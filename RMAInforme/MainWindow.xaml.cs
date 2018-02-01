@@ -35,6 +35,7 @@ namespace RMAInforme
             ComboBoxTable.Items.Add("OBSERVACIONES");
             ComboBoxTable.Items.Add("ESTADO DE CAMBIO");
             ComboBoxTable.SelectedIndex = 0;
+            CheckToday.IsChecked = true;
         }
 
         private void ButtonSearch_Click(object sender, RoutedEventArgs e)
@@ -188,7 +189,8 @@ namespace RMAInforme
                     //ERROR
                     break;
             }
-
+            int result = List.Count();
+            ShowResultInStatusBar(result);
         }
 
         private void Search(string keyword, string table)
@@ -296,6 +298,8 @@ namespace RMAInforme
                         break;
                 }
             }
+            int result = List.Count();
+            ShowResultInStatusBar(result);
         }
 
         private void Search(DateTime? init, DateTime? end)
@@ -310,13 +314,16 @@ namespace RMAInforme
                 PRDB context = new PRDB();
                 List = context.Cambio.Where(w => w.FechaCambio >= init && w.FechaCambio <= end);
             }
-
+            int result = List.Count();
+            ShowResultInStatusBar(result);
         }
 
         private void BuscarTodo()
         {
             PRDB context = new PRDB();
             List = context.Cambio.Select(s => s);
+            int result = List.Count();
+            ShowResultInStatusBar(result);
         }
 
         private void SearchBox_GotFocus(object sender, RoutedEventArgs e)
@@ -359,6 +366,39 @@ namespace RMAInforme
             #endregion
         }
 
+        private void ShowResultInStatusBar(int result)
+        {
+
+            string field = ComboBoxTable.SelectedItem.ToString();
+            DateTime? initdate = DateInit.SelectedDate;
+            DateTime? enddate = DateInit.SelectedDate;
+            string keyword = TextBoxSearchString.Text;
+            if (string.IsNullOrWhiteSpace(keyword) || keyword == "Buscar...")
+            {
+                keyword = "*";
+            }
+            else
+            {
+                keyword = TextBoxSearchString.Text;
+            }
+            if (initdate == null)
+            {
+                TextBlockStatusResult.Text = ("ULTIMA BÚSQUEDA: Se encontró un total de: " + result + " item(s) para '" + keyword + "' en la columna " + field + " desde la fecha de inicio de la base de datos.");
+            }
+            else
+            {
+                if (CheckToday.IsChecked == true)
+                {
+                    TextBlockStatusResult.Text = ("ULTIMA BÚSQUEDA: Se encontró un total de: " + result + " item(s) para '" + keyword + "' en la columna " + field + " en el día de HOY.");
+                }
+                else
+                {
+                    TextBlockStatusResult.Text = ("ULTIMA BÚSQUEDA: Se encontró un total de: " + result + " item(s) para '" + keyword + "' en la columna " + field + " cambiados entre el " + initdate + " y el " + enddate);
+                }
+                
+            }
+        }
+
         private void ButtonResetDate_Click(object sender, RoutedEventArgs e)
         {
             DateInit.SelectedDate = null;
@@ -383,6 +423,25 @@ namespace RMAInforme
         private void Export_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Funcion no implementada aun", ":(", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void CheckToday_Checked(object sender, RoutedEventArgs e)
+        {
+            DateInit.IsEnabled = false;
+            DateEnd.IsEnabled = false;
+            ButtonResetDate.IsEnabled = false;
+            DateInit.SelectedDate = DateTime.Now.AddDays(-1);
+            DateEnd.SelectedDate = DateTime.Now.AddDays(1);
+
+        }
+
+        private void CheckToday_Unchecked(object sender, RoutedEventArgs e)
+        {
+            DateInit.IsEnabled = true;
+            DateEnd.IsEnabled = true;
+            ButtonResetDate.IsEnabled = true;
+            DateInit.SelectedDate = null;
+            DateEnd.SelectedDate = null;
         }
     }
 }
