@@ -4,6 +4,10 @@ using System.Linq;
 using System.Windows.Input;
 using System;
 using System.Windows.Media;
+using System.Net.NetworkInformation;
+using System.Windows.Controls;
+using readconfig;
+using System.Net;
 
 namespace RMAInforme
 {
@@ -36,46 +40,51 @@ namespace RMAInforme
             ComboBoxTable.Items.Add("ESTADO DE CAMBIO");
             ComboBoxTable.SelectedIndex = 0;
             CheckToday.IsChecked = true;
+
         }
 
         private void ButtonSearch_Click(object sender, RoutedEventArgs e)
         {
-            if ((bool)RadioLocal.IsChecked && List == null)
-            {
-                MessageBox.Show("Realice una búsqueda en la Base de Datos primero!", "Buscar...", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-                RadioGlobal.IsChecked = true;
-                return;
-            }
-
-            if (DateInit.SelectedDate == null && DateEnd.SelectedDate != null)
-            {
-                MessageBox.Show("Ingrese fecha de inicio!", "Buscar...", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-
-            if (DateInit.SelectedDate != null && DateEnd.SelectedDate == null)
-            {
-                MessageBox.Show("Ingrese fecha final!", "Buscar...", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-
-            if (DateInit.SelectedDate > DateEnd.SelectedDate)
-            {
-                MessageBox.Show("La fecha de inicio no puede ser mayor a la final!", "Buscar...", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            string Keyword = TextBoxSearchString.Text;
-            if (Keyword == "Buscar...")
-            {
-                Keyword = null;
-            }
-            string Table = ComboBoxTable.SelectedValue.ToString();
-            DateTime? InitialDate = DateInit.SelectedDate;
-            DateTime? EndDate = DateEnd.SelectedDate;
-
             using (new WaitCursor())
             {
+                if (SimplePing() == false)
+                {
+                    MessageBox.Show("No se encontró el servidor." + Environment.NewLine + "Revise la conexión con la Base de Datos y reintente.", "Conectando al servidor", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                if ((bool)RadioLocal.IsChecked && List == null)
+                {
+                    MessageBox.Show("Realice una búsqueda en la Base de Datos primero!", "Buscar...", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    RadioGlobal.IsChecked = true;
+                    return;
+                }
+
+                if (DateInit.SelectedDate == null && DateEnd.SelectedDate != null)
+                {
+                    MessageBox.Show("Ingrese fecha de inicio!", "Buscar...", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                if (DateInit.SelectedDate != null && DateEnd.SelectedDate == null)
+                {
+                    MessageBox.Show("Ingrese fecha final!", "Buscar...", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                if (DateInit.SelectedDate > DateEnd.SelectedDate)
+                {
+                    MessageBox.Show("La fecha de inicio no puede ser mayor a la final!", "Buscar...", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                string Keyword = TextBoxSearchString.Text;
+                if (Keyword == "Buscar...")
+                {
+                    Keyword = null;
+                }
+                string Table = ComboBoxTable.SelectedValue.ToString();
+                DateTime? InitialDate = DateInit.SelectedDate;
+                DateTime? EndDate = DateEnd.SelectedDate;
 
                 if (string.IsNullOrWhiteSpace(Keyword))
                 {
@@ -105,26 +114,23 @@ namespace RMAInforme
                         Search(Keyword, Table, InitialDate, EndDate);
                     }
                 }
-            }
-
-
-            try
-            {
-                if (List.FirstOrDefault() == null)
+                try
                 {
-                    MessageBox.Show("La búsqueda no obtuvo resultados!", "Buscar...", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    if (List.FirstOrDefault() == null)
+                    {
+                        MessageBox.Show("La búsqueda no obtuvo resultados!", "Buscar...", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                    else
+                    {
+                        DataGrid.ItemsSource = List.ToList();
+                    }
+                }
+                catch (ArgumentNullException)
+                {
                     return;
                 }
-                else
-                {
-                    DataGrid.ItemsSource = List.ToList();
-                }
             }
-            catch (ArgumentNullException)
-            {
-                return;
-            }
-
         }
 
         private void Search(string keyword, string table, DateTime? init, DateTime? end)
@@ -318,12 +324,14 @@ namespace RMAInforme
             ShowResultInStatusBar(result);
         }
 
+
         private void BuscarTodo()
         {
             PRDB context = new PRDB();
             List = context.Cambio.Select(s => s);
             int result = List.Count();
             ShowResultInStatusBar(result);
+
         }
 
         private void SearchBox_GotFocus(object sender, RoutedEventArgs e)
@@ -347,6 +355,7 @@ namespace RMAInforme
 
         public class WaitCursor : IDisposable
         {
+
             private Cursor _previousCursor;
 
             public WaitCursor()
@@ -366,12 +375,39 @@ namespace RMAInforme
             #endregion
         }
 
+
+        public static bool SimplePing()
+        {
+            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["PRDB"].ConnectionString.ToString();
+            string HostName = connectionString.Between("data source=", ";initial");
+            try
+            {
+                IPAddress[] ip = Dns.GetHostAddresses(HostName);
+                Ping pingSender = new Ping();
+                PingReply reply = pingSender.Send(ip[0]);
+                if (reply.Status == IPStatus.Success)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("No se encontró el servidor, compruebe que esté online,");
+                return false;
+            }
+        }
+
+
         private void ShowResultInStatusBar(int result)
         {
 
             string field = ComboBoxTable.SelectedItem.ToString();
-            DateTime? initdate = DateInit.SelectedDate;
-            DateTime? enddate = DateInit.SelectedDate;
+            string[] initdate = DateInit.SelectedDate.ToString().Split();
+            string[] enddate = DateInit.SelectedDate.ToString().Split();
             string keyword = TextBoxSearchString.Text;
             if (string.IsNullOrWhiteSpace(keyword) || keyword == "Buscar...")
             {
@@ -379,23 +415,23 @@ namespace RMAInforme
             }
             else
             {
-                keyword = TextBoxSearchString.Text;
+                keyword = TextBoxSearchString.Text.ToUpper();
             }
             if (initdate == null)
             {
-                TextBlockStatusResult.Text = ("ULTIMA BÚSQUEDA: Se encontró un total de: " + result + " item(s) para '" + keyword + "' en la columna " + field + " desde la fecha de inicio de la base de datos.");
+                TextBlockStatusResult.Text = ("ULTIMA BÚSQUEDA: Se encontró un total de " + result + " registro(s) de '" + field + "' con palabra clave '" + keyword + "' ingresados desde la fecha de creación de la base de datos.");
             }
             else
             {
                 if (CheckToday.IsChecked == true)
                 {
-                    TextBlockStatusResult.Text = ("ULTIMA BÚSQUEDA: Se encontró un total de: " + result + " item(s) para '" + keyword + "' en la columna " + field + " en el día de HOY.");
+                    TextBlockStatusResult.Text = ("ULTIMA BÚSQUEDA: Se encontró un total de " + result + " registro(s) de '" + field + "' con palabra clave '" + keyword + "' ingresados en el dia de HOY.");
                 }
                 else
                 {
-                    TextBlockStatusResult.Text = ("ULTIMA BÚSQUEDA: Se encontró un total de: " + result + " item(s) para '" + keyword + "' en la columna " + field + " cambiados entre el " + initdate + " y el " + enddate);
+                    TextBlockStatusResult.Text = ("ULTIMA BÚSQUEDA: Se encontró un total de " + result + " registro(s) de '" + field + "' con palabra clave '" + keyword + "' ingresados entre el " + initdate[0] + " y el " + enddate[0]);
                 }
-                
+
             }
         }
 
@@ -440,8 +476,6 @@ namespace RMAInforme
             DateInit.IsEnabled = true;
             DateEnd.IsEnabled = true;
             ButtonResetDate.IsEnabled = true;
-            DateInit.SelectedDate = null;
-            DateEnd.SelectedDate = null;
         }
     }
 }
