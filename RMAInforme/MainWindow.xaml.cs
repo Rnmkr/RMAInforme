@@ -8,6 +8,10 @@ using System.Net.NetworkInformation;
 using System.Windows.Controls;
 using readconfig;
 using System.Net;
+using ClosedXML.Excel;
+using System.Data;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace RMAInforme
 {
@@ -77,6 +81,7 @@ namespace RMAInforme
                     return;
                 }
 
+
                 string Keyword = TextBoxSearchString.Text;
                 if (Keyword == "Buscar...")
                 {
@@ -118,12 +123,14 @@ namespace RMAInforme
                 {
                     if (List.FirstOrDefault() == null)
                     {
+                        Export.IsEnabled = false;
                         MessageBox.Show("La búsqueda no obtuvo resultados!", "Buscar...", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
                     }
                     else
                     {
                         DataGrid.ItemsSource = List.ToList();
+                        Export.IsEnabled = true;
                     }
                 }
                 catch (ArgumentNullException)
@@ -324,7 +331,6 @@ namespace RMAInforme
             ShowResultInStatusBar(result);
         }
 
-
         private void BuscarTodo()
         {
             PRDB context = new PRDB();
@@ -375,7 +381,6 @@ namespace RMAInforme
             #endregion
         }
 
-
         public static bool SimplePing()
         {
             string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["PRDB"].ConnectionString.ToString();
@@ -396,11 +401,9 @@ namespace RMAInforme
             }
             catch (Exception)
             {
-                MessageBox.Show("No se encontró el servidor, compruebe que esté online,");
                 return false;
             }
         }
-
 
         private void ShowResultInStatusBar(int result)
         {
@@ -458,7 +461,84 @@ namespace RMAInforme
 
         private void Export_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Funcion no implementada aun", ":(", MessageBoxButton.OK, MessageBoxImage.Information);
+            //MessageBox.Show("Funcion no implementada aun", ":(", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = "Resultados de Busqueda"; // Default file name
+            dlg.DefaultExt = ".xslx"; // Default file extension
+            dlg.Filter = "Documentos Excel (.xlsx)|*.xlsx"; // Filter files by extension
+
+            Nullable<bool> result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                // Save document
+                string filename = dlg.FileName;
+
+                try
+                {
+                    ExportDataSet(filename);
+                    MessageBox.Show("El archivo se guardó en: " + Environment.NewLine + filename, "Exportando a Excel", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Error guardando el archivo: " + Environment.NewLine + filename, "Exportando a Excel", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+        }
+
+        private void ExportDataSet(string destination)
+        {
+            var workbook = new XLWorkbook();
+
+            DataTable dt = LINQToDataTable(List);
+
+            var worksheet = workbook.Worksheets.Add("Cambios Produccion");
+            worksheet.Cell(1, 1).InsertTable(dt);
+            worksheet.Columns().AdjustToContents();
+
+            workbook.SaveAs(destination);
+            workbook.Dispose();
+        }
+
+        private DataTable LINQToDataTable<T>(IQueryable<T> varlist)
+        {
+            DataTable dtReturn = new DataTable();
+
+            // column names
+            PropertyInfo[] oProps = null;
+
+            if (varlist == null) return dtReturn;
+
+            foreach (T rec in varlist)
+            {
+                // Use reflection to get property names, to create table, Only first time, others will follow
+                if (oProps == null)
+                {
+                    oProps = ((Type)rec.GetType()).GetProperties();
+                    foreach (PropertyInfo pi in oProps)
+                    {
+                        Type colType = pi.PropertyType;
+
+                        if ((colType.IsGenericType) && (colType.GetGenericTypeDefinition() == typeof(Nullable<>)))
+                        {
+                            colType = colType.GetGenericArguments()[0];
+                        }
+
+                        dtReturn.Columns.Add(new DataColumn(pi.Name, colType));
+                    }
+                }
+                DataRow dr = dtReturn.NewRow();
+
+                foreach (PropertyInfo pi in oProps)
+                {
+                    dr[pi.Name] = pi.GetValue(rec, null) == null ? DBNull.Value : pi.GetValue(rec, null);
+                }
+
+                dtReturn.Rows.Add(dr);
+            }
+            return dtReturn;
         }
 
         private void CheckToday_Checked(object sender, RoutedEventArgs e)
@@ -477,5 +557,6 @@ namespace RMAInforme
             DateEnd.IsEnabled = true;
             ButtonResetDate.IsEnabled = true;
         }
+
     }
 }
