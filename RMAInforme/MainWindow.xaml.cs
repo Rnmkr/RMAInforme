@@ -21,6 +21,7 @@ namespace RMAInforme
     public partial class MainWindow : Window
     {
         IQueryable<Cambio> List;
+        private bool FirstRun = true;
 
         public MainWindow()
         {
@@ -42,6 +43,11 @@ namespace RMAInforme
             ComboBoxTable.Items.Add("DESCRIPCION DE FALLA");
             ComboBoxTable.Items.Add("OBSERVACIONES");
             ComboBoxTable.Items.Add("ESTADO DE CAMBIO");
+
+            ComboBoxSector.Items.Add("TODOS LOS SECTORES");
+            ComboBoxSector.Items.Add("PRODUCCION");
+            ComboBoxSector.Items.Add("SERVICIO TECNICO");
+            ComboBoxSector.SelectedIndex = 0;
             ComboBoxTable.SelectedIndex = 0;
             CheckToday.IsChecked = true;
 
@@ -51,6 +57,8 @@ namespace RMAInforme
         {
             using (new WaitCursor())
             {
+                ComboBoxSector.SelectedIndex = 0;
+
                 if (SimplePing() == false)
                 {
                     MessageBox.Show("No se encontró el servidor." + Environment.NewLine + "Revise la conexión con la Base de Datos y reintente.", "Conectando al servidor", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -131,6 +139,8 @@ namespace RMAInforme
                     {
                         DataGrid.ItemsSource = List.ToList();
                         Export.IsEnabled = true;
+                        ComboBoxSector.IsEnabled = true;
+                        
                     }
                 }
                 catch (ArgumentNullException)
@@ -337,7 +347,6 @@ namespace RMAInforme
             List = context.Cambio.Select(s => s);
             int result = List.Count();
             ShowResultInStatusBar(result);
-
         }
 
         private void SearchBox_GotFocus(object sender, RoutedEventArgs e)
@@ -410,7 +419,7 @@ namespace RMAInforme
 
             string field = ComboBoxTable.SelectedItem.ToString();
             string[] initdate = DateInit.SelectedDate.ToString().Split();
-            string[] enddate = DateInit.SelectedDate.ToString().Split();
+            string[] enddate = DateEnd.SelectedDate.ToString().Split();
             string keyword = TextBoxSearchString.Text;
             if (string.IsNullOrWhiteSpace(keyword) || keyword == "Buscar...")
             {
@@ -422,17 +431,17 @@ namespace RMAInforme
             }
             if (initdate == null)
             {
-                TextBlockStatusResult.Text = ("ULTIMA BÚSQUEDA: Se encontró un total de " + result + " registro(s) de '" + field + "' con palabra clave '" + keyword + "' ingresados desde la fecha de creación de la base de datos.");
+                TextBlockStatusResult.Text = ("ULTIMA BÚSQUEDA EN '" + ComboBoxSector.SelectedItem.ToString() + "': Se encontró un total de " + result + " registro(s) de '" + field + "' '" + keyword + "' ingresados desde la fecha de creación de la base de datos.");
             }
             else
             {
                 if (CheckToday.IsChecked == true)
                 {
-                    TextBlockStatusResult.Text = ("ULTIMA BÚSQUEDA: Se encontró un total de " + result + " registro(s) de '" + field + "' con palabra clave '" + keyword + "' ingresados en el dia de HOY.");
+                    TextBlockStatusResult.Text = ("ULTIMA BÚSQUEDA EN '" + ComboBoxSector.SelectedItem.ToString() + "': Se encontró un total de " + result + " registro(s) de '" + field + "' '" + keyword + "' ingresados en el dia de hoy.");
                 }
                 else
                 {
-                    TextBlockStatusResult.Text = ("ULTIMA BÚSQUEDA: Se encontró un total de " + result + " registro(s) de '" + field + "' con palabra clave '" + keyword + "' ingresados entre el " + initdate[0] + " y el " + enddate[0]);
+                    TextBlockStatusResult.Text = ("ULTIMA BÚSQUEDA EN '" + ComboBoxSector.SelectedItem.ToString() + "': Se encontró un total de " + result + " registro(s) de '" + field + "' '" + keyword + "' ingresados entre el " + initdate[0] + " y el " + enddate[0]);
                 }
 
             }
@@ -558,5 +567,28 @@ namespace RMAInforme
             ButtonResetDate.IsEnabled = true;
         }
 
+        private void ComboBoxSector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FirstRun == true)
+            {
+                FirstRun = false;
+                return;
+            }
+
+            if (DataGrid.ItemsSource == null)
+            {
+                MessageBox.Show("Realice una búsqueda en la Base de Datos primero!", "Informe RMA", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return;
+            }
+
+            using (new WaitCursor())
+            {
+                //List = List.Where(w => w.Sector == ComboBoxSector.SelectedItem.ToString());
+                MessageBox.Show(ComboBoxSector.SelectedItem.ToString());
+            }
+
+            int result = List.Count();
+            ShowResultInStatusBar(result);
+        }
     }
 }

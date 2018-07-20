@@ -21,13 +21,15 @@
         <RadioButton x:Name="RadioLocal" Content="Buscar en la lista actual" Margin="361,41,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="191"/>
         <RadioButton x:Name="RadioGlobal" Content="Buscar en la base de datos" Margin="361,17,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="191"/>
         <Button x:Name="Export" Content="Exportar Excel" Margin="0,10,10,0" IsEnabled="False" VerticalAlignment="Top" Height="23" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Right" Width="111" Click="Export_Click"/>
-        <Button x:Name="Stats" Content="Estadisticas" Margin="0,38,10,0" VerticalAlignment="Top" Height="23" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Right" Width="111" Click="Stats_Click"/>
+        <Button x:Name="Stats" Content="Estadisticas" Margin="0,38,10,0" IsEnabled="False" VerticalAlignment="Top" Height="23" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Right" Width="111" Click="Stats_Click"/>
         <StatusBar Name="StatusBarResult" Margin="10,0,10,7" Height="24" VerticalAlignment="Bottom">
             <StatusBarItem BorderThickness="1" BorderBrush="SteelBlue">
                 <TextBlock Name="TextBlockStatusResult" FontFamily="Consolas" FontWeight="Bold" />
             </StatusBarItem>
         </StatusBar>
         <CheckBox Name="CheckToday" Checked="CheckToday_Checked" Unchecked="CheckToday_Unchecked" Content="BUSCAR HOY" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,41,126,0" Width="98" FontWeight="Bold" FontFamily="Consolas" VerticalContentAlignment="Center"/>
+        <ComboBox x:Name="ComboBoxSector" HorizontalAlignment="Left" IsEnabled="False" Height="23" Margin="577,32,0,0" VerticalAlignment="Top" Width="255" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" SelectionChanged="ComboBoxSector_SelectionChanged"/>
+        <Label Content="Sector" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,526,0" FontFamily="Consolas" FontWeight="Bold" VerticalContentAlignment="Center" Height="23" HorizontalContentAlignment="Center" Width="255"/>
 
 
     </Grid>
