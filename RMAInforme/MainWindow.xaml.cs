@@ -594,16 +594,17 @@ namespace RMAInforme
                 if (ComboBoxSector.SelectedItem.ToString() == "TODOS LOS SECTORES")
                 {
                     DataGrid.ItemsSource = List.ToList();
+                    int result = List.Count();
+                    ShowResultInStatusBar(result);
                 }
                 else
                 {
                     TList2 = List.Where(w => w.SectorCambio == ComboBoxSector.SelectedItem.ToString());
                     DataGrid.ItemsSource = TList2.ToList();
+                    int result = TList2.Count();
+                    ShowResultInStatusBar(result);
                 }
             }
-
-            int result = List.Count();
-            ShowResultInStatusBar(result);
         }
     }
 }
