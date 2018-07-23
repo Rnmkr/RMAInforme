@@ -53,7 +53,7 @@ namespace RMAInforme.DataAccessLayer
                 .IsUnicode(false);
 
             modelBuilder.Entity<Cambio>()
-                .Property(e => e.UUID)
+                .Property(e => e.SectorCambio)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Cambio>()

@@ -51,8 +51,8 @@ namespace RMAInforme.DataAccessLayer
         [StringLength(30)]
         public string VersionItem { get; set; }
 
-        [StringLength(60)]
-        public string UUID { get; set; }
+        [StringLength(16)]
+        public string SectorCambio { get; set; }
 
         [Required]
         [StringLength(5)]

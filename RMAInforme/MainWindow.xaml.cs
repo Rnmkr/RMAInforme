@@ -21,6 +21,8 @@ namespace RMAInforme
     public partial class MainWindow : Window
     {
         IQueryable<Cambio> List;
+        IQueryable<Cambio> TList;
+        IQueryable<Cambio> TList2;
         private bool FirstRun = true;
 
         public MainWindow()
@@ -36,7 +38,7 @@ namespace RMAInforme
             ComboBoxTable.Items.Add("PRODUCTO");
             ComboBoxTable.Items.Add("VERSION");
             ComboBoxTable.Items.Add("DESCRIPCION DE ITEM");
-            ComboBoxTable.Items.Add("UUID");
+            ComboBoxTable.Items.Add("SECTOR CAMBIO");
             ComboBoxTable.Items.Add("LEGAJO");
             ComboBoxTable.Items.Add("TECNICO");
             ComboBoxTable.Items.Add("CODIGO DE FALLA");
@@ -140,7 +142,7 @@ namespace RMAInforme
                         DataGrid.ItemsSource = List.ToList();
                         Export.IsEnabled = true;
                         ComboBoxSector.IsEnabled = true;
-                        
+
                     }
                 }
                 catch (ArgumentNullException)
@@ -152,8 +154,6 @@ namespace RMAInforme
 
         private void Search(string keyword, string table, DateTime? init, DateTime? end)
         {
-            IQueryable<Cambio> TList;
-
             if ((bool)RadioLocal.IsChecked)
             {
                 TList = List.Where(w => w.FechaCambio >= init && w.FechaCambio <= end);
@@ -187,8 +187,8 @@ namespace RMAInforme
                 case "DESCRIPCION DE ITEM":
                     List = TList.Where(w => w.DescripcionItem.Contains(keyword)).Select(s => s);
                     break;
-                case "UUID":
-                    List = TList.Where(w => w.UUID.Contains(keyword)).Select(s => s);
+                case "SECTOR CAMBIO":
+                    List = TList.Where(w => w.SectorCambio.Contains(keyword)).Select(s => s);
                     break;
                 case "LEGAJO":
                     List = TList.Where(w => w.Legajo.Contains(keyword)).Select(s => s);
@@ -243,8 +243,8 @@ namespace RMAInforme
                     case "DESCRIPCION DE ITEM":
                         List = List.Where(w => w.DescripcionItem.Contains(keyword)).Select(s => s);
                         break;
-                    case "UUID":
-                        List = List.Where(w => w.UUID.Contains(keyword)).Select(s => s);
+                    case "SECTOR CAMBIO":
+                        List = List.Where(w => w.SectorCambio.Contains(keyword)).Select(s => s);
                         break;
                     case "LEGAJO":
                         List = List.Where(w => w.Legajo.Contains(keyword)).Select(s => s);
@@ -295,8 +295,8 @@ namespace RMAInforme
                     case "DESCRIPCION DE ITEM":
                         List = context.Cambio.Where(w => w.DescripcionItem.Contains(keyword)).Select(s => s);
                         break;
-                    case "UUID":
-                        List = context.Cambio.Where(w => w.UUID.Contains(keyword)).Select(s => s);
+                    case "SECTOR CAMBIO":
+                        List = context.Cambio.Where(w => w.SectorCambio.Contains(keyword)).Select(s => s);
                         break;
                     case "LEGAJO":
                         List = context.Cambio.Where(w => w.Legajo.Contains(keyword)).Select(s => s);
@@ -500,8 +500,16 @@ namespace RMAInforme
         private void ExportDataSet(string destination)
         {
             var workbook = new XLWorkbook();
+            DataTable dt;
 
-            DataTable dt = LINQToDataTable(List);
+            if (ComboBoxSector.SelectedIndex == 0)
+            {
+                dt = LINQToDataTable(List);
+            }
+            else
+            {
+                dt = LINQToDataTable(TList2);
+            }
 
             var worksheet = workbook.Worksheets.Add("Cambios Produccion");
             worksheet.Cell(1, 1).InsertTable(dt);
@@ -583,8 +591,15 @@ namespace RMAInforme
 
             using (new WaitCursor())
             {
-                //List = List.Where(w => w.Sector == ComboBoxSector.SelectedItem.ToString());
-                MessageBox.Show(ComboBoxSector.SelectedItem.ToString());
+                if (ComboBoxSector.SelectedItem.ToString() == "TODOS LOS SECTORES")
+                {
+                    DataGrid.ItemsSource = List.ToList();
+                }
+                else
+                {
+                    TList2 = List.Where(w => w.SectorCambio == ComboBoxSector.SelectedItem.ToString());
+                    DataGrid.ItemsSource = TList2.ToList();
+                }
             }
 
             int result = List.Count();
