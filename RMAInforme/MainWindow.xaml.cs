@@ -52,7 +52,7 @@ namespace RMAInforme
             ComboBoxSector.SelectedIndex = 0;
             ComboBoxTable.SelectedIndex = 0;
             CheckToday.IsChecked = true;
-
+            mainWindow.Title = "RMAInforme" + " -"  + Assembly.GetExecutingAssembly().GetName().Version;
         }
 
         private void ButtonSearch_Click(object sender, RoutedEventArgs e)
