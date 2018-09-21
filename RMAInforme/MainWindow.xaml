@@ -30,7 +30,7 @@
         </StatusBar>
         <CheckBox Name="CheckToday" Checked="CheckToday_Checked" Unchecked="CheckToday_Unchecked" Content="BUSCAR HOY" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,41,126,0" Width="98" FontWeight="Bold" FontFamily="Consolas" VerticalContentAlignment="Center"/>
         <ComboBox x:Name="ComboBoxSector" HorizontalAlignment="Left" IsEnabled="False" Height="23" Margin="577,32,0,0" VerticalAlignment="Top" Width="255" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" SelectionChanged="ComboBoxSector_SelectionChanged"/>
-        <Label Content="Sector" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,526,0" FontFamily="Consolas" FontWeight="Bold" VerticalContentAlignment="Center" Height="23" HorizontalContentAlignment="Center" Width="255"/>
+        <Label Content="Sector" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="577,10,0,0" FontFamily="Consolas" FontWeight="Bold" VerticalContentAlignment="Center" Height="23" HorizontalContentAlignment="Center" Width="255"/>
 
 
     </Grid>

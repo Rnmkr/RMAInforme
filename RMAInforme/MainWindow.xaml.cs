@@ -628,45 +628,60 @@ namespace RMAInforme
                 return;
             }
 
-            using (new WaitCursor())
+            var dialog = new PasswordWindow();
+
+            if (dialog.ShowDialog() == true)
             {
-                if (SimplePing() == false)
+                using (new WaitCursor())
                 {
-                    MessageBox.Show("No se encontró el servidor." + Environment.NewLine + "Revise la conexión con la Base de Datos y reintente.", "Conectando al servidor", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                foreach (var item in DataGrid.SelectedItems)
-                {
-                    try
+                    if (SimplePing() == false)
                     {
-                        Cambio cambioSeleccionado = (Cambio)item;
-                        int idSeleccionada = cambioSeleccionado.IdCambio;
-                        PRDB context = new PRDB();
-                        Cambio c = (from x in context.Cambio
-                                    where x.IdCambio == idSeleccionada
-                                    select x).First();
-
-                        string nuevoEstado;
-
-                        if (c.EstadoCambio == "APROBADO")
-                        {
-                            nuevoEstado = "CANCELADO";
-                        }
-                        else
-                        {
-                            nuevoEstado = "APROBADO";
-                        }
-
-                        c.EstadoCambio = nuevoEstado;
-                        context.SaveChanges();
+                        MessageBox.Show("No se encontró el servidor." + Environment.NewLine + "Revise la conexión con la Base de Datos y reintente.", "Conectando al servidor", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
                     }
-                    catch (Exception)
+
+                    string obsEst = dialog.ResponseText;
+                    string nuevoEstado;
+                    DateTime dateEst = DateTime.Now;
+
+                    foreach (var item in DataGrid.SelectedItems)
                     {
-                        MessageBox.Show("Error cambiando estado!", "Cambio de Estado", MessageBoxButton.OK, MessageBoxImage.Error);
+                        try
+                        {
+                            Cambio cambioSeleccionado = (Cambio)item;
+                            int idSeleccionada = cambioSeleccionado.IdCambio;
+                            PRDB context = new PRDB();
+                            Cambio c = (from x in context.Cambio
+                                        where x.IdCambio == idSeleccionada
+                                        select x).First();
+
+
+                            if (c.EstadoCambio == "APROBADO")
+                            {
+                                nuevoEstado = "CANCELADO";
+                            }
+                            else
+                            {
+                                nuevoEstado = "APROBADO";
+                            }
+
+
+                            c.SupervisorModificacion = obsEst;
+                            c.FechaModificacion = dateEst;
+                            c.EstadoCambio = nuevoEstado;
+                            context.SaveChanges();
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show("Error cambiando estado!", "Cambio de Estado", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
                     }
+                    MessageBox.Show("Correcto!" + Environment.NewLine + "Refresque la Busqueda para visualizar el cambio de estado!", "Cambio de Estado", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
-                MessageBox.Show("Correcto!" + Environment.NewLine + "Refresque la Busqueda para visualizar el cambio de estado!", "Cambio de Estado", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                return;
             }
         }
 
