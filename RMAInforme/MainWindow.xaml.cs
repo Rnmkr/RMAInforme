@@ -10,7 +10,6 @@ using readconfig;
 using System.Net;
 using ClosedXML.Excel;
 using System.Data;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace RMAInforme
@@ -45,6 +44,7 @@ namespace RMAInforme
             ComboBoxTable.Items.Add("DESCRIPCION DE FALLA");
             ComboBoxTable.Items.Add("OBSERVACIONES");
             ComboBoxTable.Items.Add("ESTADO DE CAMBIO");
+            ComboBoxTable.Items.Add("ID DE CAMBIO");
 
             ComboBoxSector.Items.Add("TODOS LOS SECTORES");
             ComboBoxSector.Items.Add("PRODUCCION");
@@ -52,7 +52,7 @@ namespace RMAInforme
             ComboBoxSector.SelectedIndex = 0;
             ComboBoxTable.SelectedIndex = 0;
             CheckToday.IsChecked = true;
-            mainWindow.Title = "RMAInforme" + " -"  + Assembly.GetExecutingAssembly().GetName().Version;
+            mainWindow.Title = "RMAInforme" + " -" + Assembly.GetExecutingAssembly().GetName().Version;
         }
 
         private void ButtonSearch_Click(object sender, RoutedEventArgs e)
@@ -208,6 +208,11 @@ namespace RMAInforme
                 case "ESTADO DE CAMBIO":
                     List = TList.Where(w => w.EstadoCambio.Contains(keyword)).Select(s => s);
                     break;
+                case "ID DE CAMBIO":
+
+                    int id = Int32.Parse(keyword);
+                    List = TList.Where(w => w.IdCambio == id).Select(s => s);
+                    break;
                 default:
                     //ERROR
                     break;
@@ -264,6 +269,10 @@ namespace RMAInforme
                     case "ESTADO DE CAMBIO":
                         List = List.Where(w => w.EstadoCambio.Contains(keyword)).Select(s => s);
                         break;
+                    case "ID DE CAMBIO":
+                        int id = Int32.Parse(keyword);
+                        List = List.Where(w => w.IdCambio == id).Select(s => s);
+                        break;
                     default:
                         //ERROR
                         break;
@@ -315,6 +324,10 @@ namespace RMAInforme
                         break;
                     case "ESTADO DE CAMBIO":
                         List = context.Cambio.Where(w => w.EstadoCambio.Contains(keyword)).Select(s => s);
+                        break;
+                    case "ID DE CAMBIO":
+                        int id = Int32.Parse(keyword);
+                        List = context.Cambio.Where(w => w.IdCambio == id).Select(s => s);
                         break;
                     default:
                         //ERROR
@@ -453,20 +466,20 @@ namespace RMAInforme
             DateEnd.SelectedDate = null;
         }
 
-        private void Stats_Click(object sender, RoutedEventArgs e)
-        {
-            if (List == null)
-            {
-                MessageBox.Show("Realice una búsqueda en la Base de Datos primero!", "Estadisticas", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-                return;
-            }
-            string keyword = TextBoxSearchString.Text;
-            string table = ComboBoxTable.SelectedValue.ToString();
-            DateTime? init = DateInit.SelectedDate;
-            DateTime? end = DateEnd.SelectedDate;
-            StatsWindow statsw = new StatsWindow(List, keyword, table, init, end);
-            statsw.ShowDialog();
-        }
+        //private void Stats_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (List == null)
+        //    {
+        //        MessageBox.Show("Realice una búsqueda en la Base de Datos primero!", "Estadisticas", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+        //        return;
+        //    }
+        //    string keyword = TextBoxSearchString.Text;
+        //    string table = ComboBoxTable.SelectedValue.ToString();
+        //    DateTime? init = DateInit.SelectedDate;
+        //    DateTime? end = DateEnd.SelectedDate;
+        //    StatsWindow statsw = new StatsWindow(List, keyword, table, init, end);
+        //    statsw.ShowDialog();
+        //}
 
         private void Export_Click(object sender, RoutedEventArgs e)
         {
@@ -606,5 +619,56 @@ namespace RMAInforme
                 }
             }
         }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataGrid.SelectedItem == null)
+            {
+                MessageBox.Show("Seleccione el Item que desea cambiar!", "Cambiar Estado", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            using (new WaitCursor())
+            {
+                if (SimplePing() == false)
+                {
+                    MessageBox.Show("No se encontró el servidor." + Environment.NewLine + "Revise la conexión con la Base de Datos y reintente.", "Conectando al servidor", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                foreach (var item in DataGrid.SelectedItems)
+                {
+                    try
+                    {
+                        Cambio cambioSeleccionado = (Cambio)item;
+                        int idSeleccionada = cambioSeleccionado.IdCambio;
+                        PRDB context = new PRDB();
+                        Cambio c = (from x in context.Cambio
+                                    where x.IdCambio == idSeleccionada
+                                    select x).First();
+
+                        string nuevoEstado;
+
+                        if (c.EstadoCambio == "APROBADO")
+                        {
+                            nuevoEstado = "CANCELADO";
+                        }
+                        else
+                        {
+                            nuevoEstado = "APROBADO";
+                        }
+
+                        c.EstadoCambio = nuevoEstado;
+                        context.SaveChanges();
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Error cambiando estado!", "Cambio de Estado", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+                MessageBox.Show("Correcto!" + Environment.NewLine + "Refresque la Busqueda para visualizar el cambio de estado!", "Cambio de Estado", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
     }
 }
