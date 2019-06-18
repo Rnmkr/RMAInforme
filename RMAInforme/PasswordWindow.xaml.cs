@@ -10,6 +10,7 @@ namespace RMAInforme
         public PasswordWindow()
         {
             InitializeComponent();
+            Pass.Focus();
         }
 
         public string ResponseText

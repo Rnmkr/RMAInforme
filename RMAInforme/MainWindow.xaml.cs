@@ -23,6 +23,10 @@ namespace RMAInforme
         IQueryable<Cambio> TList;
         IQueryable<Cambio> TList2;
         private bool FirstRun = true;
+        string Keyword;
+        string Table;
+        DateTime? InitialDate;
+        DateTime? EndDate;
 
         public MainWindow()
         {
@@ -92,14 +96,19 @@ namespace RMAInforme
                 }
 
 
-                string Keyword = TextBoxSearchString.Text;
+                Keyword = TextBoxSearchString.Text;
                 if (Keyword == "Buscar...")
                 {
                     Keyword = null;
                 }
-                string Table = ComboBoxTable.SelectedValue.ToString();
-                DateTime? InitialDate = DateInit.SelectedDate;
-                DateTime? EndDate = DateEnd.SelectedDate;
+                Table = ComboBoxTable.SelectedValue.ToString();
+                InitialDate = DateInit.SelectedDate ?? Convert.ToDateTime("01/01/1990");
+                EndDate = DateEnd.SelectedDate ?? Convert.ToDateTime("01/01/3000");
+                //InitialDate = InitialDate.Value.AddDays(0); //no es necesario al parecer...
+                if (EndDate != null)
+                {
+                    EndDate = EndDate.Value.AddDays(1);
+                }
 
                 if (string.IsNullOrWhiteSpace(Keyword))
                 {
@@ -340,6 +349,7 @@ namespace RMAInforme
 
         private void Search(DateTime? init, DateTime? end)
         {
+
             if ((bool)RadioLocal.IsChecked)
             {
                 List = List.Where(w => w.FechaCambio >= init && w.FechaCambio <= end);
@@ -405,26 +415,27 @@ namespace RMAInforme
 
         public static bool SimplePing()
         {
-            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["PRDB"].ConnectionString.ToString();
-            string HostName = connectionString.Between("data source=", ";initial");
-            try
-            {
-                IPAddress[] ip = Dns.GetHostAddresses(HostName);
-                Ping pingSender = new Ping();
-                PingReply reply = pingSender.Send(ip[0]);
-                if (reply.Status == IPStatus.Success)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            //string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["PRDB"].ConnectionString.ToString();
+            //string HostName = connectionString.Between("data source=", ";initial");
+            //try
+            //{
+            //    IPAddress[] ip = Dns.GetHostAddresses(HostName);
+            //    Ping pingSender = new Ping();
+            //    PingReply reply = pingSender.Send(ip[0]);
+            //    if (reply.Status == IPStatus.Success)
+            //    {
+            //        return true;
+            //    }
+            //    else
+            //    {
+            //        return false;
+            //    }
+            //}
+            //catch (Exception)
+            //{
+            //    return false;
+            //}
+            return true;
         }
 
         private void ShowResultInStatusBar(int result)
@@ -434,6 +445,16 @@ namespace RMAInforme
             string[] initdate = DateInit.SelectedDate.ToString().Split();
             string[] enddate = DateEnd.SelectedDate.ToString().Split();
             string keyword = TextBoxSearchString.Text;
+            if (DateInit.SelectedDate == null)
+            {
+                initdate[0] = "INICIO DE LA BASE DE DATOS";
+            }
+
+            if (DateEnd.SelectedDate == null)
+            {
+                enddate[0] = "FIN DE LA BASE DE DATOS";
+            }
+
             if (string.IsNullOrWhiteSpace(keyword) || keyword == "Buscar...")
             {
                 keyword = "*";
@@ -466,19 +487,19 @@ namespace RMAInforme
             DateEnd.SelectedDate = null;
         }
 
-        //private void Stats_Click(object sender, RoutedEventArgs e)
+        //private void stats_click(object sender, routedeventargs e)
         //{
-        //    if (List == null)
+        //    if (list == null)
         //    {
-        //        MessageBox.Show("Realice una búsqueda en la Base de Datos primero!", "Estadisticas", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+        //        messagebox.show("realice una búsqueda en la base de datos primero!", "estadisticas", messageboxbutton.ok, messageboximage.asterisk);
         //        return;
         //    }
-        //    string keyword = TextBoxSearchString.Text;
-        //    string table = ComboBoxTable.SelectedValue.ToString();
-        //    DateTime? init = DateInit.SelectedDate;
-        //    DateTime? end = DateEnd.SelectedDate;
-        //    StatsWindow statsw = new StatsWindow(List, keyword, table, init, end);
-        //    statsw.ShowDialog();
+        //    string keyword = textboxsearchstring.text;
+        //    string table = comboboxtable.selectedvalue.tostring();
+        //    datetime? init = dateinit.selecteddate;
+        //    datetime? end = dateend.selecteddate;
+        //    statswindow statsw = new statswindow(list, keyword, table, init, end);
+        //    statsw.showdialog();
         //}
 
         private void Export_Click(object sender, RoutedEventArgs e)
@@ -575,7 +596,9 @@ namespace RMAInforme
         {
             DateInit.IsEnabled = false;
             DateEnd.IsEnabled = false;
-            ButtonResetDate.IsEnabled = false;
+            CheckEver.IsChecked = false;
+            DateInit.IsEnabled = false;
+            DateEnd.IsEnabled = false;
             DateInit.SelectedDate = DateTime.Now.AddDays(-1);
             DateEnd.SelectedDate = DateTime.Now.AddDays(1);
 
@@ -585,7 +608,6 @@ namespace RMAInforme
         {
             DateInit.IsEnabled = true;
             DateEnd.IsEnabled = true;
-            ButtonResetDate.IsEnabled = true;
         }
 
         private void ComboBoxSector_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -685,5 +707,38 @@ namespace RMAInforme
             }
         }
 
+        private void Stats_Click(object sender, RoutedEventArgs e)
+        {
+            if (List == null)
+            {
+                MessageBox.Show("Realice una búsqueda en la Base de Datos primero!", "Buscar...", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                RadioGlobal.IsChecked = true;
+                return;
+            }
+            else
+            {
+                int countedList = List.Count();
+
+                //MessageBox.Show(countedList + " " + Keyword + " " + Table + " " + InitialDate.ToString() + " " + EndDate.ToString());
+                //return;
+                StatsWindow sw = new StatsWindow(countedList, Keyword, Table, InitialDate, EndDate);
+                sw.ShowDialog();
+            }
+        }
+
+        private void CheckEver_Checked(object sender, RoutedEventArgs e)
+        {
+            CheckToday.IsChecked = false;
+            DateInit.SelectedDate = null;
+            DateEnd.SelectedDate = null;
+            DateInit.IsEnabled = false;
+            DateEnd.IsEnabled = false;
+        }
+
+        private void CheckEver_Unchecked(object sender, RoutedEventArgs e)
+        {
+            DateInit.IsEnabled = true;
+            DateEnd.IsEnabled = true;
+        }
     }
 }

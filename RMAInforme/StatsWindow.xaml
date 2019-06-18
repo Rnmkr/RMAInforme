@@ -3,27 +3,103 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RMAInforme"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="Estadisticas de la búsqueda" Height="600" Width="800" MaxHeight="768" MaxWidth="1366" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
-    <Grid Background="LightSteelBlue">
-        <Label x:Name="LabelTotalItemsBusqueda" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Consolas" FontWeight="Bold" Margin="10,10,0,0">
-            <Label.Background>
-                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.InfoColorKey}}"/>
-            </Label.Background>
-        </Label>
-        <Label x:Name="LabelTotalCambios" Content="" FontFamily="Consolas" FontWeight="Bold" Margin="10,39,0,0" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Background="{x:Null}"/>
-        <Label x:Name="Title" Content="La búsqueda realizada representa:" FontFamily="Consolas" FontWeight="Bold" Margin="10,68,0,0" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top"/>
-        <ProgressBar x:Name="ProgressTotal" Margin="10,107,10,0" IsTabStop="False" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
-        <ProgressBar x:Name="ProgressPeriod" Margin="10,157,10,0" IsTabStop="False" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
-        <ProgressBar x:Name="ProgressSeMes" Margin="10,207,10,0" IsTabStop="False" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
-        <ProgressBar x:Name="ProgressTriMes" Margin="10,257,10,0" IsTabStop="False" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
-        <ProgressBar x:Name="ProgressMes" Margin="10,307,10,0" IsTabStop="False" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top"/>
-        <Label x:Name="LabelPorcentajeTotal" Content="Porcentaje sobre el total: %0" FontFamily="Consolas" FontWeight="Bold" Margin="10,106,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="774" Height="31" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
-        <Label x:Name="LabelPorcentajePeriodo" Content="Porcentaje sobre rango: %0" FontFamily="Consolas" FontWeight="Bold" Margin="10,159,0,0" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Width="774" HorizontalContentAlignment="Center"/>
-        <Label x:Name="LabelPorcentajeMes" Content="No implementado en esta versión" FontFamily="Consolas" FontWeight="Bold" Margin="10,209,0,0" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Width="774" HorizontalContentAlignment="Center"/>
-        <Label x:Name="LabelPorcentajeTriMes" Content="No implementado en esta versión" FontFamily="Consolas" FontWeight="Bold" Margin="10,259,0,0" VerticalContentAlignment="Center" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Width="774" HorizontalContentAlignment="Center"/>
-        <Label x:Name="LabelPorcentajeSeMes" Content="No implementado en esta versión" FontFamily="Consolas" FontWeight="Bold" Margin="10,309,0,0" VerticalContentAlignment="Center" RenderTransformOrigin="1.598,-1.5" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Width="774" HorizontalContentAlignment="Center"/>
+        Title="Estadisticas de la búsqueda" Height="766" Width="1366" WindowStartupLocation="CenterScreen">
+    
+    <Grid>
+        <Grid Name="grillita" Background="WhiteSmoke">
+ 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+        
+            <Grid.RowDefinitions>
+                <RowDefinition Height="24" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
+            <lvc:PieChart Name="PieChart1" Grid.Column="0" Grid.Row="1" LegendLocation="Top" Hoverable="True" DataTooltip="{x:Null}" Margin="0,0,0,20">
+                    <lvc:PieChart.Series>
+                    <lvc:PieSeries Title="XL2" Values="227" DataLabels="True" LabelPoint="{Binding PointLabel}"/>
+                    <lvc:PieSeries Title="TODOS LOS CAMBIOS DEL PERIODO" Values="430" DataLabels="True" LabelPoint="{Binding PointLabel}"/>
+                    </lvc:PieChart.Series>
+                </lvc:PieChart>
+                <Label Content="SE REGISTRARON 430 CAMBIOS ENTRE 01/05/2019 AL 31/05/2019 &#10;DE LOS CUALES 227 PERTENECEN A 'XL2'"  FontSize="10" Padding="0" Grid.Row="1" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+
+            <lvc:PieChart Name="PieChart2" Grid.Column="1" Grid.Row="1" LegendLocation="Top" Hoverable="True" DataTooltip="{x:Null}" Margin="0,0,0,20">
+                <lvc:PieChart.Series>
+                    <lvc:PieSeries Title="XL2 01/05/2019 AL 31/05/2019" Values="227" DataLabels="True" LabelPoint="{Binding PointLabel}"/>
+                    <lvc:PieSeries Title="RESTO DE CAMBIOS DE XL2" Values="864" DataLabels="True" LabelPoint="{Binding PointLabel}"/>
+                </lvc:PieChart.Series>
+                <lvc:PieChart.SeriesColors>
+                    <lvc:ColorsCollection>
+                        <Color A="255" R="0" G="127" B="0" />
+                        <Color A="255" R="127" G="127" B="0" />
+                    </lvc:ColorsCollection>
+                </lvc:PieChart.SeriesColors>
+            </lvc:PieChart>
+                <Label Content="SE REGISTRARON 864 CAMBIOS DE XL2 EN TOTAL &#10;DE LOS CUALES 227 SE REALIZARON ENTRE 01/05/2019 Y 31/05/2019" FontSize="10" Padding="0" Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+
+
+            <lvc:PieChart Name="PieChart3" Grid.Column="2" Grid.Row="1" LegendLocation="Top" Hoverable="True" DataTooltip="{x:Null}" Margin="0,0,0,20">
+                <lvc:PieChart.Series>
+                    <lvc:PieSeries Title="XL2 01/05/2019 AL 31/05/2019" Values="227" DataLabels="True" LabelPoint="{Binding PointLabel}"/>
+                    <lvc:PieSeries Title="RESTO DEL TOTAL DE CAMBIOS" Values="6651" DataLabels="True" LabelPoint="{Binding PointLabel}"/>
+                </lvc:PieChart.Series>
+                <lvc:PieChart.SeriesColors>
+                    <lvc:ColorsCollection>
+                        <Color A="255" R="0" G="127" B="255" />
+                        <Color A="255" R="0" G="127" B="127" />
+                    </lvc:ColorsCollection>
+                </lvc:PieChart.SeriesColors>
+            </lvc:PieChart>
+            <Label Content="AL DIA DE LA FECHA SE REGISTRARON 6651 CAMBIOS &#10;DE LOS CUALES 227 DE XL2 SE REALIZARON ENTRE 01/05/2019 Y 31/05/2019" FontSize="10" Padding="0" Grid.Row="1" Grid.Column="2" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+
+
+
+            <lvc:PieChart Name="PieChart4" Grid.Column="0" Grid.Row="3" LegendLocation="Top" Hoverable="True" DataTooltip="{x:Null}" Margin="0,0,0,20">
+                <lvc:PieChart.Series>
+                    <lvc:PieSeries Title="XL2" Values="864" DataLabels="True" LabelPoint="{Binding PointLabel}"/>
+                    <lvc:PieSeries Title="RESTO TOTAL DE CAMBIOS" Values="6651" DataLabels="True" LabelPoint="{Binding PointLabel}"/>
+                </lvc:PieChart.Series>
+                <lvc:PieChart.SeriesColors>
+                    <lvc:ColorsCollection>
+                        <Color A="255" R="127" G="127" B="127" />
+                        <Color A="255" R="127" G="0" B="127" />
+                    </lvc:ColorsCollection>
+                </lvc:PieChart.SeriesColors>
+            </lvc:PieChart>
+            <Label Content="AL DIA DE LA FECHA SE REGISTRARON 6651 CAMBIOS &#10;DE LOS CUALES 864 PERTENECEN A XL2" FontSize="10" Padding="0" Grid.Row="3" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+
+
+            <lvc:PieChart Name="PieChart5" Grid.Column="1" Grid.Row="3" LegendLocation="Top" Hoverable="True" DataTooltip="{x:Null}" Margin="0,0,0,20">
+                <lvc:PieChart.Series>
+                    <lvc:PieSeries Title="CAMARA" Values="127" DataLabels="True" LabelPoint="{Binding PointLabel}"/>
+                    <lvc:PieSeries Title="MOTHERBOARD" Values="88" DataLabels="True" LabelPoint="{Binding PointLabel}"/>
+                    <lvc:PieSeries Title="TECLADO" Values="76" DataLabels="True" LabelPoint="{Binding PointLabel}"/>
+                    <lvc:PieSeries Title="PANTALLA" Values="22" DataLabels="True" LabelPoint="{Binding PointLabel}"/>
+                </lvc:PieChart.Series>
+            </lvc:PieChart>
+            <Label Content="CATEGORIAS DE HARDWARE DE XL2 CON MAS CAMBIOS" FontSize="10" Padding="0" Grid.Row="3" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+
+            <lvc:PieChart Name="PieChart6" Grid.Column="2" Grid.Row="3" LegendLocation="Top" Hoverable="True" DataTooltip="{x:Null}" Margin="0,0,0,20">
+                <lvc:PieChart.Series>
+                    <lvc:PieSeries Title="NO DA VIDEO" Values="327" DataLabels="True" LabelPoint="{Binding PointLabel}"/>
+                    <lvc:PieSeries Title="PANTALLA RAYADA" Values="148" DataLabels="True" LabelPoint="{Binding PointLabel}"/>
+                    <lvc:PieSeries Title="PIXEL MUERTO" Values="26" DataLabels="True" LabelPoint="{Binding PointLabel}"/>
+                    <lvc:PieSeries Title="FALLA EN BURNINTEST" Values="12" DataLabels="True" LabelPoint="{Binding PointLabel}"/>
+                </lvc:PieChart.Series>
+            </lvc:PieChart>
+            <Label Content="FALLAS DE XL2 CON MAS REGISTROS" FontSize="10" Padding="0" Grid.Row="3" Grid.Column="2" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+
+        </Grid>
+            <Button HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="54" Click="Button_Click" Height="54" FontFamily="Consolas">
+            <Image Source="/RMAInforme;component/Resources/save.png" Width="32" Height="32"/>
+        </Button>
     </Grid>
 </Window>
