@@ -37,15 +37,55 @@ namespace RMAInforme
 
             Context = new PRDB();
 
+            RecaudarDatos();
+
             CargarEstadisticas();
+        }
+
+        private void RecaudarDatos()
+        {
+            switch (TablaBusqueda)
+            {
+                case "MODELO":
+                    break;
+
+                case "PRODUCTO":
+                    break;
+
+                case "LEGAJO":
+                    break;
+
+                case "TECNICO":
+                    break;
+
+                case "ARTICULO":
+                    break;
+
+                case "VERSION":
+                    break;
+
+                case "CATEGORIA":
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         private void CargarEstadisticas()
         {
-                        
-            CargarSeriesPies();
+
+               CargarSeriesPies();
 
         }
+
+
+
+
+        public SeriesCollection SeriesCollection { get; set; }
+        public string[] Labels { get; set; }
+        public Func<double, string> Formatter { get; set; }
+
 
         private void CargarSeriesPies()
         {
@@ -57,7 +97,7 @@ namespace RMAInforme
                     DataLabels = true,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = KeywordBusqueda.ToUpper()
+                    Title = "XL2 ENTRE 01/05/2019 Y 31/05/2019"
 
                 },
                 new PieSeries
@@ -66,7 +106,7 @@ namespace RMAInforme
                     DataLabels = true,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "RESTO DE CAMBIOS DEL PERIODO"
+                    Title = "TODOS LOS PRODUCTOS EN EL MISMO PERIODO"
 
                 }
             };
@@ -78,7 +118,7 @@ namespace RMAInforme
                     DataLabels = true,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "XL2 01/05/2019 AL 31/05/2019"
+                    Title = "XL2 ENTRE 01/05/2019 Y 31/05/2019"
 
                 },
                 new PieSeries
@@ -87,7 +127,7 @@ namespace RMAInforme
                     DataLabels = true,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "RESTO DE CAMBIOS DE XL2"
+                    Title = "TODOS CAMBIOS DEL MISMO MODELO DESDE 06/03/2018 (INICIO DE OPERACIONES)"
 
                 }
             };
@@ -99,7 +139,7 @@ namespace RMAInforme
                     DataLabels = true,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "XL2 01/05/2019 AL 31/05/2019"
+                    Title = "XL2 ENTRE 01/05/2019 Y 31/05/2019"
 
                 },
                 new PieSeries
@@ -108,7 +148,7 @@ namespace RMAInforme
                     DataLabels = true,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "RESTO DEL TOTAL DE CAMBIOS"
+                    Title = "TODOS LOS PRODUCTOS DESDE 06/03/2018 (INICIO DE OPERACIONES)"
 
                 }
             };
@@ -120,7 +160,7 @@ namespace RMAInforme
                     DataLabels = true,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "XL2"
+                    Title = "TODOS LOS CAMBIOS DEL MODELO DESDE 06/03/2018 (INICIO DE OPERACIONES)"
 
                 },
                 new PieSeries
@@ -129,7 +169,7 @@ namespace RMAInforme
                     DataLabels = true,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "RESTO TOTAL DE CAMBIOS"
+                    Title = "TODOS LOS PRODUCTOS DESDE 06/03/2018 (INICIO DE OPERACIONES)"
 
                 }
             };
@@ -161,15 +201,6 @@ namespace RMAInforme
                     LabelPosition = PieLabelPosition.InsideSlice,
                     Title = "TECLADO"
 
-                },
-                new PieSeries
-                {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(22) },
-                    DataLabels = true,
-                    LabelPoint = PointLabel,
-                    LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "PANTALLA"
-
                 }
             };
 
@@ -199,15 +230,6 @@ namespace RMAInforme
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
                     Title = "PIXEL MUERTO"
-
-                },
-                new PieSeries
-                {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(12) },
-                    DataLabels = true,
-                    LabelPoint = PointLabel,
-                    LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "FALLA EN BURNINTEST"
 
                 }
             };
