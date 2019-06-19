@@ -17,8 +17,8 @@ namespace RMAInforme
     {
         private int TotalEnResultadoBusqueda;
         private string KeywordBusqueda;
-        private DateTime? FechaInicioBusqueda;
-        private DateTime? FechaFinalBusqueda;
+        private string[] FechaInicioBusqueda;
+        private string[] FechaFinalBusqueda;
 
         private int TotalEnBaseDeDatos;
         private int TotalMismo;
@@ -30,10 +30,10 @@ namespace RMAInforme
             InitializeComponent();
 
             TotalEnResultadoBusqueda = cantidadResultadoBusqueda;
-            KeywordBusqueda = keywordBusqueda ?? "toda la base de datos";
+            KeywordBusqueda = keywordBusqueda.ToUpper();
             TablaBusqueda = tablaBusqueda;
-            FechaInicioBusqueda = fechaInicioBusqueda;
-            FechaFinalBusqueda = fechaFinalBusqueda;
+            FechaInicioBusqueda = fechaInicioBusqueda.ToString().Split();
+            FechaFinalBusqueda = fechaFinalBusqueda.Value.AddDays(-1).ToString().Split();
 
             Context = new PRDB();
 
@@ -89,26 +89,33 @@ namespace RMAInforme
 
         private void CargarSeriesPies()
         {
-            PointLabel = chartPoint => string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
-                                                                                                                                                                                                                                                                                                                                                                                         SeriesCollection Piechart1 = new SeriesCollection {
+            PointLabel = chartPoint => string.Format("{0} ({1:P})",chartPoint.Y, chartPoint.Participation, Brushes.Black);
+            SeriesCollection Piechart1 = new SeriesCollection {
                 new PieSeries
                 {
                     Values = new ChartValues<ObservableValue> { new ObservableValue(227) },
                     DataLabels = true,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 12,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "XL2 ENTRE 01/05/2019 Y 31/05/2019"
+                    Title = "'" + KeywordBusqueda + "'"
 
                 },
                 new PieSeries
                 {
                     Values = new ChartValues<ObservableValue> { new ObservableValue(203) },
                     DataLabels = true,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 12,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "TODOS LOS PRODUCTOS EN EL MISMO PERIODO"
+                    Title = "OTROS PRODUCTOS"
 
                 }
+                
             };
 
             SeriesCollection Piechart2 = new SeriesCollection {
@@ -116,18 +123,24 @@ namespace RMAInforme
                 {
                     Values = new ChartValues<ObservableValue> { new ObservableValue(227) },
                     DataLabels = true,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 12,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "XL2 ENTRE 01/05/2019 Y 31/05/2019"
+                    Title = "'" + KeywordBusqueda + "'" + "ENTRE " + FechaInicioBusqueda[0] + " Y " + FechaFinalBusqueda[0]
 
                 },
                 new PieSeries
                 {
                     Values = new ChartValues<ObservableValue> { new ObservableValue(637) },
                     DataLabels = true,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 12,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "TODOS CAMBIOS DEL MISMO MODELO DESDE 06/03/2018 (INICIO DE OPERACIONES)"
+                    Title = "'" + KeywordBusqueda + "'" + " RESTANTE DESDE EL INICIO DE REGISTROS (06/03/2018)"
 
                 }
             };
@@ -137,18 +150,36 @@ namespace RMAInforme
                 {
                     Values = new ChartValues<ObservableValue> { new ObservableValue(227) },
                     DataLabels = true,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 12,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "XL2 ENTRE 01/05/2019 Y 31/05/2019"
+                    Title = "'" + KeywordBusqueda + "'" + "ENTRE " + FechaInicioBusqueda[0] + " Y " + FechaFinalBusqueda[0]
+
+                },
+                new PieSeries
+                {
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(427) },
+                    DataLabels = true,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 12,
+                    LabelPoint = PointLabel,
+                    LabelPosition = PieLabelPosition.InsideSlice,
+                    Title = "'" + KeywordBusqueda + "'" + " RESTANTE"
 
                 },
                 new PieSeries
                 {
                     Values = new ChartValues<ObservableValue> { new ObservableValue(6424) },
                     DataLabels = true,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 12,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "TODOS LOS PRODUCTOS DESDE 06/03/2018 (INICIO DE OPERACIONES)"
+                    Title = "RESTO DE PRODUCTOS DESDE EL INICIO DE REGISTROS (06/03/2018)"
 
                 }
             };
@@ -156,20 +187,38 @@ namespace RMAInforme
             SeriesCollection Piechart4 = new SeriesCollection {
                 new PieSeries
                 {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(864) },
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(76) },
                     DataLabels = true,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 12,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "TODOS LOS CAMBIOS DEL MODELO DESDE 06/03/2018 (INICIO DE OPERACIONES)"
+                    Title = "NAKAMURA (422)"
 
                 },
                 new PieSeries
                 {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(5787) },
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(108) },
                     DataLabels = true,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 12,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "TODOS LOS PRODUCTOS DESDE 06/03/2018 (INICIO DE OPERACIONES)"
+                    Title = "GOMEZ (925)"
+
+                },
+                new PieSeries
+                {
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(29) },
+                    DataLabels = true,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 12,
+                    LabelPoint = PointLabel,
+                    LabelPosition = PieLabelPosition.InsideSlice,
+                    Title = "SANCHEZ (776)"
 
                 }
             };
@@ -179,6 +228,9 @@ namespace RMAInforme
                 {
                     Values = new ChartValues<ObservableValue> { new ObservableValue(127) },
                     DataLabels = true,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 12,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
                     Title = "CAMARA"
@@ -188,6 +240,9 @@ namespace RMAInforme
                 {
                     Values = new ChartValues<ObservableValue> { new ObservableValue(88) },
                     DataLabels = true,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 12,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
                     Title = "MOTHERBOARD"
@@ -197,6 +252,9 @@ namespace RMAInforme
                 {
                     Values = new ChartValues<ObservableValue> { new ObservableValue(76) },
                     DataLabels = true,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 12,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
                     Title = "TECLADO"
@@ -209,6 +267,9 @@ namespace RMAInforme
                 {
                     Values = new ChartValues<ObservableValue> { new ObservableValue(327) },
                     DataLabels = true,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 12,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
                     Title = "NO DA VIDEO"
@@ -218,6 +279,9 @@ namespace RMAInforme
                 {
                     Values = new ChartValues<ObservableValue> { new ObservableValue(148) },
                     DataLabels = true,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 12,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
                     Title = "PANTALLA RAYADA"
@@ -227,6 +291,9 @@ namespace RMAInforme
                 {
                     Values = new ChartValues<ObservableValue> { new ObservableValue(26) },
                     DataLabels = true,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 12,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
                     Title = "PIXEL MUERTO"
@@ -246,9 +313,9 @@ namespace RMAInforme
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.FileName = "Estadísticas de búesqueda"; // Default file name
-            dlg.DefaultExt = ".jpeg"; // Default file extension
-            dlg.Filter = "Archivo de imagen (.jpeg)|*.jpg"; // Filter files by extension
+            dlg.FileName = "Estadísticas de busqueda"; // Default file name
+            dlg.DefaultExt = ".png"; // Default file extension
+            dlg.Filter = "Archivo de imagen (.png)|*.png"; // Filter files by extension
 
             Nullable<bool> result = dlg.ShowDialog();
 
@@ -264,7 +331,7 @@ namespace RMAInforme
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Error guardando el archivo: " + Environment.NewLine + filename, "Estadisticas de búsuqeda", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Error guardando el archivo: " + Environment.NewLine + filename, "Estadisticas de búsqueda", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }
@@ -276,8 +343,8 @@ namespace RMAInforme
             //using (FileStream stream = File.Create(@"C:\Users\Rnmkr\Desktop\Estadisticas.jpeg"))
             using (FileStream stream = File.Create(_filename))
             {
-                JpegBitmapEncoder encoder = new JpegBitmapEncoder(); //se puede pasar a pngencoder...
-                encoder.QualityLevel = 100;
+                PngBitmapEncoder encoder = new PngBitmapEncoder(); //se puede pasar a pngencoder...
+                //encoder.QualityLevel = 100;
                 encoder.Frames.Add(BitmapFrame.Create(bitmap));
                 encoder.Save(stream);
             }

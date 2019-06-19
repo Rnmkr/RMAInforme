@@ -102,8 +102,8 @@ namespace RMAInforme
                     Keyword = null;
                 }
                 Table = ComboBoxTable.SelectedValue.ToString();
-                InitialDate = DateInit.SelectedDate ?? Convert.ToDateTime("01/01/1990");
-                EndDate = DateEnd.SelectedDate ?? Convert.ToDateTime("01/01/3000");
+                InitialDate = DateInit.SelectedDate ?? Convert.ToDateTime("06/03/2018");
+                EndDate = DateEnd.SelectedDate ?? Convert.ToDateTime(DateTime.Today);
                 //InitialDate = InitialDate.Value.AddDays(0); //no es necesario al parecer...
                 if (EndDate != null)
                 {
@@ -143,6 +143,7 @@ namespace RMAInforme
                     if (List.FirstOrDefault() == null)
                     {
                         Export.IsEnabled = false;
+                        Stats.IsEnabled = false;
                         MessageBox.Show("La búsqueda no obtuvo resultados!", "Buscar...", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;
                     }
@@ -150,6 +151,7 @@ namespace RMAInforme
                     {
                         DataGrid.ItemsSource = List.ToList();
                         Export.IsEnabled = true;
+                        Stats.IsEnabled = true;
                         ComboBoxSector.IsEnabled = true;
 
                     }
@@ -447,12 +449,12 @@ namespace RMAInforme
             string keyword = TextBoxSearchString.Text;
             if (DateInit.SelectedDate == null)
             {
-                initdate[0] = "INICIO DE LA BASE DE DATOS";
+                initdate[0] = "INICIO DE REGISTROS (06/03/2018)";
             }
 
             if (DateEnd.SelectedDate == null)
             {
-                enddate[0] = "FIN DE LA BASE DE DATOS";
+                enddate[0] = "HOY";
             }
 
             if (string.IsNullOrWhiteSpace(keyword) || keyword == "Buscar...")
@@ -739,6 +741,18 @@ namespace RMAInforme
         {
             DateInit.IsEnabled = true;
             DateEnd.IsEnabled = true;
+        }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataGrid.SelectedItem.Equals(-1))
+            {
+                Cancel.IsEnabled = false;
+            }
+            else
+            {
+                Cancel.IsEnabled = true;
+            }
         }
     }
 }
