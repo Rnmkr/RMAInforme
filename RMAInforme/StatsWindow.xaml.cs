@@ -16,9 +16,19 @@ namespace RMAInforme
     public partial class StatsWindow : Window
     {
         private int TotalEnResultadoBusqueda;
+        private int TotalTodosEnFechaBusqueda;
+        private int CantidadOtrosProductosFecha;
         private string KeywordBusqueda;
         private string[] FechaInicioBusqueda;
         private string[] FechaFinalBusqueda;
+
+        private int Top3A;
+        private int Top3B;
+        private int Top3C;
+
+        private int Top3D;
+        private int Top3E;
+        private int Top3F;
 
         private int TotalEnBaseDeDatos;
         private int TotalMismo;
@@ -30,70 +40,48 @@ namespace RMAInforme
             InitializeComponent();
 
             TotalEnResultadoBusqueda = cantidadResultadoBusqueda;
-            KeywordBusqueda = keywordBusqueda.ToUpper();
+            KeywordBusqueda = keywordBusqueda.ToUpper() ?? "TODO";
             TablaBusqueda = tablaBusqueda;
             FechaInicioBusqueda = fechaInicioBusqueda.ToString().Split();
             FechaFinalBusqueda = fechaFinalBusqueda.Value.AddDays(-1).ToString().Split();
 
             Context = new PRDB();
+            TotalEnBaseDeDatos = Context.Cambio.Count();
+            TotalTodosEnFechaBusqueda = Context.Cambio.Where(w => w.FechaCambio >= fechaInicioBusqueda && w.FechaCambio <= fechaFinalBusqueda).Count();
 
-            RecaudarDatos();
+            CantidadOtrosProductosFecha = (TotalTodosEnFechaBusqueda - TotalEnResultadoBusqueda);
 
-            CargarEstadisticas();
-        }
-
-        private void RecaudarDatos()
-        {
-            switch (TablaBusqueda)
+            switch (tablaBusqueda)
             {
                 case "MODELO":
-                    break;
-
-                case "PRODUCTO":
-                    break;
-
-                case "LEGAJO":
-                    break;
-
-                case "TECNICO":
-                    break;
-
-                case "ARTICULO":
-                    break;
-
-                case "VERSION":
-                    break;
-
-                case "CATEGORIA":
+                    TotalMismo = Context.Cambio.Where(w => w.Modelo == keywordBusqueda).Count();
+                    ////////////////////////////////////////////
+                    ///Top3A = Context.Cambio.Where(w => w.Modelo == KeywordBusqueda).Select(s => s.DescripcionFalla).Distinct().Count();
                     break;
 
                 default:
                     break;
             }
+
+            PointLabel = chartPoint => string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation, Brushes.Black);
+
+
+            CargarChart1();
+            CargarChart2();
+            CargarChart3();
+            //CargarChart4();
+            //CargarChart5();
+            //CargarChart6();
         }
 
-        private void CargarEstadisticas()
+        private void CargarChart1()
         {
+            //Piechart1 muestra que porcentaje representa la busqueda con respecto a todos los cambios en una fecha dada
 
-               CargarSeriesPies();
-
-        }
-
-
-
-
-        public SeriesCollection SeriesCollection { get; set; }
-        public string[] Labels { get; set; }
-        public Func<double, string> Formatter { get; set; }
-
-
-        private void CargarSeriesPies()
-        {
-            PointLabel = chartPoint => string.Format("{0} ({1:P})",chartPoint.Y, chartPoint.Participation, Brushes.Black);
             SeriesCollection Piechart1 = new SeriesCollection {
                 new PieSeries
                 {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(227) },
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(TotalEnResultadoBusqueda) },
                     DataLabels = true,
                     Foreground = Brushes.Black,
                     FontFamily = new FontFamily("Consolas"),
@@ -105,7 +93,7 @@ namespace RMAInforme
                 },
                 new PieSeries
                 {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(203) },
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(CantidadOtrosProductosFecha) },
                     DataLabels = true,
                     Foreground = Brushes.Black,
                     FontFamily = new FontFamily("Consolas"),
@@ -115,13 +103,19 @@ namespace RMAInforme
                     Title = "OTROS PRODUCTOS"
 
                 }
-                
+
             };
 
+            Chart1Label.Text = "TOTAL: " + TotalTodosEnFechaBusqueda + " REGISTROS ENTRE " + FechaInicioBusqueda[0] + " Y " + FechaFinalBusqueda[0];
+            PieChart1.Series = Piechart1;
+        }
+
+        private void CargarChart2()
+        {
             SeriesCollection Piechart2 = new SeriesCollection {
                 new PieSeries
                 {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(227) },
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(TotalEnResultadoBusqueda) },
                     DataLabels = true,
                     Foreground = Brushes.Black,
                     FontFamily = new FontFamily("Consolas"),
@@ -133,22 +127,41 @@ namespace RMAInforme
                 },
                 new PieSeries
                 {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(637) },
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(TotalMismo - TotalEnResultadoBusqueda) },
                     DataLabels = true,
                     Foreground = Brushes.Black,
                     FontFamily = new FontFamily("Consolas"),
                     FontSize = 12,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "'" + KeywordBusqueda + "'" + " RESTANTE DESDE EL INICIO DE REGISTROS (06/03/2018)"
+                    Title = "'" + KeywordBusqueda + "'" + " RESTANTE DESDE INICIO DE BASE DE DATOS (06/03/2018)"
+
+                },
+                new PieSeries
+                {
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(TotalEnBaseDeDatos - TotalMismo) },
+                    DataLabels = true,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 12,
+                    LabelPoint = PointLabel,
+                    LabelPosition = PieLabelPosition.InsideSlice,
+                    Title = "OTROS PRODUCTOS DESDE INICIO DE BASE DE DATOS (06/03/2018)"
 
                 }
             };
+
+            Chart2Label.Text = "TOTAL: " + TotalEnBaseDeDatos + " REGISTROS DESDE EL INICIO DE BASE DE DATOS (06/03/2018)";
+            PieChart2.Series = Piechart2;
+        }
+
+        private void CargarChart3()
+        {
 
             SeriesCollection Piechart3 = new SeriesCollection {
                 new PieSeries
                 {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(227) },
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(TotalEnResultadoBusqueda) },
                     DataLabels = true,
                     Foreground = Brushes.Black,
                     FontFamily = new FontFamily("Consolas"),
@@ -160,29 +173,24 @@ namespace RMAInforme
                 },
                 new PieSeries
                 {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(427) },
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(TotalMismo - TotalEnResultadoBusqueda) },
                     DataLabels = true,
                     Foreground = Brushes.Black,
                     FontFamily = new FontFamily("Consolas"),
                     FontSize = 12,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "'" + KeywordBusqueda + "'" + " RESTANTE"
+                    Title = "'" + KeywordBusqueda + "'" + " RESTANTE DESDE INICIO DE BASE DE DATOS (06/03/2018)"
 
                 },
-                new PieSeries
-                {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(6424) },
-                    DataLabels = true,
-                    Foreground = Brushes.Black,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 12,
-                    LabelPoint = PointLabel,
-                    LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "RESTO DE PRODUCTOS DESDE EL INICIO DE REGISTROS (06/03/2018)"
-
-                }
             };
+
+            Chart3Label.Text = "TOTAL: " + TotalMismo + " REGISTROS DE '" + KeywordBusqueda + "' DESDE INICIO DE BASE DE DATOS (06/03/2018)";
+            PieChart3.Series = Piechart3;
+        }
+
+        private void CargarChart4()
+        {
 
             SeriesCollection Piechart4 = new SeriesCollection {
                 new PieSeries
@@ -209,19 +217,13 @@ namespace RMAInforme
                     Title = "GOMEZ (925)"
 
                 },
-                new PieSeries
-                {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(29) },
-                    DataLabels = true,
-                    Foreground = Brushes.Black,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 12,
-                    LabelPoint = PointLabel,
-                    LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "SANCHEZ (776)"
-
-                }
             };
+            //Chart4Label.Text = "TOTAL: " + TotalTodosEnFechaBusqueda + " REGISTROS ENTRE " + FechaInicioBusqueda[0] + " Y " + FechaFinalBusqueda[0];
+            //PieChart4.Series = Piechart4;
+        }
+
+        private void CargarChart5()
+        {
 
             SeriesCollection Piechart5 = new SeriesCollection {
                 new PieSeries
@@ -261,6 +263,12 @@ namespace RMAInforme
 
                 }
             };
+            //Chart5Label.Text = "TOTAL: " + TotalTodosEnFechaBusqueda + " REGISTROS ENTRE " + FechaInicioBusqueda[0] + " Y " + FechaFinalBusqueda[0];
+            //PieChart5.Series = Piechart5;
+        }
+
+        private void CargarChart6()
+        {
 
             SeriesCollection Piechart6 = new SeriesCollection {
                  new PieSeries
@@ -300,17 +308,15 @@ namespace RMAInforme
 
                 }
             };
-
-            PieChart1.Series = Piechart1;
-            PieChart2.Series = Piechart2;
-            PieChart3.Series = Piechart3;
-            PieChart4.Series = Piechart4;
-            PieChart5.Series = Piechart5;
-            PieChart6.Series = Piechart6;
+            //Chart6Label.Text = "TOTAL: " + TotalTodosEnFechaBusqueda + " REGISTROS ENTRE " + FechaInicioBusqueda[0] + " Y " + FechaFinalBusqueda[0];
+            //PieChart6.Series = Piechart6;
         }
 
+        public SeriesCollection SeriesCollection { get; set; }
+        public string[] Labels { get; set; }
+        public Func<double, string> Formatter { get; set; }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
             dlg.FileName = "Estadísticas de busqueda"; // Default file name
