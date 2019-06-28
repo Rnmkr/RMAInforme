@@ -81,9 +81,9 @@ namespace RMAInforme
             switch (TablaBusqueda)
             {
                 case "MODELO":
-                    Chart4Label.Text = "TOP 3 TECNICOS PARA '" + KeywordBusqueda + "' DESDE INICIO DE BASE DE DATOS";
+                    //Chart4Label.Text = "TOP 3 TECNICOS PARA '" + KeywordBusqueda + "' DESDE INICIO DE BASE DE DATOS";
                     Chart5Label.Text = "TOP 3 CATEGORIAS DE '" + KeywordBusqueda + "' DESDE INICIO DE BASE DE DATOS";
-                    Chart6Label.Text = "TOP 3 FALLAS DE '" + KeywordBusqueda + "' DESDE INICIO DE BASE DE DATOS";
+                    //Chart6Label.Text = "TOP 3 FALLAS DE '" + KeywordBusqueda + "' DESDE INICIO DE BASE DE DATOS";
 
                     TitleFourthValueChart4 = "OTROS TECNICOS";
                     TitleFourthValueChart5 = "RESTO DE CATEGORIAS";
@@ -265,8 +265,8 @@ namespace RMAInforme
                 },
             };
 
-            Chart3Label.Text = "TOTAL: " + TotalMismo + " REGISTROS DE '" + KeywordBusqueda + "' DESDE INICIO DE BASE DE DATOS (06/03/2018)";
-            PieChart3.Series = Piechart3;
+            //Chart3Label.Text = "TOTAL: " + TotalMismo + " REGISTROS DE '" + KeywordBusqueda + "' DESDE INICIO DE BASE DE DATOS (06/03/2018)";
+            //PieChart3.Series = Piechart3;
         }
 
         private void CargarChart4()
@@ -323,7 +323,7 @@ namespace RMAInforme
                 }
             };
 
-            PieChart4.Series = Piechart4;
+            //PieChart4.Series = Piechart4;
         }
 
         private void CargarChart5()
@@ -437,7 +437,7 @@ namespace RMAInforme
                 }
             };
 
-            PieChart6.Series = Piechart6;
+            //PieChart6.Series = Piechart6;
         }
 
         public SeriesCollection SeriesCollection { get; set; }
