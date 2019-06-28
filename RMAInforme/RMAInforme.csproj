@@ -168,28 +168,10 @@
     <Resource Include="informe.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\search.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\statistics.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\status.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\xls.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\save.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\save.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\xls.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\stats.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\delete.ico" />
