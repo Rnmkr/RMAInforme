@@ -57,6 +57,7 @@ namespace RMAInforme
             ComboBoxTable.SelectedIndex = 0;
             CheckToday.IsChecked = true;
             mainWindow.Title = "RMAInforme" + " -" + Assembly.GetExecutingAssembly().GetName().Version;
+
         }
 
         private void ButtonSearch_Click(object sender, RoutedEventArgs e)
@@ -161,6 +162,10 @@ namespace RMAInforme
                     return;
                 }
             }
+
+            DataGrid.Columns[0].Visibility = Visibility.Collapsed;
+            DataGrid.Columns[17].Visibility = Visibility.Collapsed;
+            DataGrid.Columns[18].Visibility = Visibility.Collapsed;
         }
 
         private void Search(string keyword, string table, DateTime? init, DateTime? end)
