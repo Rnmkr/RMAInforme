@@ -1,11 +1,12 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace RMAInforme
 {
     /// <summary>
     /// Interaction logic for Password.xaml
     /// </summary>
-    public partial class PasswordWindow : Window
+    public partial class PasswordWindow : UserControl
     {
         public PasswordWindow()
         {
@@ -23,7 +24,8 @@ namespace RMAInforme
         {
             if (Pass.Password == "3X0")
             {
-                DialogResult = true;
+                OKButton.CommandParameter = true;
+                return;
             }
             else
             {
@@ -34,7 +36,7 @@ namespace RMAInforme
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
+            return;
         }
     }
 }

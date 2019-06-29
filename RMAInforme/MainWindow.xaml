@@ -4,42 +4,45 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:RMAInforme"
         mc:Ignorable="d"
-        Title="Informe RMA" Height="768" Width="1366" MinHeight="240" MinWidth="1190" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        Title="Informe RMA" Width="1366" MinHeight="240" MinWidth="1190" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
+    <materialDesign:DialogHost CloseOnClickAway="True" Identifier="openup">
+    <Grid>
+                <StackPanel Background="WhiteSmoke"  Height="66" VerticalAlignment="Top"/>
+                <DataGrid x:Name="DataGrid" Margin="0,71,0,36" IsReadOnly="True" FontFamily="Consolas" FontSize="14" SelectionChanged="DataGrid_SelectionChanged"/>
+                <Button x:Name="ButtonSearch" VerticalAlignment="Top" Margin="215,7,0,0" Click="ButtonSearch_Click" Height="54" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="54">
+                    <Image Source="/RMAInforme;component/Resources/search.ico"/>
+                </Button>
+                <TextBox x:Name="TextBoxSearchString" HorizontalAlignment="Left" Height="26" Margin="10,7,0,0" TextWrapping="Wrap" Text="Buscar..."  VerticalAlignment="Top" Width="200" GotFocus="SearchBox_GotFocus" LostFocus="SearchBox_LostFocus" FontFamily="Consolas" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                <ComboBox x:Name="ComboBoxTable" HorizontalAlignment="Left" Height="26" Margin="10,35,0,0" VerticalAlignment="Top" Width="200" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <Label Content="INICIO" IsEnabled="False" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="717,7,0,0" FontFamily="Consolas" FontWeight="Bold" VerticalContentAlignment="Center" Height="25"/>
+                <DatePicker x:Name="DateInit" Margin="545,7,0,0" VerticalAlignment="Top" Height="26" FontFamily="Consolas" FontWeight="Bold" Text="Seleccionar" HorizontalAlignment="Left" Width="171" VerticalContentAlignment="Center" Padding="4,0,0,0" HorizontalContentAlignment="Stretch"/>
+                <Label Content="FIN" IsEnabled="False" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="717,35,0,0" FontFamily="Consolas" FontWeight="Bold" VerticalContentAlignment="Center" Height="26" Width="50"/>
+                <DatePicker x:Name="DateEnd" Margin="545,35,0,0" VerticalAlignment="Top" Height="26" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="171" VerticalContentAlignment="Center" Padding="4,0,0,0" HorizontalContentAlignment="Stretch"/>
+                <RadioButton x:Name="RadioLocal" Content="EN LISTA ACTUAL" Margin="274,35,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="130" Height="26"/>
+                <RadioButton x:Name="RadioGlobal" Content="EN BASE DE DATOS" Margin="274,7,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="130" Height="25"/>
+                <Button x:Name="Export" ToolTip="EXPORTAR RESULTADO DE BUSQUEDA EN FORMATO XLS" Margin="0,6,10,0" IsEnabled="False" VerticalAlignment="Top" Height="54" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Right" Width="54" Click="Export_Click">
+                    <Image Source="/RMAInforme;component/Resources/xls.ico"/>
+                </Button>
+                <Button x:Name="Cancel" Margin="0,6,128,0" IsEnabled="False" VerticalAlignment="Top" Height="54" ToolTip="CAMBIAR ESTADO DE REGISTRO" FontFamily="Consolas" HorizontalAlignment="Right" Width="54" Click="Cancel_Click" FontWeight="Bold" FontSize="11">
+                    <Image Source="/RMAInforme;component/Resources/delete.ico" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Button>
+                <StatusBar Name="StatusBarResult" Margin="0,0,0,5" Height="24" VerticalAlignment="Bottom">
+                    <StatusBarItem BorderThickness="1" BorderBrush="SteelBlue">
+                        <TextBlock Name="TextBlockStatusResult" FontFamily="Consolas" FontWeight="Bold" />
+                    </StatusBarItem>
+                </StatusBar>
+                <CheckBox Name="CheckToday" Checked="CheckToday_Checked" Unchecked="CheckToday_Unchecked" Content="HOY" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="409,37,0,0" Width="131" FontWeight="Bold" FontFamily="Consolas" VerticalContentAlignment="Center" Height="24"/>
+                <CheckBox Name="CheckEver" Checked="CheckEver_Checked"  Unchecked="CheckEver_Unchecked"  Content="CUALQUIER FECHA" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="409,7,0,0" Width="131" FontWeight="Bold" FontFamily="Consolas" VerticalContentAlignment="Center" Height="25"/>
+                <ComboBox x:Name="ComboBoxSector" HorizontalAlignment="Left" IsEnabled="False" Height="25" Margin="781,7,0,0" VerticalAlignment="Top" Width="200" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" SelectionChanged="ComboBoxSector_SelectionChanged"/>
+                <Button x:Name="Stats" ToolTip="VER ESTADISTICAS SOBRE LA BUSQUEDA" Margin="0,6,69,0" IsEnabled="False" VerticalAlignment="Top" Height="54" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Right" Width="54" Click="Stats_Click">
+                    <Image Source="/RMAInforme;component/Resources/piechart.ico"/>
+                </Button>
 
-        <StackPanel Background="LightSteelBlue"  Height="66" VerticalAlignment="Top"/>
-        <DataGrid x:Name="DataGrid" Margin="10,71,10,36" IsReadOnly="True" FontFamily="Consolas" FontSize="14" SelectionChanged="DataGrid_SelectionChanged"/>
-        <Button x:Name="ButtonSearch" VerticalAlignment="Top" Margin="215,7,0,0" Click="ButtonSearch_Click" Height="54" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="54">
-            <Image Source="/RMAInforme;component/Resources/search.ico"/>
-        </Button>
-        <TextBox x:Name="TextBoxSearchString" HorizontalAlignment="Left" Height="26" Margin="10,7,0,0" TextWrapping="Wrap" Text="Buscar..."  VerticalAlignment="Top" Width="200" GotFocus="SearchBox_GotFocus" LostFocus="SearchBox_LostFocus" FontFamily="Consolas" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-        <ComboBox x:Name="ComboBoxTable" HorizontalAlignment="Left" Height="26" Margin="10,35,0,0" VerticalAlignment="Top" Width="200" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-        <Label Content="INICIO" IsEnabled="False" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="717,7,0,0" FontFamily="Consolas" FontWeight="Bold" VerticalContentAlignment="Center" Height="25"/>
-        <DatePicker x:Name="DateInit" Margin="545,7,0,0" VerticalAlignment="Top" Height="26" FontFamily="Consolas" FontWeight="Bold" Text="Seleccionar" HorizontalAlignment="Left" Width="171" VerticalContentAlignment="Center" Padding="4,0,0,0" HorizontalContentAlignment="Stretch"/>
-        <Label Content="FIN" IsEnabled="False" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="717,35,0,0" FontFamily="Consolas" FontWeight="Bold" VerticalContentAlignment="Center" Height="26" Width="50"/>
-        <DatePicker x:Name="DateEnd" Margin="545,35,0,0" VerticalAlignment="Top" Height="26" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="171" VerticalContentAlignment="Center" Padding="4,0,0,0" HorizontalContentAlignment="Stretch"/>
-        <RadioButton x:Name="RadioLocal" Content="EN LISTA ACTUAL" Margin="274,35,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="130" Height="26"/>
-        <RadioButton x:Name="RadioGlobal" Content="EN BASE DE DATOS" Margin="274,7,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="130" Height="25"/>
-        <Button x:Name="Export" ToolTip="EXPORTAR RESULTADO DE BUSQUEDA EN FORMATO XLS" Margin="0,6,10,0" IsEnabled="False" VerticalAlignment="Top" Height="54" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Right" Width="54" Click="Export_Click">
-            <Image Source="/RMAInforme;component/Resources/xls.ico" Width="40" Height="40"/>
-        </Button>
-        <Button x:Name="Cancel" Margin="0,6,128,0" IsEnabled="False" VerticalAlignment="Top" Height="54" ToolTip="CAMBIAR ESTADO DE REGISTRO" FontFamily="Consolas" HorizontalAlignment="Right" Width="54" Click="Cancel_Click" FontWeight="Bold" FontSize="11">
-            <Image Source="/RMAInforme;component/Resources/delete.ico" Width="40" Height="40"/>
-        </Button>
-        <StatusBar Name="StatusBarResult" Margin="10,0,10,7" Height="24" VerticalAlignment="Bottom">
-            <StatusBarItem BorderThickness="1" BorderBrush="SteelBlue">
-                <TextBlock Name="TextBlockStatusResult" FontFamily="Consolas" FontWeight="Bold" />
-            </StatusBarItem>
-        </StatusBar>
-        <CheckBox Name="CheckToday" Checked="CheckToday_Checked" Unchecked="CheckToday_Unchecked" Content="HOY" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="409,37,0,0" Width="120" FontWeight="Bold" FontFamily="Consolas" VerticalContentAlignment="Center" Height="24"/>
-        <CheckBox Name="CheckEver" Checked="CheckEver_Checked"  Unchecked="CheckEver_Unchecked"  Content="CUALQUIER FECHA" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="409,7,0,0" Width="120" FontWeight="Bold" FontFamily="Consolas" VerticalContentAlignment="Center" Height="25"/>
-        <ComboBox x:Name="ComboBoxSector" HorizontalAlignment="Left" IsEnabled="False" Height="25" Margin="781,7,0,0" VerticalAlignment="Top" Width="200" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" SelectionChanged="ComboBoxSector_SelectionChanged"/>
-        <Button x:Name="Stats" ToolTip="VER ESTADISTICAS SOBRE LA BUSQUEDA" Margin="0,6,69,0" IsEnabled="False" VerticalAlignment="Top" Height="54" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Right" Width="54" Click="Stats_Click">
-            <Image Source="/RMAInforme;component/Resources/piechart.ico" Width="40" Height="40"/>
-        </Button>
-
-
+    </Grid>
+        </materialDesign:DialogHost>
     </Grid>
 </Window>

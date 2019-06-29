@@ -8,10 +8,11 @@ using LiveCharts.Defaults;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.IO;
+using System.Windows.Controls;
 
 namespace RMAInforme
 {
-    public partial class StatsWindow : Window
+    public partial class StatsWindow : UserControl
     {
         private int TotalEnResultadoBusqueda;
         private int TotalTodosEnFechaBusqueda;
@@ -82,7 +83,7 @@ namespace RMAInforme
             {
                 case "MODELO":
                     //Chart4Label.Text = "TOP 3 TECNICOS PARA '" + KeywordBusqueda + "' DESDE INICIO DE BASE DE DATOS";
-                    Chart5Label.Text = "TOP 3 CATEGORIAS DE '" + KeywordBusqueda + "' DESDE INICIO DE BASE DE DATOS";
+                    Chart5Label.Text = "CATEGORIAS DE '" + KeywordBusqueda + "' CON MAS REGISTROS DESDE INICIO DE BASE DE DATOS (03/06/2018)";
                     //Chart6Label.Text = "TOP 3 FALLAS DE '" + KeywordBusqueda + "' DESDE INICIO DE BASE DE DATOS";
 
                     TitleFourthValueChart4 = "OTROS TECNICOS";
@@ -186,7 +187,7 @@ namespace RMAInforme
 
             };
 
-            Chart1Label.Text = "TOTAL: " + TotalTodosEnFechaBusqueda + " REGISTROS ENTRE " + FechaInicioBusqueda[0] + " Y " + FechaFinalBusqueda[0];
+            Chart1Label.Text = + TotalTodosEnFechaBusqueda + " REGISTROS ENTRE " + FechaInicioBusqueda[0] + " Y " + FechaFinalBusqueda[0];
             PieChart1.Series = Piechart1;
         }
 
@@ -231,7 +232,7 @@ namespace RMAInforme
                 }
             };
 
-            Chart2Label.Text = "TOTAL: " + TotalEnBaseDeDatos + " REGISTROS DESDE INICIO DE BASE DE DATOS (06/03/2018)";
+            Chart2Label.Text = TotalEnBaseDeDatos + " REGISTROS DESDE INICIO DE BASE DE DATOS (06/03/2018)";
             PieChart2.Series = Piechart2;
         }
 

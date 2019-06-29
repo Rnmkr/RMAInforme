@@ -11,6 +11,7 @@ using System.Net;
 using ClosedXML.Excel;
 using System.Data;
 using System.Reflection;
+using MaterialDesignThemes.Wpf;
 
 namespace RMAInforme
 {
@@ -649,7 +650,7 @@ namespace RMAInforme
             }
         }
 
-        private void Cancel_Click(object sender, RoutedEventArgs e)
+        private async void Cancel_Click(object sender, RoutedEventArgs e)
         {
             if (DataGrid.SelectedItem == null)
             {
@@ -657,9 +658,20 @@ namespace RMAInforme
                 return;
             }
 
-            var dialog = new PasswordWindow();
+            //var dialog = new PasswordWindow();
+            var dialogX = await DialogHost.Show(new PasswordWindow(), "openup", dialogClosingEH);
+            
+        }
 
-            if (dialog.ShowDialog() == true)
+        private void dialogClosingEH(object sender, DialogClosingEventArgs eventArgs)
+        {
+            Console.WriteLine("SAMPLE 1: Closing dialog with parameter: " + (eventArgs.Parameter ?? ""));
+
+            //you can cancel the dialog close:
+            //eventArgs.Cancel();
+
+            //MessageBox.Show(eventArgs);
+            if (!Equals(eventArgs.Parameter, true))
             {
                 using (new WaitCursor())
                 {
@@ -669,7 +681,7 @@ namespace RMAInforme
                         return;
                     }
 
-                    string obsEst = dialog.ResponseText;
+                    string obsEst = "APROBADO";
                     string nuevoEstado;
                     DateTime dateEst = DateTime.Now;
 
@@ -695,7 +707,7 @@ namespace RMAInforme
                             }
 
 
-                            c.SupervisorModificacion = obsEst;
+                            c.SupervisorModificacion = "admin";
                             c.FechaModificacion = dateEst;
                             c.EstadoCambio = nuevoEstado;
                             context.SaveChanges();
@@ -712,9 +724,16 @@ namespace RMAInforme
             {
                 return;
             }
+
+
+
+
+
+
+            //if (!string.IsNullOrWhiteSpace(FruitTextBox.Text)) FruitListBox.Items.Add(FruitTextBox.Text.Trim());
         }
 
-        private void Stats_Click(object sender, RoutedEventArgs e)
+        private async void Stats_Click(object sender, RoutedEventArgs e)
         {
             if (List == null)
             {
@@ -728,8 +747,12 @@ namespace RMAInforme
 
                 //MessageBox.Show(countedList + " " + Keyword + " " + Table + " " + InitialDate.ToString() + " " + EndDate.ToString());
                 //return;
-                StatsWindow sw = new StatsWindow(countedList, Keyword, Table, InitialDate, EndDate);
-                sw.ShowDialog();
+                //StatsWindow sw = new StatsWindow(countedList, Keyword, Table, InitialDate, EndDate);
+                //sw.Owner = Window.GetWindow(this);
+                //DialogHost.Show(sw, "openup");
+                //sw.ShowDialog();
+                var x = await DialogHost.Show(new StatsWindow(countedList, Keyword, Table, InitialDate, EndDate), "openup");
+
             }
         }
 
@@ -750,6 +773,17 @@ namespace RMAInforme
 
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (DataGrid.Items.Count < 0)
+            {
+                return;
+            }
+
+            if (DataGrid.SelectedItem == null)
+            {
+                Cancel.IsEnabled = false;
+                return;
+            }
+
             if (DataGrid.SelectedItem.Equals(-1))
             {
                 Cancel.IsEnabled = false;
