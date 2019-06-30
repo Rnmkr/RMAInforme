@@ -184,49 +184,160 @@ namespace RMAInforme
             switch (table)
             {
                 case "ARTICULO":
-                    List = TList.Where(w => w.ArticuloItem.Contains(keyword)).Select(s => s);
+                    if (CheckEqual.IsChecked == true)
+                    {
+                        List = TList.Where(w => w.ArticuloItem == keyword).Select(s => s);
+                    }
+                    else
+                    {
+                        List = TList.Where(w => w.ArticuloItem.Contains(keyword)).Select(s => s);
+                    }
                     break;
-                case "NUMERO DE PEDIDO":
-                    List = TList.Where(w => w.NumeroPedido.Contains(keyword)).Select(s => s);
-                    break;
-                case "CATEGORIA":
-                    List = TList.Where(w => w.CategoriaItem.Contains(keyword)).Select(s => s);
-                    break;
-                case "MODELO":
-                    List = TList.Where(w => w.Modelo.Contains(keyword)).Select(s => s);
-                    break;
-                case "PRODUCTO":
-                    List = TList.Where(w => w.Producto.Contains(keyword)).Select(s => s);
-                    break;
-                case "VERSION":
-                    List = TList.Where(w => w.VersionItem.Contains(keyword)).Select(s => s);
-                    break;
-                case "DESCRIPCION DE ITEM":
-                    List = TList.Where(w => w.DescripcionItem.Contains(keyword)).Select(s => s);
-                    break;
-                case "SECTOR CAMBIO":
-                    List = TList.Where(w => w.SectorCambio.Contains(keyword)).Select(s => s);
-                    break;
-                case "LEGAJO":
-                    List = TList.Where(w => w.Legajo.Contains(keyword)).Select(s => s);
-                    break;
-                case "TECNICO":
-                    List = TList.Where(w => w.Tecnico.Contains(keyword)).Select(s => s);
-                    break;
-                case "CODIGO DE FALLA":
-                    List = TList.Where(w => w.CodigoFalla.Contains(keyword)).Select(s => s);
-                    break;
-                case "DESCRIPCION DE FALLA":
-                    List = TList.Where(w => w.DescripcionFalla.Contains(keyword)).Select(s => s);
-                    break;
-                case "OBSERVACIONES":
-                    List = TList.Where(w => w.Observaciones.Contains(keyword)).Select(s => s);
-                    break;
-                case "ESTADO DE CAMBIO":
-                    List = TList.Where(w => w.EstadoCambio.Contains(keyword)).Select(s => s);
-                    break;
-                case "ID DE CAMBIO":
 
+                case "NUMERO DE PEDIDO":
+                    if (CheckEqual.IsChecked == true)
+                    {
+                        List = TList.Where(w => w.NumeroPedido == keyword).Select(s => s);
+                    }
+                    else
+                    {
+                        List = TList.Where(w => w.NumeroPedido.Contains(keyword)).Select(s => s);
+                    }
+                    break;
+
+                case "CATEGORIA":
+                    if (CheckEqual.IsChecked == true)
+                    {
+                        List = TList.Where(w => w.CategoriaItem == keyword).Select(s => s);
+                    }
+                    else
+                    {
+                        List = TList.Where(w => w.CategoriaItem.Contains(keyword)).Select(s => s);
+                    }
+                    break;
+
+                case "MODELO":
+                    if (CheckEqual.IsChecked == true)
+                    {
+                        List = TList.Where(w => w.Modelo == keyword).Select(s => s);
+                    }
+                    else
+                    {
+                        List = TList.Where(w => w.Modelo.Contains(keyword)).Select(s => s);
+                    }
+                    break;
+
+                case "PRODUCTO":
+                    if (CheckEqual.IsChecked == true)
+                    {
+                        List = TList.Where(w => w.Producto == keyword).Select(s => s);
+                    }
+                    else
+                    {
+                        List = TList.Where(w => w.Producto.Contains(keyword)).Select(s => s);
+                    }
+                    break;
+
+                case "VERSION":
+                    if (CheckEqual.IsChecked == true)
+                    {
+                        List = TList.Where(w => w.VersionItem == keyword).Select(s => s);
+                    }
+                    else
+                    {
+                        List = TList.Where(w => w.VersionItem.Contains(keyword)).Select(s => s);
+                    }
+                    break;
+
+                case "DESCRIPCION DE ITEM":
+                    if (CheckEqual.IsChecked == true)
+                    {
+                        List = TList.Where(w => w.DescripcionItem == keyword).Select(s => s);
+                    }
+                    else
+                    {
+                        List = TList.Where(w => w.DescripcionItem.Contains(keyword)).Select(s => s);
+                    }
+                    break;
+
+                case "SECTOR CAMBIO":
+                    if (CheckEqual.IsChecked == true)
+                    {
+                        List = TList.Where(w => w.SectorCambio == keyword).Select(s => s);
+                    }
+                    else
+                    {
+                        List = TList.Where(w => w.SectorCambio.Contains(keyword)).Select(s => s);
+                    }
+                    break;
+
+                case "LEGAJO":
+                    if (CheckEqual.IsChecked == true)
+                    {
+                        List = TList.Where(w => w.Legajo == keyword).Select(s => s);
+                    }
+                    else
+                    {
+                        List = TList.Where(w => w.Legajo.Contains(keyword)).Select(s => s);
+                    }
+                    break;
+
+                case "TECNICO":
+                    if (CheckEqual.IsChecked == true)
+                    {
+                        List = TList.Where(w => w.Tecnico == keyword).Select(s => s);
+                    }
+                    else
+                    {
+                        List = TList.Where(w => w.Tecnico.Contains(keyword)).Select(s => s);
+                    }
+                    break;
+
+                case "CODIGO DE FALLA":
+                    if (CheckEqual.IsChecked == true)
+                    {
+                        List = TList.Where(w => w.CodigoFalla == keyword).Select(s => s);
+                    }
+                    else
+                    {
+                        List = TList.Where(w => w.CodigoFalla.Contains(keyword)).Select(s => s);
+                    }
+                    break;
+
+                case "DESCRIPCION DE FALLA":
+                    if (CheckEqual.IsChecked == true)
+                    {
+                        List = TList.Where(w => w.DescripcionFalla == keyword).Select(s => s);
+                    }
+                    else
+                    {
+                        List = TList.Where(w => w.DescripcionFalla.Contains(keyword)).Select(s => s);
+                    }
+                    break;
+
+                case "OBSERVACIONES":
+                    if (CheckEqual.IsChecked == true)
+                    {
+                        List = TList.Where(w => w.Observaciones == keyword).Select(s => s);
+                    }
+                    else
+                    {
+                        List = TList.Where(w => w.Observaciones == keyword).Select(s => s);
+                    }
+                    break;
+
+                case "ESTADO DE CAMBIO":
+                    if (CheckEqual.IsChecked == true)
+                    {
+                        List = TList.Where(w => w.EstadoCambio == keyword).Select(s => s);
+                    }
+                    else
+                    {
+                        List = TList.Where(w => w.EstadoCambio.Contains(keyword)).Select(s => s);
+                    }
+                    break;
+
+                case "ID DE CAMBIO":
                     int id = Int32.Parse(keyword);
                     List = TList.Where(w => w.IdCambio == id).Select(s => s);
                     break;

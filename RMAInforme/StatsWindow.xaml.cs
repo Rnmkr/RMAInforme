@@ -191,7 +191,7 @@ namespace RMAInforme
             PieChart1.Series = Piechart1;
         }
 
-        private void CargarChart2()
+        private void CargarChart4()
         {
             SeriesCollection Piechart2 = new SeriesCollection {
                 new PieSeries
@@ -270,7 +270,7 @@ namespace RMAInforme
             //PieChart3.Series = Piechart3;
         }
 
-        private void CargarChart4()
+        private void CargarChart2()
         {
 
             SeriesCollection Piechart4 = new SeriesCollection {

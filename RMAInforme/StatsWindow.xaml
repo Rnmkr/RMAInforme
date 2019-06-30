@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Width="1000"
         Height="500" >
@@ -30,8 +31,8 @@
                     <lvc:PieChart.SeriesColors>
                         <lvc:ColorsCollection>
                             <Color A="220" R="220" G="75" B="75" />
-                            <Color A="200" R="50" G="75" B="75" />
                             <Color A="200" R="75" G="150" B="75" />
+                            <Color A="200" R="50" G="75" B="75" />
                             <Color A="175" R="220" G="220" B="25" />
                         </lvc:ColorsCollection>
                     </lvc:PieChart.SeriesColors>
@@ -50,10 +51,10 @@
                     </lvc:PieChart.Series>
                     <lvc:PieChart.SeriesColors>
                         <lvc:ColorsCollection>
-                            <Color A="220" R="220" G="75" B="75" />
+                            <Color A="175" R="220" G="220" B="25" />
                             <Color A="200" R="75" G="150" B="75" />
                             <Color A="200" R="50" G="75" B="75" />
-                            <Color A="175" R="220" G="220" B="25" />
+                            <Color A="220" R="220" G="75" B="75" />
                         </lvc:ColorsCollection>
                     </lvc:PieChart.SeriesColors>
                 </lvc:PieChart>
@@ -106,9 +107,9 @@
                     <lvc:PieChart.SeriesColors>
                         <lvc:ColorsCollection>
                             <Color A="220" R="220" G="75" B="75" />
-                            <Color A="200" R="25" G="25" B="220" />
+                            <Color A="150" R="25" G="25" B="240" />
                             <Color A="200" R="75" G="150" B="75" />
-                            <Color A="175" R="220" G="220" B="25" />
+                            <Color A="150" R="220" G="220" B="25" />
                         </lvc:ColorsCollection>
                     </lvc:PieChart.SeriesColors>
                 </lvc:PieChart>
@@ -130,8 +131,9 @@
             <TextBlock x:Name="Chart6Label" FontSize="11" Text="fff" Grid.Row="1" Grid.Column="2" Margin="0,5,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="consolas" FontWeight="Bold" />-->
 
         </Grid>
-        <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Bottom" Width="48" Click="ButtonSave_Click" Height="48" FontFamily="Consolas">
-            <Image Source="/RMAInforme;component/Resources/save.ico" HorizontalAlignment="Center" VerticalAlignment="Center" Width="16" Height="16"/>
+        <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Bottom" Width="54" Click="ButtonSave_Click" Height="54" FontFamily="Consolas">
+            <materialDesign:PackIcon Kind="ContentSaveOutline" Height="24" Width="24" />
+            <!--<Image Source="/RMAInforme;component/Resources/save.ico" HorizontalAlignment="Center" VerticalAlignment="Center" Width="16" Height="16"/>-->
         </Button>
 
 

@@ -160,6 +160,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -172,21 +173,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="informe.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\save.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\xls.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\delete.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\search.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\piechart.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
