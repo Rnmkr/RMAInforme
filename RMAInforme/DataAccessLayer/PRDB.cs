@@ -8,9 +8,9 @@ namespace RMAInforme.DataAccessLayer
     public partial class PRDB : DbContext
     {
         public PRDB()
-                     // : base("data source=VM-FORREST;initial catalog=Produccion;user id=BUBBASQL;password=12345678;MultipleActiveResultSets=True;App=EntityFramework")
+                      : base("data source=VM-FORREST;initial catalog=Produccion;user id=BUBBASQL;password=12345678;MultipleActiveResultSets=True;App=EntityFramework")
                      //   : base("data source=BUBBA;initial catalog=Produccion;persist security info=True;user id=BUBBASQL;password=12345678;MultipleActiveResultSets=True;App=EntityFramework")
-                      : base("data source=DESKTOP;initial catalog=PRODUCCION; integrated security=True; MultipleActiveResultSets=True;App=EntityFramework")
+                     // : base("data source=DESKTOP;initial catalog=PRODUCCION; integrated security=True; MultipleActiveResultSets=True;App=EntityFramework")
 
         {
         }

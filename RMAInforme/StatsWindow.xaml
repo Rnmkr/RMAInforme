@@ -6,7 +6,7 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Width="1000"
+        Width="1200"
         Height="500" >
 
     <Grid>
@@ -17,125 +17,76 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+            <GroupBox Header="Relación de la búsqueda en el período" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
+                <Grid Grid.Column="0" Grid.Row="1" Background="Transparent">
+                    <TextBlock x:Name="Chart1Label" Text="aaa" Margin="5" FontWeight="Bold"  TextWrapping="Wrap" FontSize="11"/>
+                    <lvc:PieChart x:Name="PieChart1" Grid.Column="1" Grid.Row="0" DisableAnimations="True" LegendLocation="Top" FontSize="12" FontWeight="Bold" Hoverable="False" DataTooltip="{x:Null}" Margin="25,50,25,25" FontFamily="Consolas">
+                        <lvc:PieChart.Series>
+                            <lvc:PieSeries Title="aaa" Values="50" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
+                            <lvc:PieSeries Title="aaa" Values="50" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
+                        </lvc:PieChart.Series>
+                        <lvc:PieChart.SeriesColors>
+                            <lvc:ColorsCollection>
+                                <Color A="220" R="220" G="75" B="75" />
+                                <Color A="200" R="75" G="150" B="75" />
+                                <Color A="200" R="50" G="75" B="75" />
+                                <Color A="175" R="220" G="220" B="25" />
+                            </lvc:ColorsCollection>
+                        </lvc:PieChart.SeriesColors>
+                    </lvc:PieChart>
+                </Grid>
+            </GroupBox>
 
-            <Grid Grid.Column="0" Grid.Row="1" Background="Transparent">
-                <lvc:PieChart x:Name="PieChart1" Grid.Column="1" Grid.Row="0" DisableAnimations="True" LegendLocation="Top" FontSize="12" FontWeight="Bold" Hoverable="False" DataTooltip="{x:Null}" Margin="25,50,25,25" FontFamily="Consolas">
-                    <lvc:PieChart.Series>
-                        <lvc:PieSeries Title="aaa" Values="50" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
-                        <lvc:PieSeries Title="aaa" Values="50" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
-                    </lvc:PieChart.Series>
-                    <lvc:PieChart.SeriesColors>
-                        <lvc:ColorsCollection>
-                            <Color A="220" R="220" G="75" B="75" />
-                            <Color A="200" R="75" G="150" B="75" />
-                            <Color A="200" R="50" G="75" B="75" />
-                            <Color A="175" R="220" G="220" B="25" />
-                        </lvc:ColorsCollection>
-                    </lvc:PieChart.SeriesColors>
-                </lvc:PieChart>
-            </Grid>
-            <Grid  Grid.Row="0" Grid.Column="0" Background="#FFFFE0FF">
-                <TextBlock x:Name="Chart1Label" Text="aaa" Margin="5" FontWeight="Bold"  TextWrapping="Wrap"/>
-            </Grid>
-
-            <Grid Grid.Column="1" Grid.Row="1" Background="Transparent">
-                <lvc:PieChart x:Name="PieChart2" Grid.Column="1" Grid.Row="0" DisableAnimations="True" FontWeight="Bold" LegendLocation="Top" FontSize="11" Hoverable="False" DataTooltip="{x:Null}"  Margin="25,50,25,25"  FontFamily="Consolas">
-                    <lvc:PieChart.Series>
-                        <lvc:PieSeries Title="bbb" Values="33" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
-                        <lvc:PieSeries Title="bbb" Values="33" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
-                        <lvc:PieSeries Title="bbb" Values="33" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
-                    </lvc:PieChart.Series>
-                    <lvc:PieChart.SeriesColors>
-                        <lvc:ColorsCollection>
-                            <Color A="175" R="220" G="220" B="25" />
-                            <Color A="200" R="75" G="150" B="75" />
-                            <Color A="200" R="50" G="75" B="75" />
-                            <Color A="220" R="220" G="75" B="75" />
-                        </lvc:ColorsCollection>
-                    </lvc:PieChart.SeriesColors>
-                </lvc:PieChart>
-            </Grid>
-            <Grid Grid.Row="0" Grid.Column="1" Background="LightCyan">
-                <TextBlock x:Name="Chart2Label" Text="bbb" Grid.Row="0" Grid.Column="1" Margin="5" FontWeight="Bold"  TextWrapping="Wrap" />
-            </Grid>
-
-            <!--<Grid Grid.Column="0" Grid.Row="1" Background="#FFFFE0FF">
-                <lvc:PieChart x:Name="PieChart3" Grid.Column="0" Grid.Row="1" DisableAnimations="True" LegendLocation="Top" FontSize="12" FontWeight="Bold" Hoverable="False" DataTooltip="{x:Null}"  Margin="25,25,25,25"  FontFamily="Consolas">
-                    <lvc:PieChart.Series>
-                        <lvc:PieSeries Title="ccc" Values="50" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
-                        <lvc:PieSeries Title="ccc" Values="50" DataLabels="True" FontFamily="Consolas" Foreground="Black" FontSize="16" LabelPoint="{Binding PointLabel}"/>
-                    </lvc:PieChart.Series>
-                    <lvc:PieChart.SeriesColors>
-                        <lvc:ColorsCollection>
-                            <Color A="200" R="255" G="150" B="150" />
-                            <Color A="200" R="100" G="175" B="255" />
-                            -->
-            <!--<Color A="200" R="150" G="220" B="150" />-->
-            <!--
-                        </lvc:ColorsCollection>
-                    </lvc:PieChart.SeriesColors>
-                </lvc:PieChart>
-            </Grid>
-            <TextBlock x:Name="Chart3Label" FontSize="11" Text="ccc" Grid.Row="0" Grid.Column="2" Margin="0,5,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="consolas" FontWeight="Bold" TextWrapping="Wrap" />-->
+            <GroupBox Grid.Column="1" Header="Relación del período de la búsqueda sobre el total" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
+                <Grid Grid.Column="1" Grid.Row="1" Background="Transparent">
+                    <TextBlock x:Name="Chart2Label" Text="bbb" Grid.Row="0" Grid.Column="1" Margin="5" FontWeight="Bold"  TextWrapping="Wrap" FontSize="11" />
+                    <lvc:PieChart x:Name="PieChart2" Grid.Column="1" Grid.Row="0" DisableAnimations="True" FontWeight="Bold" LegendLocation="Top" FontSize="11" Hoverable="False" DataTooltip="{x:Null}"  Margin="25,50,25,25"  FontFamily="Consolas">
+                        <lvc:PieChart.Series>
+                            <lvc:PieSeries Title="bbb" Values="33" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
+                            <lvc:PieSeries Title="bbb" Values="33" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
+                        </lvc:PieChart.Series>
+                        <lvc:PieChart.SeriesColors>
+                            <lvc:ColorsCollection>
+                                <Color A="150" R="25" G="25" B="240" />
+                                <Color A="200" R="50" G="75" B="75" />
+                                <Color A="175" R="220" G="220" B="25" />
+                                <Color A="220" R="220" G="75" B="75" />
+                                <Color A="200" R="75" G="150" B="75" />
+                            </lvc:ColorsCollection>
+                        </lvc:PieChart.SeriesColors>
+                    </lvc:PieChart>
+                </Grid>
+            </GroupBox>
 
 
-            <!--<Grid Grid.Column="1" Grid.Row="1" Background="LightCyan">
-                <lvc:PieChart x:Name="PieChart4" Grid.Column="2" Grid.Row="1" DisableAnimations="True" LegendLocation="Top" FontSize="11" FontWeight="Bold" Hoverable="False" DataTooltip="{x:Null}" Margin="25,25,25,25" FontFamily="Consolas">
-                    <lvc:PieChart.Series>
-                        <lvc:PieSeries Title="ddd" Values="25" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
-                        <lvc:PieSeries Title="ddd" Values="25" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
-                        <lvc:PieSeries Title="ddd" Values="25" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
-                        <lvc:PieSeries Title="ddd" Values="25" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
-                    </lvc:PieChart.Series>
-                </lvc:PieChart>
-            </Grid>
-            <TextBlock x:Name="Chart4Label" FontSize="11" Text="ddd" Grid.Row="1" Grid.Column="0" Margin="0,5,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="consolas" FontWeight="Bold" />-->
-
-
-            <Grid Grid.Column="2" Grid.Row="1" Background="Transparent">
-                <lvc:PieChart x:Name="PieChart5" Grid.Column="2" Grid.Row="0" DisableAnimations="True" LegendLocation="Top" FontSize="11" FontWeight="Bold" Hoverable="False" DataTooltip="{x:Null}" Margin="25,50,25,25" FontFamily="Consolas">
-                    <lvc:PieChart.Series>
-                        <lvc:PieSeries Title="eee" Values="25" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
-                        <lvc:PieSeries Title="eee" Values="25" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
-                        <lvc:PieSeries Title="eee" Values="25" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
-                        <lvc:PieSeries Title="eee" Values="25" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
-                    </lvc:PieChart.Series>
-                    <lvc:PieChart.SeriesColors>
-                        <lvc:ColorsCollection>
-                            <Color A="220" R="220" G="75" B="75" />
-                            <Color A="150" R="25" G="25" B="240" />
-                            <Color A="200" R="75" G="150" B="75" />
-                            <Color A="150" R="220" G="220" B="25" />
-                        </lvc:ColorsCollection>
-                    </lvc:PieChart.SeriesColors>
-                </lvc:PieChart>
-            </Grid>
-            <Grid Grid.Row="0" Grid.Column="2" Background="LightYellow">
-                <TextBlock x:Name="Chart5Label" Text="eee" TextWrapping="Wrap" Grid.Row="0" Grid.Column="2" Margin="5" FontWeight="Bold" />
-            </Grid>
-
-            <!--<Grid Grid.Column="2" Grid.Row="1" Background="LightCyan">
-                <lvc:PieChart x:Name="PieChart6" Grid.Column="1" Grid.Row="1" DisableAnimations="True" LegendLocation="Top" FontSize="11" FontWeight="Bold" Hoverable="False" DataTooltip="{x:Null}" Margin="25,25,25,25" FontFamily="Consolas">
-                    <lvc:PieChart.Series>
-                        <lvc:PieSeries Title="fff" Values="25" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
-                        <lvc:PieSeries Title="fff" Values="25" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
-                        <lvc:PieSeries Title="fff" Values="25" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
-                        <lvc:PieSeries Title="fff" Values="25" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
-                    </lvc:PieChart.Series>
-                </lvc:PieChart>
-            </Grid>
-            <TextBlock x:Name="Chart6Label" FontSize="11" Text="fff" Grid.Row="1" Grid.Column="2" Margin="0,5,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="consolas" FontWeight="Bold" />-->
-
+            <GroupBox Grid.Column="2" Header="Más relevantes" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
+                <Grid Grid.Column="2" Grid.Row="1" Background="Transparent">
+                    <TextBlock x:Name="Chart3Label" Text="eee" TextWrapping="Wrap" Grid.Row="0" Grid.Column="2" Margin="5" FontWeight="Bold" FontSize="11" />
+                    <lvc:PieChart x:Name="PieChart3" Grid.Column="2" Grid.Row="0" DisableAnimations="True" LegendLocation="Top" FontSize="11" FontWeight="Bold" Hoverable="False" DataTooltip="{x:Null}" Margin="25,50,25,25" FontFamily="Consolas">
+                        <lvc:PieChart.Series>
+                            <lvc:PieSeries Title="eee" Values="25" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
+                            <lvc:PieSeries Title="eee" Values="25" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
+                            <lvc:PieSeries Title="eee" Values="25" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
+                            <lvc:PieSeries Title="eee" Values="25" DataLabels="True" Foreground="Black" FontFamily="Consolas" FontSize="16" LabelPoint="{Binding PointLabel}"/>
+                        </lvc:PieChart.Series>
+                        <lvc:PieChart.SeriesColors>
+                            <lvc:ColorsCollection>
+                                <Color A="220" R="220" G="75" B="75" />
+                                <Color A="150" R="75" G="75" B="100" />
+                                <Color A="200" R="75" G="150" B="75" />
+                                <Color A="150" R="220" G="220" B="25" />
+                            </lvc:ColorsCollection>
+                        </lvc:PieChart.SeriesColors>
+                    </lvc:PieChart>
+                </Grid>
+            </GroupBox>
+        
         </Grid>
-        <Button Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Bottom" Width="54" Click="ButtonSave_Click" Height="54" FontFamily="Consolas">
+
+        <Button Grid.Row="0" Grid.Column="3" HorizontalAlignment="Right" Margin="5,5,10,10" VerticalAlignment="Bottom" Width="54" Click="ButtonSave_Click" Height="54" FontFamily="Consolas">
             <materialDesign:PackIcon Kind="ContentSaveOutline" Height="24" Width="24" />
-            <!--<Image Source="/RMAInforme;component/Resources/save.ico" HorizontalAlignment="Center" VerticalAlignment="Center" Width="16" Height="16"/>-->
         </Button>
-
-
+    
     </Grid>
+    
 </UserControl>
