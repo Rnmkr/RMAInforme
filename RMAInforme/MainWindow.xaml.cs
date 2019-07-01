@@ -241,10 +241,12 @@ namespace RMAInforme
                     if (CheckEqual.IsChecked == true)
                     {
                         List = TList.Where(w => w.Producto == keyword).Select(s => s);
+                        distintos = TList.Where(w => w.Producto == keyword).Select(s => s.Producto).Distinct().ToList();
                     }
                     else
                     {
                         List = TList.Where(w => w.Producto.Contains(keyword)).Select(s => s);
+                        distintos = TList.Where(w => w.Producto.Contains(keyword)).Select(s => s.Producto).Distinct().ToList();
                     }
                     break;
 
@@ -252,10 +254,12 @@ namespace RMAInforme
                     if (CheckEqual.IsChecked == true)
                     {
                         List = TList.Where(w => w.VersionItem == keyword).Select(s => s);
+                        distintos = TList.Where(w => w.VersionItem == keyword).Select(s => s.VersionItem).Distinct().ToList();
                     }
                     else
                     {
                         List = TList.Where(w => w.VersionItem.Contains(keyword)).Select(s => s);
+                        distintos = TList.Where(w => w.VersionItem.Contains(keyword)).Select(s => s.VersionItem).Distinct().ToList();
                     }
                     break;
 
@@ -263,10 +267,12 @@ namespace RMAInforme
                     if (CheckEqual.IsChecked == true)
                     {
                         List = TList.Where(w => w.DescripcionItem == keyword).Select(s => s);
+                        distintos = TList.Where(w => w.DescripcionItem == keyword).Select(s => s.DescripcionItem).Distinct().ToList();
                     }
                     else
                     {
                         List = TList.Where(w => w.DescripcionItem.Contains(keyword)).Select(s => s);
+                        distintos = TList.Where(w => w.DescripcionItem.Contains(keyword)).Select(s => s.DescripcionItem).Distinct().ToList();
                     }
                     break;
 
@@ -274,10 +280,12 @@ namespace RMAInforme
                     if (CheckEqual.IsChecked == true)
                     {
                         List = TList.Where(w => w.SectorCambio == keyword).Select(s => s);
+                        distintos = TList.Where(w => w.SectorCambio == keyword).Select(s => s.SectorCambio).Distinct().ToList();
                     }
                     else
                     {
                         List = TList.Where(w => w.SectorCambio.Contains(keyword)).Select(s => s);
+                        distintos = TList.Where(w => w.SectorCambio.Contains(keyword)).Select(s => s.SectorCambio).Distinct().ToList();
                     }
                     break;
 
@@ -285,10 +293,12 @@ namespace RMAInforme
                     if (CheckEqual.IsChecked == true)
                     {
                         List = TList.Where(w => w.Legajo == keyword).Select(s => s);
+                        distintos = TList.Where(w => w.Legajo == keyword).Select(s => s.Legajo).Distinct().ToList();
                     }
                     else
                     {
                         List = TList.Where(w => w.Legajo.Contains(keyword)).Select(s => s);
+                        distintos = TList.Where(w => w.Legajo.Contains(keyword)).Select(s => s.Legajo).Distinct().ToList();
                     }
                     break;
 
@@ -296,10 +306,12 @@ namespace RMAInforme
                     if (CheckEqual.IsChecked == true)
                     {
                         List = TList.Where(w => w.Tecnico == keyword).Select(s => s);
+                        distintos = TList.Where(w => w.Tecnico == keyword).Select(s => s.Tecnico).Distinct().ToList();
                     }
                     else
                     {
                         List = TList.Where(w => w.Tecnico.Contains(keyword)).Select(s => s);
+                        distintos = TList.Where(w => w.Tecnico.Contains(keyword)).Select(s => s.Tecnico).Distinct().ToList();
                     }
                     break;
 
@@ -307,10 +319,12 @@ namespace RMAInforme
                     if (CheckEqual.IsChecked == true)
                     {
                         List = TList.Where(w => w.CodigoFalla == keyword).Select(s => s);
+                        distintos = TList.Where(w => w.CodigoFalla == keyword).Select(s => s.CodigoFalla).Distinct().ToList();
                     }
                     else
                     {
                         List = TList.Where(w => w.CodigoFalla.Contains(keyword)).Select(s => s);
+                        distintos = TList.Where(w => w.CodigoFalla.Contains(keyword)).Select(s => s.CodigoFalla).Distinct().ToList();
                     }
                     break;
 
@@ -318,10 +332,12 @@ namespace RMAInforme
                     if (CheckEqual.IsChecked == true)
                     {
                         List = TList.Where(w => w.DescripcionFalla == keyword).Select(s => s);
+                        distintos = TList.Where(w => w.DescripcionFalla == keyword).Select(s => s.DescripcionFalla).Distinct().ToList();
                     }
                     else
                     {
                         List = TList.Where(w => w.DescripcionFalla.Contains(keyword)).Select(s => s);
+                        distintos = TList.Where(w => w.DescripcionFalla.Contains(keyword)).Select(s => s.DescripcionFalla).Distinct().ToList();
                     }
                     break;
 
@@ -329,10 +345,12 @@ namespace RMAInforme
                     if (CheckEqual.IsChecked == true)
                     {
                         List = TList.Where(w => w.Observaciones == keyword).Select(s => s);
+                        distintos = TList.Where(w => w.Observaciones == keyword).Select(s => s.Observaciones).Distinct().ToList();
                     }
                     else
                     {
-                        List = TList.Where(w => w.Observaciones == keyword).Select(s => s);
+                        List = TList.Where(w => w.Observaciones.Contains(keyword)).Select(s => s);
+                        distintos = TList.Where(w => w.Observaciones.Contains(keyword)).Select(s => s.Observaciones).Distinct().ToList();
                     }
                     break;
 
@@ -340,19 +358,22 @@ namespace RMAInforme
                     if (CheckEqual.IsChecked == true)
                     {
                         List = TList.Where(w => w.EstadoCambio == keyword).Select(s => s);
+                        distintos = TList.Where(w => w.EstadoCambio == keyword).Select(s => s.EstadoCambio).Distinct().ToList();
                     }
                     else
                     {
                         List = TList.Where(w => w.EstadoCambio.Contains(keyword)).Select(s => s);
+                        distintos = TList.Where(w => w.EstadoCambio.Contains(keyword)).Select(s => s.EstadoCambio).Distinct().ToList();
                     }
                     break;
 
                 case "ID DE CAMBIO":
                     int id = Int32.Parse(keyword);
                     List = TList.Where(w => w.IdCambio == id).Select(s => s);
+                    distintos = TList.Where(w => w.IdCambio == id).Select(s => s.IdCambio.ToString()).Distinct().ToList();
                     break;
                 default:
-                    //ERROR
+                    MessageBox.Show("Error: Los parametros de la búsqueda son erróneos, avise al administrador", "ERROR!", MessageBoxButton.OK, MessageBoxImage.Error);
                     break;
             }
             int result = List.Count();
@@ -369,11 +390,13 @@ namespace RMAInforme
                         if (CheckEqual.IsChecked == true)
                         {
                             List = List.Where(w => w.ArticuloItem == keyword).Select(s => s);
+                            distintos = List.Where(w => w.ArticuloItem == keyword).Select(s => s.ArticuloItem).Distinct().ToList();
                         }
                         else
                         {
 
                             List = List.Where(w => w.ArticuloItem.Contains(keyword)).Select(s => s);
+                            distintos = List.Where(w => w.EstadoCambio.Contains(keyword)).Select(s => s.EstadoCambio).Distinct().ToList();
                         }
                         break;
 
@@ -381,10 +404,12 @@ namespace RMAInforme
                         if (CheckEqual.IsChecked == true)
                         {
                             List = List.Where(w => w.NumeroPedido == keyword).Select(s => s);
+                            distintos = List.Where(w => w.NumeroPedido== keyword).Select(s => s.NumeroPedido).Distinct().ToList();
                         }
                         else
                         {
                             List = List.Where(w => w.NumeroPedido.Contains(keyword)).Select(s => s);
+                            distintos = List.Where(w => w.NumeroPedido.Contains(keyword)).Select(s => s.NumeroPedido).Distinct().ToList();
                         }
                         break;
 
@@ -392,11 +417,13 @@ namespace RMAInforme
                         if (CheckEqual.IsChecked == true)
                         {
                             List = List.Where(w => w.CategoriaItem == keyword).Select(s => s);
+                            distintos = List.Where(w => w.CategoriaItem == keyword).Select(s => s.CategoriaItem).Distinct().ToList();
                         }
                         else
                         {
 
                             List = List.Where(w => w.CategoriaItem.Contains(keyword)).Select(s => s);
+                            distintos = List.Where(w => w.CategoriaItem.Contains(keyword)).Select(s => s.CategoriaItem).Distinct().ToList();
                         }
                         break;
 
@@ -404,11 +431,12 @@ namespace RMAInforme
                         if (CheckEqual.IsChecked == true)
                         {
                             List = List.Where(w => w.Modelo == keyword).Select(s => s);
+                            distintos = List.Where(w => w.Modelo == keyword).Select(s => s.Modelo).Distinct().ToList();
                         }
                         else
                         {
-
                             List = List.Where(w => w.Modelo.Contains(keyword)).Select(s => s);
+                            distintos = List.Where(w => w.Modelo.Contains(keyword)).Select(s => s.Modelo).Distinct().ToList();
                         }
                         break;
 
@@ -416,11 +444,12 @@ namespace RMAInforme
                         if (CheckEqual.IsChecked == true)
                         {
                             List = List.Where(w => w.Producto == keyword).Select(s => s);
+                            distintos = List.Where(w => w.Producto == keyword).Select(s => s.Producto).Distinct().ToList();
                         }
                         else
                         {
-
                             List = List.Where(w => w.Producto.Contains(keyword)).Select(s => s);
+                            distintos = List.Where(w => w.Producto.Contains(keyword)).Select(s => s.Producto).Distinct().ToList();
                         }
                         break;
 
@@ -428,11 +457,12 @@ namespace RMAInforme
                         if (CheckEqual.IsChecked == true)
                         {
                             List = List.Where(w => w.VersionItem == keyword).Select(s => s);
+                            distintos = List.Where(w => w.VersionItem == keyword).Select(s => s.VersionItem).Distinct().ToList();
                         }
                         else
                         {
-
                             List = List.Where(w => w.VersionItem.Contains(keyword)).Select(s => s);
+                            distintos = List.Where(w => w.VersionItem.Contains(keyword)).Select(s => s.VersionItem).Distinct().ToList();
                         }
                         break;
 
@@ -440,11 +470,12 @@ namespace RMAInforme
                         if (CheckEqual.IsChecked == true)
                         {
                             List = List.Where(w => w.DescripcionItem == keyword).Select(s => s);
+                            distintos = List.Where(w => w.DescripcionItem == keyword).Select(s => s.DescripcionItem).Distinct().ToList();
                         }
                         else
                         {
-
                             List = List.Where(w => w.DescripcionItem.Contains(keyword)).Select(s => s);
+                            distintos = List.Where(w => w.DescripcionItem.Contains(keyword)).Select(s => s.DescripcionItem).Distinct().ToList();
                         }
                         break;
 
@@ -452,11 +483,12 @@ namespace RMAInforme
                         if (CheckEqual.IsChecked == true)
                         {
                             List = List.Where(w => w.SectorCambio == keyword).Select(s => s);
+                            distintos = List.Where(w => w.SectorCambio == keyword).Select(s => s.SectorCambio).Distinct().ToList();
                         }
                         else
                         {
-
                             List = List.Where(w => w.SectorCambio.Contains(keyword)).Select(s => s);
+                            distintos = List.Where(w => w.SectorCambio.Contains(keyword)).Select(s => s.SectorCambio).Distinct().ToList();
                         }
                         break;
 
@@ -464,11 +496,12 @@ namespace RMAInforme
                         if (CheckEqual.IsChecked == true)
                         {
                             List = List.Where(w => w.Legajo == keyword).Select(s => s);
+                            distintos = List.Where(w => w.Legajo == keyword).Select(s => s.Legajo).Distinct().ToList();
                         }
                         else
                         {
-
                             List = List.Where(w => w.Legajo.Contains(keyword)).Select(s => s);
+                            distintos = List.Where(w => w.Legajo.Contains(keyword)).Select(s => s.Legajo).Distinct().ToList();
                         }
                         break;
 
@@ -476,11 +509,12 @@ namespace RMAInforme
                         if (CheckEqual.IsChecked == true)
                         {
                             List = List.Where(w => w.Tecnico == keyword).Select(s => s);
+                            distintos = List.Where(w => w.Tecnico == keyword).Select(s => s.Tecnico).Distinct().ToList();
                         }
                         else
                         {
-
                             List = List.Where(w => w.Tecnico.Contains(keyword)).Select(s => s);
+                            distintos = List.Where(w => w.Tecnico.Contains(keyword)).Select(s => s.Tecnico).Distinct().ToList();
                         }
                         break;
 
@@ -488,11 +522,12 @@ namespace RMAInforme
                         if (CheckEqual.IsChecked == true)
                         {
                             List = List.Where(w => w.CodigoFalla == keyword).Select(s => s);
+                            distintos = List.Where(w => w.CodigoFalla == keyword).Select(s => s.CodigoFalla).Distinct().ToList();
                         }
                         else
                         {
-
                             List = List.Where(w => w.CodigoFalla.Contains(keyword)).Select(s => s);
+                            distintos = List.Where(w => w.CodigoFalla.Contains(keyword)).Select(s => s.CodigoFalla).Distinct().ToList();
                         }
                         break;
 
@@ -500,11 +535,12 @@ namespace RMAInforme
                         if (CheckEqual.IsChecked == true)
                         {
                             List = List.Where(w => w.DescripcionFalla == keyword).Select(s => s);
+                            distintos = List.Where(w => w.DescripcionFalla == keyword).Select(s => s.DescripcionFalla).Distinct().ToList();
                         }
                         else
                         {
-
                             List = List.Where(w => w.DescripcionFalla.Contains(keyword)).Select(s => s);
+                            distintos = List.Where(w => w.DescripcionFalla.Contains(keyword)).Select(s => s.DescripcionFalla).Distinct().ToList();
                         }
                         break;
 
@@ -512,11 +548,12 @@ namespace RMAInforme
                         if (CheckEqual.IsChecked == true)
                         {
                             List = List.Where(w => w.Observaciones == keyword).Select(s => s);
+                            distintos = List.Where(w => w.Observaciones == keyword).Select(s => s.Observaciones).Distinct().ToList();
                         }
                         else
                         {
-
                             List = List.Where(w => w.Observaciones.Contains(keyword)).Select(s => s);
+                            distintos = List.Where(w => w.Observaciones.Contains(keyword)).Select(s => s.Observaciones).Distinct().ToList();
                         }
                         break;
 
@@ -524,203 +561,28 @@ namespace RMAInforme
                         if (CheckEqual.IsChecked == true)
                         {
                             List = List.Where(w => w.EstadoCambio == keyword).Select(s => s);
+                            distintos = List.Where(w => w.EstadoCambio == keyword).Select(s => s.EstadoCambio).Distinct().ToList();
                         }
                         else
                         {
-
                             List = List.Where(w => w.EstadoCambio.Contains(keyword)).Select(s => s);
+                            distintos = List.Where(w => w.EstadoCambio.Contains(keyword)).Select(s => s.EstadoCambio).Distinct().ToList();
                         }
                         break;
 
                     case "ID DE CAMBIO":
                         int id = Int32.Parse(keyword);
                         List = List.Where(w => w.IdCambio == id).Select(s => s);
+                        distintos = List.Where(w => w.IdCambio == id).Select(s => s.IdCambio.ToString()).Distinct().ToList();
                         break;
                     default:
-                        //ERROR
+                        MessageBox.Show("Error: Los parametros de la búsqueda son erróneos, avise al administrador", "ERROR!", MessageBoxButton.OK, MessageBoxImage.Error);
                         break;
                 }
             }
             else
             {
-                PRDB context = new PRDB();
-                switch (table)
-                {
-                    case "ARTICULO":
-                        if (CheckEqual.IsChecked == true)
-                        {
-                            List = context.Cambio.Where(w => w.ArticuloItem == keyword).Select(s => s);
-                        }
-                        else
-                        {
-
-                            List = context.Cambio.Where(w => w.ArticuloItem.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "NUMERO DE PEDIDO":
-                        if (CheckEqual.IsChecked == true)
-                        {
-                            List = context.Cambio.Where(w => w.NumeroPedido == keyword).Select(s => s);
-                        }
-                        else
-                        {
-
-                            List = context.Cambio.Where(w => w.NumeroPedido.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "CATEGORIA":
-                        if (CheckEqual.IsChecked == true)
-                        {
-                            List = context.Cambio.Where(w => w.CategoriaItem == keyword).Select(s => s);
-                        }
-                        else
-                        {
-
-                            List = context.Cambio.Where(w => w.CategoriaItem.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "MODELO":
-                        if (CheckEqual.IsChecked == true)
-                        {
-                            List = context.Cambio.Where(w => w.Modelo == keyword).Select(s => s);
-                        }
-                        else
-                        {
-
-                            List = context.Cambio.Where(w => w.Modelo.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "PRODUCTO":
-                        if (CheckEqual.IsChecked == true)
-                        {
-                            List = context.Cambio.Where(w => w.Producto == keyword).Select(s => s);
-                        }
-                        else
-                        {
-
-                            List = context.Cambio.Where(w => w.Producto.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-                    case "VERSION":
-                        if (CheckEqual.IsChecked == true)
-                        {
-                            List = context.Cambio.Where(w => w.VersionItem == keyword).Select(s => s);
-                        }
-                        else
-                        {
-
-                            List = context.Cambio.Where(w => w.VersionItem.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "DESCRIPCION DE ITEM":
-                        if (CheckEqual.IsChecked == true)
-                        {
-                            List = context.Cambio.Where(w => w.DescripcionItem == keyword).Select(s => s);
-                        }
-                        else
-                        {
-
-                            List = context.Cambio.Where(w => w.DescripcionItem.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "SECTOR CAMBIO":
-                        if (CheckEqual.IsChecked == true)
-                        {
-                            List = context.Cambio.Where(w => w.SectorCambio == keyword).Select(s => s);
-                        }
-                        else
-                        {
-
-                            List = context.Cambio.Where(w => w.SectorCambio.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "LEGAJO":
-                        if (CheckEqual.IsChecked == true)
-                        {
-                            List = context.Cambio.Where(w => w.Legajo == keyword).Select(s => s);
-                        }
-                        else
-                        {
-
-                            List = context.Cambio.Where(w => w.Legajo.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "TECNICO":
-                        if (CheckEqual.IsChecked == true)
-                        {
-                            List = context.Cambio.Where(w => w.Tecnico == keyword).Select(s => s);
-                        }
-                        else
-                        {
-
-                            List = context.Cambio.Where(w => w.Tecnico.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "CODIGO DE FALLA":
-                        if (CheckEqual.IsChecked == true)
-                        {
-                            List = context.Cambio.Where(w => w.CodigoFalla == keyword).Select(s => s);
-                        }
-                        else
-                        {
-
-                            List = context.Cambio.Where(w => w.CodigoFalla.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "DESCRIPCION DE FALLA":
-                        if (CheckEqual.IsChecked == true)
-                        {
-                            List = context.Cambio.Where(w => w.DescripcionFalla == keyword).Select(s => s);
-                        }
-                        else
-                        {
-
-                            List = context.Cambio.Where(w => w.DescripcionFalla.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "OBSERVACIONES":
-                        if (CheckEqual.IsChecked == true)
-                        {
-                            List = context.Cambio.Where(w => w.Observaciones == keyword).Select(s => s);
-                        }
-                        else
-                        {
-
-                            List = context.Cambio.Where(w => w.Observaciones.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "ESTADO DE CAMBIO":
-                        if (CheckEqual.IsChecked == true)
-                        {
-                            List = context.Cambio.Where(w => w.EstadoCambio == keyword).Select(s => s);
-                        }
-                        else
-                        {
-
-                            List = context.Cambio.Where(w => w.EstadoCambio.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "ID DE CAMBIO":
-                        int id = Int32.Parse(keyword);
-                        List = context.Cambio.Where(w => w.IdCambio == id).Select(s => s);
-                        break;
-                    default:
-                        //ERROR
-                        break;
-                }
+                Search(Keyword, Table, InitialDate, EndDate);
             }
             int result = List.Count();
             ShowResultInStatusBar(result);
@@ -1112,7 +974,7 @@ namespace RMAInforme
                     {
                         dist = dist + "- " + item.ToString() + Environment.NewLine;
                     }
-                    MessageBox.Show("Hay mas de un " + Table + " en el resultado." + Environment.NewLine + Environment.NewLine + "Por favor, filtre la lista haciendo una búsqueda exacta de uno de los siguientes:" + Environment.NewLine + dist, "No se pueden mostrar estadísticas", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    MessageBox.Show("Hay mas de un resultado para: " + Table + Environment.NewLine + Environment.NewLine + "Por favor, filtre la lista haciendo una búsqueda exacta de uno de los siguientes:" + Environment.NewLine + Environment.NewLine + dist, "No se pueden mostrar estadísticas", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
 
             }

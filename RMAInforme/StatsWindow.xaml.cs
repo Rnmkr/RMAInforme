@@ -219,7 +219,7 @@ namespace RMAInforme
             Top3ABC = mostFrequent.Select(s => s).ToArray();
 
             string s4 = Top3ABC[0];
-            string s5 = Top3ABC[1];
+            string s5 = Top3ABC[1]; //manejar cuando no llega a completar los 3 da error
             string s6 = Top3ABC[2];
             Top3A = ListaMismo.Where(w => w.CategoriaItem == s4).Count();
             Top3B = ListaMismo.Where(w => w.CategoriaItem == s5).Count();
