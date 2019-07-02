@@ -24,7 +24,7 @@ namespace RMAInforme
 
         private int RestoChart3;
         private string TitleFourthValueChart3;
-        private string[] Top3ABC;
+        private string[] Top3ABC = new string[3];
         private int Top3A;
         private int Top3B;
         private int Top3C;
@@ -216,14 +216,48 @@ namespace RMAInforme
                     .Take(3)
                     .Select(s => s.Key).ToList();
 
+            if (mostFrequent.Count < 3)
+            {
+                int Length = (3 - mostFrequent.Count);
+                for (int i = 0; i < Length; i++)
+                {
+                    mostFrequent.Add("N/A");
+                }
+            }
+
             Top3ABC = mostFrequent.Select(s => s).ToArray();
 
             string s4 = Top3ABC[0];
-            string s5 = Top3ABC[1]; //manejar cuando no llega a completar los 3 da error
+            string s5 = Top3ABC[1];
             string s6 = Top3ABC[2];
-            Top3A = ListaMismo.Where(w => w.CategoriaItem == s4).Count();
-            Top3B = ListaMismo.Where(w => w.CategoriaItem == s5).Count();
-            Top3C = ListaMismo.Where(w => w.CategoriaItem == s6).Count();
+
+            if (s4 == "N/A")
+            {
+                Top3A = 0;
+            }
+            else
+            {
+                Top3A = ListaMismo.Where(w => w.CategoriaItem == s4).Count();
+            }
+
+            if (s5 == "N/A")
+            {
+                Top3B = 0;
+            }
+            else
+            {
+                Top3B = ListaMismo.Where(w => w.CategoriaItem == s5).Count();
+            }
+
+            if (s6 == "N/A")
+            {
+                Top3C = 0;
+            }
+            else
+            {
+                Top3C = ListaMismo.Where(w => w.CategoriaItem == s6).Count();
+            }
+
             RestoChart3 = TotalMismo - (Top3A + Top3B + Top3C);
 
             Chart3Label.Text = "CATEGORIAS DE '" + KeywordBusqueda + "' CON MAS REGISTROS (SOBRE EL TOTAL DE REGISTROS DE '" + KeywordBusqueda + "')";

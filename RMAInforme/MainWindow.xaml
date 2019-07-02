@@ -35,7 +35,7 @@
                     </StatusBarItem>
                 </StatusBar>
                 <CheckBox Name="CheckToday" Checked="CheckToday_Checked" Unchecked="CheckToday_Unchecked" Content="HOY" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="419,37,0,0" Width="141" FontWeight="Bold" FontFamily="Consolas" VerticalContentAlignment="Center" Height="24"/>
-                <CheckBox Name="CheckEver" Checked="CheckEver_Checked"  Unchecked="CheckEver_Unchecked"  Content="INICIO A FIN B.D." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="419,7,0,0" Width="141" FontWeight="Bold" FontFamily="Consolas" VerticalContentAlignment="Center" Height="25"/>
+                <CheckBox Name="CheckEver" Content="INICIO A FIN B.D." Checked="CheckEver_Checked"  Unchecked="CheckEver_Unchecked" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="419,7,0,0" Width="141" FontWeight="Bold" FontFamily="Consolas" VerticalContentAlignment="Center" Height="25"/>
                 <ComboBox x:Name="ComboBoxSector" HorizontalAlignment="Left" IsEnabled="False" Height="25" Margin="801,8,0,0" VerticalAlignment="Top" Width="200" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" SelectionChanged="ComboBoxSector_SelectionChanged"/>
                 <CheckBox Name="CheckEqual" IsChecked="True" Content="BUSQUEDA EXACTA" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="830,38,0,0" Width="125" FontWeight="Bold" FontFamily="Consolas" VerticalContentAlignment="Center" Height="25"/>
 
