@@ -19,7 +19,7 @@
                         <Button Name="SearchButton" Command="{Binding SearchCommand}"  CommandParameter="{Binding ElementName=tbKeyword, Path=Text}" Height="24" Width="24" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="185,9,0,0">
                             <materialDesign:PackIcon Kind="Magnify" Opacity="1" Width="16" Height="16" />
                         </Button>
-                    <ComboBox Name="cbColumna" materialDesign:HintAssist.Hint="COLUMNA" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="10,37,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+                    <ComboBox Name="cbColumna" materialDesign:HintAssist.Hint="COLUMNA" HorizontalAlignment="Left" VerticalAlignment="Top" Width="171" Margin="10,37,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
                     <ComboBox Name="cbPresicion" materialDesign:HintAssist.Hint="PRESICION" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="220,5,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                     <ComboBox Name="cbOrigenDatos" materialDesign:HintAssist.Hint="ORIGEN DE DATOS" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="220,37,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                     <ComboBox Name="cbPeriodo" materialDesign:HintAssist.Hint="PERIODO" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="370,5,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
@@ -38,10 +38,8 @@
                     </Button>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <StackPanel>
-                        <DataGrid Name="dgListaCambios" VerticalAlignment="Top"/>
-                        <StatusBar Background="Red" VerticalAlignment="Bottom"/>
-                    </StackPanel>
+                        <DataGrid Name="dgListaCambios"/>
+                        <StatusBar Background="Red" VerticalAlignment="Bottom" Height="26"/>
                 </Grid>
                 
                 
