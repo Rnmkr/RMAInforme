@@ -71,35 +71,53 @@ namespace RMAInforme
 
                 if (SimplePing() == false)
                 {
-                    MessageBox.Show("No se encontró el servidor." + Environment.NewLine + "Revise la conexión con la Base de Datos y reintente.", "Conectando al servidor", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    var MessageDialog = new MessageDialog
+                    {
+                        Message = { Text = "No se encontró el servidor." + Environment.NewLine + "Revise la conexión con la Base de Datos y reintente." }
+                    };
+                    DialogHost.Show(MessageDialog, "openup");
                     return;
                 }
+
                 if ((bool)RadioLocal.IsChecked && List == null)
                 {
-                    //MessageBox.Show("Realice una búsqueda en la Base de Datos primero!", "Buscar...", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-                    DialogHost.Show("Realice una búsqueda en la Base de Datos primero!", "openup");
+                    var MessageDialog = new MessageDialog
+                    {
+                        Message = { Text = "Realice una búsqueda en la Base de Datos primero!" }
+                    };
+                    DialogHost.Show(MessageDialog, "openup");
+
                     RadioGlobal.IsChecked = true;
                     return;
                 }
 
                 if (DateInit.SelectedDate == null && DateEnd.SelectedDate != null)
                 {
-                    //MessageBox.Show("Ingrese fecha de inicio!", "Buscar...", MessageBoxButton.OK, MessageBoxImage.Information);
-                    DialogHost.Show("Ingrese fecha de inicio!", "openup");
+                    var MessageDialog = new MessageDialog
+                    {
+                        Message = { Text = "Ingrese Fecha de Inicio" }
+                    };
+                    DialogHost.Show(MessageDialog, "openup");
                     return;
                 }
 
                 if (DateInit.SelectedDate != null && DateEnd.SelectedDate == null)
                 {
-                    //MessageBox.Show("Ingrese fecha final!", "Buscar...", MessageBoxButton.OK, MessageBoxImage.Information);
-                    DialogHost.Show("Ingrese fecha final!", "openup");
+                    var MessageDialog = new MessageDialog
+                    {
+                        Message = { Text = "Ingrese Fecha Final" }
+                    };
+                    DialogHost.Show(MessageDialog, "openup");
                     return;
                 }
 
                 if (DateInit.SelectedDate > DateEnd.SelectedDate)
                 {
-                    //MessageBox.Show("La fecha de inicio no puede ser mayor a la final!", "Buscar...", MessageBoxButton.OK, MessageBoxImage.Error);
-                    DialogHost.Show("La fecha de inicio no puede ser mayor a la final!", "openup");
+                    var MessageDialog = new MessageDialog
+                    {
+                        Message = { Text = "La fecha de inicio no puede ser mayor a la final!" }
+                    };
+                    DialogHost.Show(MessageDialog, "openup");
                     return;
                 }
 
@@ -112,7 +130,7 @@ namespace RMAInforme
                 Table = ComboBoxTable.SelectedValue.ToString();
                 InitialDate = DateInit.SelectedDate ?? Convert.ToDateTime("01/01/2018");
                 EndDate = DateEnd.SelectedDate ?? Convert.ToDateTime(DateTime.Today);
-                //InitialDate = InitialDate.Value.AddDays(0); //no es necesario al parecer...
+
                 if (EndDate != null)
                 {
                     EndDate = EndDate.Value.AddDays(1);
@@ -152,8 +170,12 @@ namespace RMAInforme
                     {
                         Export.IsEnabled = false;
                         Stats.IsEnabled = false;
-                        //MessageBox.Show("La búsqueda no obtuvo resultados!" + Environment.NewLine + "Sugerencia: intente desmarcando la opción de 'Búsqueda Exacta'", "Buscar...", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        DialogHost.Show("La búsqueda no obtuvo resultados!" + Environment.NewLine + "Sugerencia: intente desmarcando la opción de 'Búsqueda Exacta'", "openup");
+
+                        var MessageDialog = new MessageDialog
+                        {
+                            Message = { Text = "La búsqueda no obtuvo resultados!" + Environment.NewLine + Environment.NewLine + "Sugerencia: intente desmarcando la opción de 'Búsqueda Exacta' o ampliando el rango de fechas." }
+                        };
+                        DialogHost.Show(MessageDialog, "openup");
                         return;
                     }
                     else
@@ -377,9 +399,13 @@ namespace RMAInforme
                     List = TList.Where(w => w.IdCambio == id).Select(s => s);
                     distintos = TList.Where(w => w.IdCambio == id).Select(s => s.IdCambio.ToString()).Distinct().ToList();
                     break;
+
                 default:
-                    //MessageBox.Show("Error: Los parametros de la búsqueda son erróneos, avise al administrador", "ERROR!", MessageBoxButton.OK, MessageBoxImage.Error);
-                    DialogHost.Show("Error: Los parametros de la búsqueda son erróneos, avise al administrador");
+                    var MessageDialog = new MessageDialog
+                    {
+                        Message = { Text = "Error: Los parametros de la búsqueda son erróneos, avise al administrador" }
+                    };
+                    DialogHost.Show(MessageDialog, "openup");
                     break;
             }
             int result = List.Count();
@@ -410,7 +436,7 @@ namespace RMAInforme
                         if (CheckEqual.IsChecked == true)
                         {
                             List = List.Where(w => w.NumeroPedido == keyword).Select(s => s);
-                            distintos = List.Where(w => w.NumeroPedido== keyword).Select(s => s.NumeroPedido).Distinct().ToList();
+                            distintos = List.Where(w => w.NumeroPedido == keyword).Select(s => s.NumeroPedido).Distinct().ToList();
                         }
                         else
                         {
@@ -581,8 +607,13 @@ namespace RMAInforme
                         List = List.Where(w => w.IdCambio == id).Select(s => s);
                         distintos = List.Where(w => w.IdCambio == id).Select(s => s.IdCambio.ToString()).Distinct().ToList();
                         break;
+
                     default:
-                        MessageBox.Show("Error: Los parametros de la búsqueda son erróneos, avise al administrador", "ERROR!", MessageBoxButton.OK, MessageBoxImage.Error);
+                        var MessageDialog = new MessageDialog
+                        {
+                            Message = { Text = "Error: Los parametros de la búsqueda son erróneos, avise al administrador" }
+                        };
+                        DialogHost.Show(MessageDialog, "openup");
                         break;
                 }
             }
@@ -736,8 +767,6 @@ namespace RMAInforme
 
         private void Export_Click(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show("Funcion no implementada aun", ":(", MessageBoxButton.OK, MessageBoxImage.Information);
-
             Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
             dlg.FileName = "Resultados de Busqueda"; // Default file name
             dlg.DefaultExt = ".xslx"; // Default file extension
@@ -753,14 +782,19 @@ namespace RMAInforme
                 try
                 {
                     ExportDataSet(filename);
-                    //MessageBox.Show("El archivo se guardó en: " + Environment.NewLine + filename, "Exportando a Excel", MessageBoxButton.OK, MessageBoxImage.Information);
-                    DialogHost.Show("El archivo se guardó en: " + Environment.NewLine + filename);
-
+                    var MessageDialog = new MessageDialog
+                    {
+                        Message = { Text = "El archivo se guardó en: " + Environment.NewLine + filename }
+                    };
+                    DialogHost.Show(MessageDialog, "openup");
                 }
                 catch (Exception)
                 {
-                    //MessageBox.Show("Error guardando el archivo: " + Environment.NewLine + filename, "Exportando a Excel", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    DialogHost.Show("Error guardando el archivo: " + Environment.NewLine + filename);
+                    var MessageDialog = new MessageDialog
+                    {
+                        Message = { Text = "Error guardando el archivo: " + Environment.NewLine + filename }
+                    };
+                    DialogHost.Show(MessageDialog, "openup");
                 }
             }
         }
@@ -854,8 +888,11 @@ namespace RMAInforme
 
             if (DataGrid.ItemsSource == null)
             {
-                //MessageBox.Show("Realice una búsqueda en la Base de Datos primero!", "Informe RMA", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-                DialogHost.Show("Realice una búsqueda en la Base de Datos primero!");
+                var MessageDialog = new MessageDialog
+                {
+                    Message = { Text = "Realice una búsqueda en la Base de Datos primero!" }
+                };
+                DialogHost.Show(MessageDialog, "openup");
                 return;
             }
 
@@ -881,15 +918,20 @@ namespace RMAInforme
         {
             if (DataGrid.SelectedItem == null)
             {
-
-                //MessageBox.Show("Seleccione el Item que desea cambiar!", "Cambiar Estado", MessageBoxButton.OK, MessageBoxImage.Error);
-                var dialogY = await DialogHost.Show("Seleccione el Item que desea cambiar!");
+                var MessageDialog = new MessageDialog
+                {
+                    Message = { Text = "Seleccione el Item que desea cambiar!" }
+                };
+                await DialogHost.Show(MessageDialog, "openup");
                 return;
             }
-
-            //var dialog = new PasswordWindow();
+            //////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////
+            /////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////
+            /////////////////////////////////////////////////////////////////////////////////////////
             var dialogX = await DialogHost.Show(new PasswordWindow(), "openup", dialogClosingEH);
-            
+
         }
 
         private void dialogClosingEH(object sender, DialogClosingEventArgs eventArgs)
@@ -958,12 +1000,15 @@ namespace RMAInforme
             }
         }
 
-        private async void Stats_Click(object sender, RoutedEventArgs e)
+        private void Stats_Click(object sender, RoutedEventArgs e)
         {
             if (List == null)
             {
-                //MessageBox.Show("Realice una búsqueda en la Base de Datos primero!", "Buscar...", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-                var dialogZ = await DialogHost.Show("Realice una búsqueda en la Base de Datos primero!");
+                var MessageDialog = new MessageDialog
+                {
+                    Message = { Text = "Realice una búsqueda en la Base de Datos primero!" }
+                };
+                DialogHost.Show(MessageDialog, "openup");
                 RadioGlobal.IsChecked = true;
                 return;
             }
@@ -973,7 +1018,7 @@ namespace RMAInforme
                 if (distintos.Count == 1)
                 {
                     int countedList = List.Count();
-                    var x = await DialogHost.Show(new StatsWindow(countedList, Keyword, Table, InitialDate, EndDate), "openup");
+                    DialogHost.Show(new StatsWindow(countedList, Keyword, Table, InitialDate, EndDate), "openup");
                 }
                 else
                 {
@@ -982,8 +1027,11 @@ namespace RMAInforme
                     {
                         dist = dist + "- " + item.ToString() + Environment.NewLine;
                     }
-                    //MessageBox.Show("Hay mas de un resultado para: " + Table + Environment.NewLine + Environment.NewLine + "Por favor, filtre la lista haciendo una búsqueda exacta de uno de los siguientes:" + Environment.NewLine + Environment.NewLine + dist, "No se pueden mostrar estadísticas", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                    var dialogZ = await DialogHost.Show("Hay mas de un resultado para: " + Table + Environment.NewLine + Environment.NewLine + "Por favor, filtre la lista haciendo una búsqueda exacta de uno de los siguientes:" + Environment.NewLine + Environment.NewLine + dist);
+                    var MessageDialog = new MessageDialog
+                    {
+                        Message = { Text = "Hay mas de un resultado para: " + Table + Environment.NewLine + Environment.NewLine + "Por favor, filtre la lista haciendo una búsqueda exacta de uno de los siguientes:" + Environment.NewLine + Environment.NewLine + dist }
+                    };
+                    DialogHost.Show(MessageDialog, "openup");
                 }
             }
         }
