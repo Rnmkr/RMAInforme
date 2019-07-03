@@ -188,7 +188,7 @@ namespace RMAInforme
 
             RestoChart3 = TotalMismo - (Top3A + Top3B + Top3C);
 
-            Chart3Label.Text = "CATEGORIAS DE '" + KeywordBusqueda + "' CON MAS REGISTROS" + Environment.NewLine + "(SOBRE EL TOTAL DE REGISTROS DE '" + KeywordBusqueda + "')";
+            Chart3Label.Text = "COMPONENTES DE '" + KeywordBusqueda + "' CON MAS REGISTROS" + Environment.NewLine + "(SOBRE EL TOTAL DE REGISTROS DE '" + KeywordBusqueda + "')";
             TitleFourthValueChart3 = "RESTO DE CATEGORIAS";
         }
 

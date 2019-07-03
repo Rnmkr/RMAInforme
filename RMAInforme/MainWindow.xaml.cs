@@ -61,6 +61,16 @@ namespace RMAInforme
             CheckToday.IsChecked = true;
             mainWindow.Title = "RMAInforme" + " -" + Assembly.GetExecutingAssembly().GetName().Version;
 
+            List<string> ListaMeses = new List<string> {"ESPECIFICO", "COMPLETO", "HOY", "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE" };
+            List<string> ListaOrigen = new List<string> { "BASE DE DATOS", "LISTA ACTUAL" };
+            List<string> ListaPresicion = new List<string> { "EXACTA", "SIMILAR" };
+            List<string> ListaSectores = new List<string> {"TODOS", "PRODUCCION", "SERVICIO TECNICO" };
+            List<string> ListaColumnas = new List<string> { "ARTICULO", "NUMERO DE PEDIDO", "CATEGORIA", "MODELO", "PRODUCTO", "VERSION", "DESCRIPCION DE ITEM", "SECTOR CAMBIO", "LEGAJO", "TECNICO", "CODIGO DE FALLA", "DESCRIPCION DE FALLA", "OBSERVACIONES", "ESTADO DE CAMBIO", "ID DE CAMBIO" };
+            ComboBoxMeses.ItemsSource = ListaMeses;
+            ComboBoxOrigen.ItemsSource = ListaOrigen;
+            cbColumna.ItemsSource = ListaColumnas;
+            ComboBoxPrecision.ItemsSource = ListaPresicion;
+            ComboBoxSectores.ItemsSource = ListaSectores;
         }
 
         private void ButtonSearch_Click(object sender, RoutedEventArgs e)
@@ -395,7 +405,21 @@ namespace RMAInforme
                     break;
 
                 case "ID DE CAMBIO":
-                    int id = Int32.Parse(keyword);
+                    int id;
+                    try
+                    {
+                        id = Int32.Parse(keyword);
+                    }
+                    catch (FormatException)
+                    {
+                        var MessageDialog1 = new MessageDialog
+                        {
+                            Message = { Text = "Ingrese un número como parametro de búsqueda" }
+                        };
+                        DialogHost.Show(MessageDialog1, "openup");
+                        return;
+                    }
+
                     List = TList.Where(w => w.IdCambio == id).Select(s => s);
                     distintos = TList.Where(w => w.IdCambio == id).Select(s => s.IdCambio.ToString()).Distinct().ToList();
                     break;
@@ -603,7 +627,20 @@ namespace RMAInforme
                         break;
 
                     case "ID DE CAMBIO":
-                        int id = Int32.Parse(keyword);
+                        int id;
+                        try
+                        {
+                            id = Int32.Parse(keyword);
+                        }
+                        catch (FormatException)
+                        {
+                            var MessageDialog1 = new MessageDialog
+                            {
+                                Message = { Text = "Ingrese un número como parametro de búsqueda" }
+                            };
+                            DialogHost.Show(MessageDialog1, "openup");
+                            return;
+                        }
                         List = List.Where(w => w.IdCambio == id).Select(s => s);
                         distintos = List.Where(w => w.IdCambio == id).Select(s => s.IdCambio.ToString()).Distinct().ToList();
                         break;

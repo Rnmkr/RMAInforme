@@ -8,21 +8,57 @@
         mc:Ignorable="d"
         Title="Informe RMA" Width="1366" MinHeight="240" MinWidth="1190" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
-        <materialDesign:DialogHost CloseOnClickAway="True" Identifier="openup">
+        <materialDesign:DialogHost CloseOnClickAway="True" Identifier="DialogHostGrid">
             <Grid>
-                <StackPanel Background="WhiteSmoke"  Height="66" VerticalAlignment="Top"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="75"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Background="WhiteSmoke">
+                        <TextBox Name="tbKeyword" materialDesign:HintAssist.Hint="BUSCAR..." Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="171" Margin="10,10,0,0" HorizontalContentAlignment="Center" Height="24" VerticalContentAlignment="Center"/>
+                        <Button Name="SearchButton" Command="{Binding SearchCommand}"  CommandParameter="{Binding ElementName=tbKeyword, Path=Text}" Height="24" Width="24" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="185,9,0,0">
+                            <materialDesign:PackIcon Kind="Magnify" Opacity="1" Width="16" Height="16" />
+                        </Button>
+                    <ComboBox Name="cbColumna" materialDesign:HintAssist.Hint="COLUMNA" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="10,37,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+                    <ComboBox Name="cbPresicion" materialDesign:HintAssist.Hint="PRESICION" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="220,5,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                    <ComboBox Name="cbOrigenDatos" materialDesign:HintAssist.Hint="ORIGEN DE DATOS" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="220,37,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                    <ComboBox Name="cbPeriodo" materialDesign:HintAssist.Hint="PERIODO" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="370,5,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                    <ComboBox Name="cbSector" materialDesign:HintAssist.Hint="FILTRAR SECTOR" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="370,37,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                    <DatePicker Name="dpInicial" materialDesign:HintAssist.Hint="FECHA INICIAL"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="520,8,0,0"/>
+                    <DatePicker Name="dpfINAL" materialDesign:HintAssist.Hint="FECHA FINAL"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="520,40,0,0"/>
+
+                    <Button Name="btnCancelarCambio" Width="64" Height="64" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,149,0" >
+                        <materialDesign:PackIcon Kind="Cancel" Opacity="1" Width="32" Height="32" />
+                    </Button>
+                    <Button Name="btnEstadisticas" Width="64" Height="64" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,79,0" >
+                        <materialDesign:PackIcon Kind="ChartPie" Opacity="1" Width="32" Height="32" />
+                    </Button>
+                    <Button Name="btnExportarPlanilla" Width="64" Height="64" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" >
+                        <materialDesign:PackIcon Kind="FileExcel" Opacity="1" Width="32" Height="32" />
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <StackPanel>
+                        <DataGrid Name="dgListaCambios" VerticalAlignment="Top"/>
+                        <StatusBar Background="Red" VerticalAlignment="Bottom"/>
+                    </StackPanel>
+                </Grid>
+                
+                
+                
+                
+                <!--<StackPanel Background="WhiteSmoke"  Height="66" VerticalAlignment="Top"/>
                 <DataGrid x:Name="DataGrid" Margin="0,71,0,36" IsReadOnly="True" FontFamily="Consolas" FontSize="14" SelectionChanged="DataGrid_SelectionChanged"/>
-                <Button x:Name="ButtonSearch" VerticalAlignment="Top" Margin="220,7,0,0" Click="ButtonSearch_Click" Height="54" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="54">
+                <Button x:Name="ButtonSearch" VerticalAlignment="Top" Margin="595,10,0,0" Click="ButtonSearch_Click" Height="54" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="54">
                     <materialDesign:PackIcon Kind="Search" Height="24" Width="24" />
                 </Button>
-                <TextBox x:Name="TextBoxSearchString" HorizontalAlignment="Left" Height="26" Margin="10,7,0,0" TextWrapping="Wrap" Text="Buscar..."  VerticalAlignment="Top" Width="200" GotFocus="SearchBox_GotFocus" LostFocus="SearchBox_LostFocus" FontFamily="Consolas" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-                <ComboBox x:Name="ComboBoxTable" HorizontalAlignment="Left" Height="26" Margin="10,35,0,0" VerticalAlignment="Top" Width="200" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <Label Content="INICIO" IsEnabled="False" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="737,7,0,0" FontFamily="Consolas" FontWeight="Bold" VerticalContentAlignment="Center" Height="25"/>
-                <DatePicker x:Name="DateInit" Margin="565,7,0,0" VerticalAlignment="Top" Height="26" FontFamily="Consolas" FontWeight="Bold" Text="Seleccionar" HorizontalAlignment="Left" Width="171" VerticalContentAlignment="Center" Padding="4,0,0,0" HorizontalContentAlignment="Stretch"/>
-                <Label Content="FIN" IsEnabled="False" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="737,35,0,0" FontFamily="Consolas" FontWeight="Bold" VerticalContentAlignment="Center" Height="26" Width="50"/>
-                <DatePicker x:Name="DateEnd" Margin="565,35,0,0" VerticalAlignment="Top" Height="26" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="171" VerticalContentAlignment="Center" Padding="4,0,0,0" HorizontalContentAlignment="Stretch"/>
-                <RadioButton x:Name="RadioLocal" Content="EN LISTA ACTUAL" Margin="284,35,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="130" Height="26"/>
-                <RadioButton x:Name="RadioGlobal" Content="EN BASE DE DATOS" Margin="284,7,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="130" Height="25"/>
+                <ComboBox x:Name="ComboBoxColumna" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="COLUMNA" Height="26" Margin="267,40,0,0" VerticalAlignment="Top" Width="200" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="TextBoxSearchString" materialDesign:HintAssist.Hint="BUSCAR..." HorizontalAlignment="Left" Height="26" Margin="267,9,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="200" GotFocus="SearchBox_GotFocus" LostFocus="SearchBox_LostFocus" FontFamily="Consolas" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" RenderTransformOrigin="1.97,0.462"/>
+                <ComboBox x:Name="ComboBoxTable" Visibility="Collapsed" materialDesign:HintAssist.Hint="COLUMNA" HorizontalAlignment="Left" Height="26" Margin="10,35,0,0" VerticalAlignment="Top" Width="200" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <DatePicker x:Name="DateInit" materialDesign:HintAssist.Hint="FECHA INICIAL" Margin="799,9,0,0" VerticalAlignment="Top" Height="26" FontFamily="Consolas" FontWeight="Bold" Text="Seleccionar" HorizontalAlignment="Left" Width="110" VerticalContentAlignment="Center" Padding="4,0,0,0" HorizontalContentAlignment="Stretch"/>
+                <DatePicker x:Name="DateEnd" Margin="799,38,0,0" VerticalAlignment="Top"  materialDesign:HintAssist.Hint="FECHA FINAL" Height="26" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="110" VerticalContentAlignment="Center" Padding="4,0,0,0" HorizontalContentAlignment="Stretch"/>
+                <RadioButton x:Name="RadioLocal" Visibility="Collapsed" Content="EN LISTA ACTUAL" Margin="284,35,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="130" Height="26"/>
+                <RadioButton x:Name="RadioGlobal" Visibility="Collapsed" Content="EN BASE DE DATOS" Margin="284,7,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="130" Height="25"/>
                 <Button x:Name="Export" ToolTip="EXPORTAR RESULTADO DE BUSQUEDA EN FORMATO XLS" Margin="0,6,10,0" IsEnabled="False" VerticalAlignment="Top" Height="54" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Right" Width="54" Click="Export_Click">
                     <materialDesign:PackIcon Kind="FileExcel" Height="24" Width="24" />
                 </Button>
@@ -34,14 +70,18 @@
                         <TextBlock Name="TextBlockStatusResult" FontFamily="Consolas" FontWeight="Bold" />
                     </StatusBarItem>
                 </StatusBar>
-                <CheckBox Name="CheckToday" Checked="CheckToday_Checked" Unchecked="CheckToday_Unchecked" Content="HOY" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="419,37,0,0" Width="141" FontWeight="Bold" FontFamily="Consolas" VerticalContentAlignment="Center" Height="24"/>
-                <CheckBox Name="CheckEver" Content="INICIO A FIN B.D." Checked="CheckEver_Checked"  Unchecked="CheckEver_Unchecked" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="419,7,0,0" Width="141" FontWeight="Bold" FontFamily="Consolas" VerticalContentAlignment="Center" Height="25"/>
-                <ComboBox x:Name="ComboBoxSector" HorizontalAlignment="Left" IsEnabled="False" Height="25" Margin="801,8,0,0" VerticalAlignment="Top" Width="200" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" SelectionChanged="ComboBoxSector_SelectionChanged"/>
-                <CheckBox Name="CheckEqual" IsChecked="True" Content="BUSQUEDA EXACTA" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="830,38,0,0" Width="125" FontWeight="Bold" FontFamily="Consolas" VerticalContentAlignment="Center" Height="25"/>
+                <CheckBox Name="CheckToday" Checked="CheckToday_Checked" Unchecked="CheckToday_Unchecked" Content="HOY" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Top" Margin="419,37,0,0" Width="48" FontWeight="Bold" FontFamily="Consolas" VerticalContentAlignment="Center" Height="24"/>
+                <ComboBox x:Name="ComboBoxMeses" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="PERIODO" Height="26" Margin="659,38,0,0" VerticalAlignment="Top" Width="130" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <ComboBox x:Name="ComboBoxOrigen" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="ORIGEN DE DATOS" Height="26" Margin="659,9,0,0" VerticalAlignment="Top" Width="130" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <CheckBox Name="CheckEver" Content="INICIO A FIN BASE DATOS" Visibility="Collapsed" Checked="CheckEver_Checked"  Unchecked="CheckEver_Unchecked" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="419,7,0,0" Width="176" FontWeight="Bold" FontFamily="Consolas" VerticalContentAlignment="Center" Height="25"/>
+                <ComboBox x:Name="ComboBoxSector" Visibility="Collapsed" materialDesign:HintAssist.Hint="SECTOR" HorizontalAlignment="Left" IsEnabled="False" Height="28" Margin="539,34,0,0" VerticalAlignment="Top" Width="150" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" SelectionChanged="ComboBoxSector_SelectionChanged"/>
+                <ComboBox x:Name="ComboBoxSectores" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="SECTOR" Height="26" Margin="919,38,0,0" VerticalAlignment="Top" Width="130" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <ComboBox x:Name="ComboBoxPrecision" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="PRESICION" Height="26" Margin="919,6,0,0" VerticalAlignment="Top" Width="130" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <CheckBox Name="CheckEqual" Visibility="Collapsed" IsChecked="True" Content="BUSQUEDA EXACTA" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="549,7,0,0" Width="125" FontWeight="Bold" FontFamily="Consolas" VerticalContentAlignment="Center" Height="25"/>
 
                 <Button x:Name="Stats" ToolTip="VER ESTADISTICAS SOBRE LA BUSQUEDA" Margin="0,6,69,0" IsEnabled="False" VerticalAlignment="Top" Height="54" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Right" Width="54" Click="Stats_Click">
                     <materialDesign:PackIcon Kind="ChartPie" Height="24" Width="24" />
-                </Button>
+                </Button>-->
             </Grid>
         </materialDesign:DialogHost>
     </Grid>
