@@ -110,7 +110,7 @@ namespace RMAInforme
                     Keyword = null;
                 }
                 Table = ComboBoxTable.SelectedValue.ToString();
-                InitialDate = DateInit.SelectedDate ?? Convert.ToDateTime("06/03/2018");
+                InitialDate = DateInit.SelectedDate ?? Convert.ToDateTime("01/01/2018");
                 EndDate = DateEnd.SelectedDate ?? Convert.ToDateTime(DateTime.Today);
                 //InitialDate = InitialDate.Value.AddDays(0); //no es necesario al parecer...
                 if (EndDate != null)
@@ -694,7 +694,7 @@ namespace RMAInforme
             string keyword = TextBoxSearchString.Text;
             if (DateInit.SelectedDate == null)
             {
-                initdate[0] = "INICIO DE REGISTROS (03/06/2018)";
+                initdate[0] = "INICIO DE REGISTROS (01/01/2018)";
             }
 
             if (DateEnd.SelectedDate == null)
@@ -995,7 +995,7 @@ namespace RMAInforme
             DateEnd.SelectedDate = null;
             DateInit.IsEnabled = false;
             DateEnd.IsEnabled = false;
-            DateInit.SelectedDate = DateTime.Parse("06/03/2018");
+            DateInit.SelectedDate = DateTime.Parse("01/01/2018");
             DateEnd.SelectedDate = DateTime.Now;
         }
 

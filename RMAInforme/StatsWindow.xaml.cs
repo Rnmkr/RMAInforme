@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.IO;
 using System.Windows.Controls;
+using System.Collections.Generic;
 
 namespace RMAInforme
 {
@@ -28,7 +29,6 @@ namespace RMAInforme
         private int Top3A;
         private int Top3B;
         private int Top3C;
-
         private int TotalEnBaseDeDatos;
         private int TotalMismo;
         private string TablaBusqueda;
@@ -54,7 +54,6 @@ namespace RMAInforme
             Context = new PRDB();
             TotalEnBaseDeDatos = Context.Cambio.Count();
             TotalTodosEnFechaBusqueda = Context.Cambio.Where(w => w.FechaCambio >= fechaInicioBusqueda && w.FechaCambio <= fechaFinalBusqueda).Count();
-
             CantidadOtrosProductosFecha = (TotalTodosEnFechaBusqueda - TotalEnResultadoBusqueda);
 
             FillByTable();
@@ -106,21 +105,13 @@ namespace RMAInforme
             TotalMismo = ListaMismo.Count();
 
             //MODELOS
-            var mostFrequent = ListaMismo
+            var _mostFrequent = ListaMismo
                     .GroupBy(g => g.Modelo)
                     .OrderByDescending(o => o.Count())
                     .Take(3)
                     .Select(s => s.Key).ToList();
 
-            Top3ABC = mostFrequent.Select(s => s).ToArray();
-
-            string s4 = Top3ABC[0];
-            string s5 = Top3ABC[1];
-            string s6 = Top3ABC[2];
-            Top3A = ListaMismo.Where(w => w.Modelo == s4).Count();
-            Top3B = ListaMismo.Where(w => w.Modelo == s5).Count();
-            Top3C = ListaMismo.Where(w => w.Modelo == s6).Count();
-            RestoChart3 = TotalMismo - (Top3A + Top3B + Top3C);
+            FillMostFrequent(_mostFrequent);
 
             Chart3Label.Text = "MODELOS CON MAS REGISTROS DE '" + KeywordBusqueda + "' (SOBRE EL TOTAL DE REGISTROS DE '" + KeywordBusqueda + "')";
             TitleFourthValueChart3 = "RESTO DE MODELOS";
@@ -132,21 +123,13 @@ namespace RMAInforme
             TotalMismo = ListaMismo.Count();
 
             //FALLAS
-            var mostFrequent = ListaMismo
+            var _mostFrequent = ListaMismo
                     .GroupBy(g => g.DescripcionFalla)
                     .OrderByDescending(o => o.Count())
                     .Take(3)
                     .Select(s => s.Key).ToList();
 
-            Top3ABC = mostFrequent.Select(s => s).ToArray();
-
-            string s4 = Top3ABC[0];
-            string s5 = Top3ABC[1];
-            string s6 = Top3ABC[2];
-            Top3A = ListaMismo.Where(w => w.DescripcionFalla == s4).Count();
-            Top3B = ListaMismo.Where(w => w.DescripcionFalla == s5).Count();
-            Top3C = ListaMismo.Where(w => w.DescripcionFalla == s6).Count();
-            RestoChart3 = TotalMismo - (Top3A + Top3B + Top3C);
+            FillMostFrequent(_mostFrequent);
 
             Chart3Label.Text = "FALLAS DE '" + KeywordBusqueda + "' CON MAS REGISTROS (SOBRE EL TOTAL DE REGISTROS DE '" + KeywordBusqueda + "')";
             TitleFourthValueChart3 = "RESTO DE FALLAS";
@@ -158,21 +141,13 @@ namespace RMAInforme
             TotalMismo = ListaMismo.Count();
 
             //MODELOS
-            var mostFrequent = ListaMismo
+            var _mostFrequent = ListaMismo
                     .GroupBy(g => g.Producto)
                     .OrderByDescending(o => o.Count())
                     .Take(3)
                     .Select(s => s.Key).ToList();
 
-            Top3ABC = mostFrequent.Select(s => s).ToArray();
-
-            string s4 = Top3ABC[0];
-            string s5 = Top3ABC[1];
-            string s6 = Top3ABC[2];
-            Top3A = ListaMismo.Where(w => w.Producto == s4).Count();
-            Top3B = ListaMismo.Where(w => w.Producto == s5).Count();
-            Top3C = ListaMismo.Where(w => w.Producto == s6).Count();
-            RestoChart3 = TotalMismo - (Top3A + Top3B + Top3C);
+            FillMostFrequent(_mostFrequent);
 
             Chart3Label.Text = "MODELOS DE '" + KeywordBusqueda + "' CON MAS REGISTROS (SOBRE EL TOTAL DE REGISTROS DE '" + KeywordBusqueda + "')";
             TitleFourthValueChart3 = "RESTO DE MODELOS";
@@ -184,21 +159,13 @@ namespace RMAInforme
             TotalMismo = ListaMismo.Count();
 
             //MODELOS
-            var mostFrequent = ListaMismo
+            var _mostFrequent = ListaMismo
                     .GroupBy(g => g.Modelo)
                     .OrderByDescending(o => o.Count())
                     .Take(3)
                     .Select(s => s.Key).ToList();
 
-            Top3ABC = mostFrequent.Select(s => s).ToArray();
-
-            string s4 = Top3ABC[0];
-            string s5 = Top3ABC[1];
-            string s6 = Top3ABC[2];
-            Top3A = ListaMismo.Where(w => w.Modelo == s4).Count();
-            Top3B = ListaMismo.Where(w => w.Modelo == s5).Count();
-            Top3C = ListaMismo.Where(w => w.Modelo == s6).Count();
-            RestoChart3 = TotalMismo - (Top3A + Top3B + Top3C);
+            FillMostFrequent(_mostFrequent);
 
             Chart3Label.Text = "MODELOS DE '" + KeywordBusqueda + "' CON MAS REGISTROS (SOBRE EL TOTAL DE REGISTROS DE '" + KeywordBusqueda + "')";
             TitleFourthValueChart3 = "RESTO DE MODELOS";
@@ -207,15 +174,26 @@ namespace RMAInforme
         private void FillModelo()
         {
             ListaMismo = Context.Cambio.Where(w => w.Modelo == KeywordBusqueda);
+
             TotalMismo = ListaMismo.Count();
 
             //CATEGORIAS
-            var mostFrequent = ListaMismo
+            var _mostFrequent = ListaMismo
                     .GroupBy(g => g.CategoriaItem)
                     .OrderByDescending(o => o.Count())
                     .Take(3)
                     .Select(s => s.Key).ToList();
 
+            FillMostFrequent(_mostFrequent);
+
+            RestoChart3 = TotalMismo - (Top3A + Top3B + Top3C);
+
+            Chart3Label.Text = "CATEGORIAS DE '" + KeywordBusqueda + "' CON MAS REGISTROS" + Environment.NewLine + "(SOBRE EL TOTAL DE REGISTROS DE '" + KeywordBusqueda + "')";
+            TitleFourthValueChart3 = "RESTO DE CATEGORIAS";
+        }
+
+        private void FillMostFrequent(List<string> mostFrequent)
+        {
             if (mostFrequent.Count < 3)
             {
                 int Length = (3 - mostFrequent.Count);
@@ -256,12 +234,7 @@ namespace RMAInforme
             else
             {
                 Top3C = ListaMismo.Where(w => w.CategoriaItem == s6).Count();
-            }
-
-            RestoChart3 = TotalMismo - (Top3A + Top3B + Top3C);
-
-            Chart3Label.Text = "CATEGORIAS DE '" + KeywordBusqueda + "' CON MAS REGISTROS (SOBRE EL TOTAL DE REGISTROS DE '" + KeywordBusqueda + "')";
-            TitleFourthValueChart3 = "RESTO DE CATEGORIAS";
+            };
         }
 
         private void CargarChart1()
