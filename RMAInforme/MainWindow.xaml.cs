@@ -32,6 +32,15 @@ namespace RMAInforme
         private string sectorSeleccionado;
         private string keyword;
 
+        //IQueryable<Cambio> TList;
+        //IQueryable<Cambio> TList2;
+        //private bool FirstRun = true;
+        //string Keyword;
+        //string Table;
+        //DateTime? InitialDate;
+        //DateTime? EndDate;
+        //List<string> distintos;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -167,11 +176,8 @@ namespace RMAInforme
         {
             if (ComprobarOpciones())
             {
-                using (new WaitCursor())
-                {
-                    ListaResultadoBusqueda = context.Cambio.Select(s => s);
-                    dgListaCambios.ItemsSource = ListaResultadoBusqueda.ToList();
-                }
+                ListaResultadoBusqueda = context.Cambio.Select(s => s);
+                dgListaCambios.ItemsSource = ListaResultadoBusqueda.ToList();
             }
 
             IQueryable<Cambio> ResultadoBusqueda = null;
@@ -270,27 +276,12 @@ namespace RMAInforme
             periodoFinalSeleccionado = dpFinal.SelectedDate.ToString();
         }
 
-        public class WaitCursor : IDisposable
-        {
-            private Cursor _previousCursor;
-
-            public WaitCursor()
-            {
-                _previousCursor = Mouse.OverrideCursor;
-
-                Mouse.OverrideCursor = Cursors.Wait;
-            }
-
-            #region IDisposable Members
-
-            public void Dispose()
-            {
-                Mouse.OverrideCursor = _previousCursor;
-            }
-        }
 
 
-        #endregion
+
+
+
+
 
 
 
