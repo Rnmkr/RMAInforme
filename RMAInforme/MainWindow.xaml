@@ -50,7 +50,7 @@
                     </Button>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <DataGrid Name="dgListaCambios" AutoGenerateColumns="False" EnableColumnVirtualization="True" EnableRowVirtualization="True">
+                    <DataGrid Name="dgListaCambios">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Nro. Cambio" Binding="{Binding IdCambio}"/>
                             <DataGridTextColumn Header="Legajo" Binding="{Binding Legajo}"/>
