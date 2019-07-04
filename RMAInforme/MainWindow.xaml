@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Informe RMA" Width="1366" MinHeight="240" MinWidth="1190" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        Title="REGISTROS RMA" Width="900" Height="450" MinHeight="450" MinWidth="900" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
         <materialDesign:DialogHost CloseOnClickAway="True" Identifier="DialogHostGrid">
             <Grid>
@@ -14,12 +14,23 @@
                     <RowDefinition Height="75"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0" Background="WhiteSmoke">
-                        <TextBox Name="tbKeyword" materialDesign:HintAssist.Hint="BUSCAR..." Style="{StaticResource MaterialDesignTextBox}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="171" Margin="10,10,0,0" HorizontalContentAlignment="Center" Height="24" VerticalContentAlignment="Center"/>
-                        <Button Name="SearchButton" Command="{Binding SearchCommand}"  CommandParameter="{Binding ElementName=tbKeyword, Path=Text}" Height="24" Width="24" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="186,8,0,0">
+                <Grid Grid.Row="0" Background="#FFE6E6E6">
+                    <!--<TextBox Name="tbKeyword" materialDesign:HintAssist.Hint="BUSCAR..." Style="{StaticResource MaterialDesignTextBox}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="171" Margin="10,10,0,0" HorizontalContentAlignment="Center" Height="24" VerticalContentAlignment="Center"/>
+                    <Button Name="SearchButton" Style="{StaticResource MaterialDesignTextBox}" Command="{Binding SearchCommand}"  CommandParameter="{Binding ElementName=tbKeyword, Path=Text}" Height="24" Width="24" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="186,8,0,0">
                             <materialDesign:PackIcon Kind="Magnify" Opacity="1" Width="16" Height="16" />
+                        </Button>-->
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Background="WhiteSmoke" Width="200">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Margin="5,0,0,0" KeyDown="Search_OnKeyDown" materialDesign:HintAssist.Hint="Buscar" x:Name="SearchBox" materialDesign:TextFieldAssist.DecorationVisibility="Hidden" BorderThickness="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="164" />
+                        <Button Grid.Column="1" Style="{DynamicResource MaterialDesignToolButton}" Command="{Binding SearchCommand}" x:Name="SearchButton" CommandParameter="{Binding ElementName=SearchBox, Path=Text}" Height="24" Width="24" HorizontalAlignment="Right">
+                            <materialDesign:PackIcon Kind="Magnify" Opacity=".56" />
                         </Button>
-                    <ComboBox Name="cbColumna" materialDesign:HintAssist.Hint="COLUMNA" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="10,37,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+                    </Grid>
+
+                    <ComboBox Name="cbCampo" materialDesign:HintAssist.Hint="CAMPO" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="10,37,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
                     <ComboBox Name="cbPresicion" materialDesign:HintAssist.Hint="PRESICION" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="220,5,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                     <ComboBox Name="cbOrigenDatos" materialDesign:HintAssist.Hint="ORIGEN DE DATOS" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="220,37,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                     <ComboBox Name="cbPeriodo" materialDesign:HintAssist.Hint="PERIODO" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="370,5,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
@@ -38,13 +49,13 @@
                     </Button>
                 </Grid>
                 <Grid Grid.Row="1">
-                        <DataGrid Name="dgListaCambios"/>
-                        <StatusBar Background="WhiteSmoke" VerticalAlignment="Bottom" Height="26"/>
+                    <DataGrid Name="dgListaCambios"/>
+                    <StatusBar Background="#FFE6E6E6" VerticalAlignment="Bottom" Height="26"/>
                 </Grid>
-                
-                
-                
-                
+
+
+
+
                 <!--<StackPanel Background="WhiteSmoke"  Height="66" VerticalAlignment="Top"/>
                 <DataGrid x:Name="DataGrid" Margin="0,71,0,36" IsReadOnly="True" FontFamily="Consolas" FontSize="14" SelectionChanged="DataGrid_SelectionChanged"/>
                 <Button x:Name="ButtonSearch" VerticalAlignment="Top" Margin="595,10,0,0" Click="ButtonSearch_Click" Height="54" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="54">
