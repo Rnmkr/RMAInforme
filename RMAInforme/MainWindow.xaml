@@ -39,7 +39,7 @@
                 </Grid>
                 <Grid Grid.Row="1">
                         <DataGrid Name="dgListaCambios"/>
-                        <StatusBar Background="Red" VerticalAlignment="Bottom" Height="26"/>
+                        <StatusBar Background="WhiteSmoke" VerticalAlignment="Bottom" Height="26"/>
                 </Grid>
                 
                 
