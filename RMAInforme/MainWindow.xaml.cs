@@ -81,7 +81,8 @@ namespace RMAInforme
             {
                 var MessageDialog = new MessageDialog
                 {
-                    Message = { Text = "Seleccione un campo para la búsqueda." }
+                    Titulo = { Text = "Oops!" },
+                    Mensaje = { Text = "Seleccione un campo para la búsqueda." }
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
@@ -91,7 +92,8 @@ namespace RMAInforme
             {
                 var MessageDialog = new MessageDialog
                 {
-                    Message = { Text = "Seleccione la presición para la búsqueda." }
+                    Titulo = { Text = "Oops!" },
+                    Mensaje = { Text = "Seleccione la presición para la búsqueda." }
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
@@ -101,7 +103,8 @@ namespace RMAInforme
             {
                 var MessageDialog = new MessageDialog
                 {
-                    Message = { Text = "Seleccione origen de datos para la búsqueda." }
+                    Titulo = { Text = "Oops!" },
+                    Mensaje = { Text = "Seleccione origen de datos para la búsqueda." }
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
@@ -111,7 +114,8 @@ namespace RMAInforme
             {
                 var MessageDialog = new MessageDialog
                 {
-                    Message = { Text = "Seleccione periodo para la búsqueda." }
+                    Titulo = { Text = "Oops!" },
+                    Mensaje = { Text = "Seleccione periodo para la búsqueda." }
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
@@ -121,7 +125,8 @@ namespace RMAInforme
             {
                 var MessageDialog = new MessageDialog
                 {
-                    Message = { Text = "Seleccione periodo para la búsqueda." }
+                    Titulo = { Text = "Oops!" },
+                    Mensaje = { Text = "Seleccione periodo para la búsqueda." }
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
@@ -131,7 +136,8 @@ namespace RMAInforme
             {
                 var MessageDialog = new MessageDialog
                 {
-                    Message = { Text = "La fecha inicial no puede ser mayor a la final." }
+                    Titulo = { Text = "Oops!" },
+                    Mensaje = { Text = "La fecha inicial no puede ser mayor a la final." }
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
@@ -142,7 +148,8 @@ namespace RMAInforme
             {
                 var MessageDialog = new MessageDialog
                 {
-                    Message = { Text = "Seleccione un sector para la búsqueda." }
+                    Titulo = { Text = "Oops!" },
+                    Mensaje = { Text = "Seleccione un sector para la búsqueda." }
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
@@ -154,7 +161,8 @@ namespace RMAInforme
             {
                 var MessageDialog = new MessageDialog
                 {
-                    Message = { Text = "Ingrese un valor o 'keyword' para la búsqueda." }
+                    Titulo = { Text = "Oops!" },
+                    Mensaje = { Text = "Ingrese un valor o 'keyword' para la búsqueda." }
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
@@ -169,8 +177,14 @@ namespace RMAInforme
             {
                 using (new WaitCursor())
                 {
-                    ListaResultadoBusqueda = context.Cambio.Select(s => s);
-                    dgListaCambios.ItemsSource = ListaResultadoBusqueda.ToList();
+                    if (PingServer("DESKTOP"))
+                    {
+                        ListaResultadoBusqueda = context.Cambio.Select(s => s);
+                        int TotalResultadosBusqueda = ListaResultadoBusqueda.Count();
+                        dgListaCambios.ItemsSource = ListaResultadoBusqueda.ToList();
+                        sbText.Text = TotalResultadosBusqueda + " registros encontrados.";
+
+                    }
                 }
             }
 
@@ -281,17 +295,38 @@ namespace RMAInforme
                 Mouse.OverrideCursor = Cursors.Wait;
             }
 
-            #region IDisposable Members
-
             public void Dispose()
             {
                 Mouse.OverrideCursor = _previousCursor;
             }
         }
 
+        public  bool PingServer(string ServerHostName)
+        {
+            try
+            {
+                IPAddress[] ip = Dns.GetHostAddresses(ServerHostName);
+                Ping pingSender = new Ping();
+                PingReply reply = pingSender.Send(ip[0]);
 
-        #endregion
+                if (reply.Status == IPStatus.Success)
+                {
+                    return true;
+                }
 
+                return false;
+            }
+            catch (System.Net.Sockets.SocketException)
+            {
+                var MessageDialog = new MessageDialog
+                {
+                    Titulo = { Text = "Oops!" },
+                    Mensaje = { Text = "No se pudo contactar al servidor." }
+                };
+                DialogHost.Show(MessageDialog, "mainDialogHost");
+                return false;
+            }
+        }
 
 
 
@@ -311,7 +346,7 @@ namespace RMAInforme
         //        {
         //            var MessageDialog = new MessageDialog
         //            {
-        //                Message = { Text = "No se encontró el servidor." + Environment.NewLine + "Revise la conexión con la Base de Datos y reintente." }
+        //                Mensaje = { Text = "No se encontró el servidor." + Environment.NewLine + "Revise la conexión con la Base de Datos y reintente." }
         //            };
         //            DialogHost.Show(MessageDialog, "openup");
         //            return;
@@ -321,7 +356,7 @@ namespace RMAInforme
         //        {
         //            var MessageDialog = new MessageDialog
         //            {
-        //                Message = { Text = "Realice una búsqueda en la Base de Datos primero!" }
+        //                Mensaje = { Text = "Realice una búsqueda en la Base de Datos primero!" }
         //            };
         //            DialogHost.Show(MessageDialog, "openup");
 
@@ -333,7 +368,7 @@ namespace RMAInforme
         //        {
         //            var MessageDialog = new MessageDialog
         //            {
-        //                Message = { Text = "Ingrese Fecha de Inicio" }
+        //                Mensaje = { Text = "Ingrese Fecha de Inicio" }
         //            };
         //            DialogHost.Show(MessageDialog, "openup");
         //            return;
@@ -343,7 +378,7 @@ namespace RMAInforme
         //        {
         //            var MessageDialog = new MessageDialog
         //            {
-        //                Message = { Text = "Ingrese Fecha Final" }
+        //                Mensaje = { Text = "Ingrese Fecha Final" }
         //            };
         //            DialogHost.Show(MessageDialog, "openup");
         //            return;
@@ -353,7 +388,7 @@ namespace RMAInforme
         //        {
         //            var MessageDialog = new MessageDialog
         //            {
-        //                Message = { Text = "La fecha de inicio no puede ser mayor a la final!" }
+        //                Mensaje = { Text = "La fecha de inicio no puede ser mayor a la final!" }
         //            };
         //            DialogHost.Show(MessageDialog, "openup");
         //            return;
@@ -411,7 +446,7 @@ namespace RMAInforme
 
         //                var MessageDialog = new MessageDialog
         //                {
-        //                    Message = { Text = "La búsqueda no obtuvo resultados!" + Environment.NewLine + Environment.NewLine + "Sugerencia: intente desmarcando la opción de 'Búsqueda Exacta' o ampliando el rango de fechas." }
+        //                    Mensaje = { Text = "La búsqueda no obtuvo resultados!" + Environment.NewLine + Environment.NewLine + "Sugerencia: intente desmarcando la opción de 'Búsqueda Exacta' o ampliando el rango de fechas." }
         //                };
         //                DialogHost.Show(MessageDialog, "openup");
         //                return;
@@ -642,7 +677,7 @@ namespace RMAInforme
         //            {
         //                var MessageDialog1 = new MessageDialog
         //                {
-        //                    Message = { Text = "Ingrese un número como parametro de búsqueda" }
+        //                    Mensaje = { Text = "Ingrese un número como parametro de búsqueda" }
         //                };
         //                DialogHost.Show(MessageDialog1, "openup");
         //                return;
@@ -655,7 +690,7 @@ namespace RMAInforme
         //        default:
         //            var MessageDialog = new MessageDialog
         //            {
-        //                Message = { Text = "Error: Los parametros de la búsqueda son erróneos, avise al administrador" }
+        //                Mensaje = { Text = "Error: Los parametros de la búsqueda son erróneos, avise al administrador" }
         //            };
         //            DialogHost.Show(MessageDialog, "openup");
         //            break;
@@ -864,7 +899,7 @@ namespace RMAInforme
         //                {
         //                    var MessageDialog1 = new MessageDialog
         //                    {
-        //                        Message = { Text = "Ingrese un número como parametro de búsqueda" }
+        //                        Mensaje = { Text = "Ingrese un número como parametro de búsqueda" }
         //                    };
         //                    DialogHost.Show(MessageDialog1, "openup");
         //                    return;
@@ -876,7 +911,7 @@ namespace RMAInforme
         //            default:
         //                var MessageDialog = new MessageDialog
         //                {
-        //                    Message = { Text = "Error: Los parametros de la búsqueda son erróneos, avise al administrador" }
+        //                    Mensaje = { Text = "Error: Los parametros de la búsqueda son erróneos, avise al administrador" }
         //                };
         //                DialogHost.Show(MessageDialog, "openup");
         //                break;
@@ -1049,7 +1084,7 @@ namespace RMAInforme
         //            ExportDataSet(filename);
         //            var MessageDialog = new MessageDialog
         //            {
-        //                Message = { Text = "El archivo se guardó en: " + Environment.NewLine + filename }
+        //                Mensaje = { Text = "El archivo se guardó en: " + Environment.NewLine + filename }
         //            };
         //            DialogHost.Show(MessageDialog, "openup");
         //        }
@@ -1057,7 +1092,7 @@ namespace RMAInforme
         //        {
         //            var MessageDialog = new MessageDialog
         //            {
-        //                Message = { Text = "Error guardando el archivo: " + Environment.NewLine + filename }
+        //                Mensaje = { Text = "Error guardando el archivo: " + Environment.NewLine + filename }
         //            };
         //            DialogHost.Show(MessageDialog, "openup");
         //        }
@@ -1155,7 +1190,7 @@ namespace RMAInforme
         //    {
         //        var MessageDialog = new MessageDialog
         //        {
-        //            Message = { Text = "Realice una búsqueda en la Base de Datos primero!" }
+        //            Mensaje = { Text = "Realice una búsqueda en la Base de Datos primero!" }
         //        };
         //        DialogHost.Show(MessageDialog, "openup");
         //        return;
@@ -1185,7 +1220,7 @@ namespace RMAInforme
         //    {
         //        var MessageDialog = new MessageDialog
         //        {
-        //            Message = { Text = "Seleccione el Item que desea cambiar!" }
+        //            Mensaje = { Text = "Seleccione el Item que desea cambiar!" }
         //        };
         //        await DialogHost.Show(MessageDialog, "openup");
         //        return;
@@ -1271,7 +1306,7 @@ namespace RMAInforme
         //    {
         //        var MessageDialog = new MessageDialog
         //        {
-        //            Message = { Text = "Realice una búsqueda en la Base de Datos primero!" }
+        //            Mensaje = { Text = "Realice una búsqueda en la Base de Datos primero!" }
         //        };
         //        DialogHost.Show(MessageDialog, "openup");
         //        RadioGlobal.IsChecked = true;
@@ -1294,7 +1329,7 @@ namespace RMAInforme
         //            }
         //            var MessageDialog = new MessageDialog
         //            {
-        //                Message = { Text = "Hay mas de un resultado para: " + Table + Environment.NewLine + Environment.NewLine + "Por favor, filtre la lista haciendo una búsqueda exacta de uno de los siguientes:" + Environment.NewLine + Environment.NewLine + dist }
+        //                Mensaje = { Text = "Hay mas de un resultado para: " + Table + Environment.NewLine + Environment.NewLine + "Por favor, filtre la lista haciendo una búsqueda exacta de uno de los siguientes:" + Environment.NewLine + Environment.NewLine + dist }
         //            };
         //            DialogHost.Show(MessageDialog, "openup");
         //        }

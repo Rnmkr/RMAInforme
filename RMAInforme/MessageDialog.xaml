@@ -5,16 +5,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
-             MaxWidth="400">
-    <Grid Margin="16">
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <TextBlock x:Name="Message" Margin="0 6 0 0" Grid.Row="0" TextWrapping="Wrap" FontSize="16"/>
-        <Button Grid.Row="1" IsDefault="True" Style="{DynamicResource MaterialDesignFlatButton}" HorizontalAlignment="Right" Margin="16 16 16 0" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
-            ACEPTAR
-        </Button>
+             d:DesignHeight="160" d:DesignWidth="320">
+    <Grid>
+
+        <StackPanel Margin="16">
+            
+            <TextBlock Name="Titulo" FontWeight="Bold" FontSize="10"/>
+            
+            <TextBlock Name="Mensaje" Margin="0 16 0 0" HorizontalAlignment="Stretch"  />
+            
+                <Button Style="{StaticResource MaterialDesignFlatButton}" IsDefault="True" Margin="0 16 0 0" Command="materialDesign:DialogHost.CloseDialogCommand" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                    ACEPTAR
+                </Button>
+            
+        </StackPanel>
+        
     </Grid>
+    
 </UserControl>
