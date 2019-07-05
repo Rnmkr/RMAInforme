@@ -22,13 +22,12 @@ namespace RMAInforme
     /// </summary>
     public partial class MainWindow : Window
     {
-        private PRDB context = new PRDB();
         private IQueryable<Cambio> ListaResultadoBusqueda;
         private string campoSeleccionado;
-        private bool? buscarValorExacto;
-        private bool? origenEsBaseDatos;
-        private string periodoInicialSeleccionado;
-        private string periodoFinalSeleccionado;
+        private string buscarValorExacto;
+        private string origenDatos;
+        private DateTime? periodoInicialSeleccionado;
+        private DateTime? periodoFinalSeleccionado;
         private string sectorSeleccionado;
         private string keyword;
 
@@ -64,20 +63,20 @@ namespace RMAInforme
 
         private void BtnBuscar_Click(object sender, RoutedEventArgs e)
         {
-            Buscar();
+            IniciarBusqueda();
         }
 
         private void TbSearchBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                Buscar();
+                IniciarBusqueda();
             }
         }
 
         private bool ComprobarOpciones()
         {
-            if (string.IsNullOrWhiteSpace(campoSeleccionado))
+            if (cbCampo.SelectedValue == null)
             {
                 var MessageDialog = new MessageDialog
                 {
@@ -88,7 +87,7 @@ namespace RMAInforme
                 return false;
             }
 
-            if (buscarValorExacto == null)
+            if (cbPresicion.SelectedValue == null)
             {
                 var MessageDialog = new MessageDialog
                 {
@@ -99,7 +98,7 @@ namespace RMAInforme
                 return false;
             }
 
-            if (origenEsBaseDatos == null)
+            if (cbOrigenDatos.SelectedValue == null)
             {
                 var MessageDialog = new MessageDialog
                 {
@@ -110,7 +109,7 @@ namespace RMAInforme
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(periodoInicialSeleccionado))
+            if (dpInicial.SelectedDate == null)
             {
                 var MessageDialog = new MessageDialog
                 {
@@ -121,7 +120,7 @@ namespace RMAInforme
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(periodoFinalSeleccionado))
+            if (dpFinal.SelectedDate == null)
             {
                 var MessageDialog = new MessageDialog
                 {
@@ -144,7 +143,7 @@ namespace RMAInforme
             }
 
 
-            if (string.IsNullOrWhiteSpace(sectorSeleccionado))
+            if (cbSector.SelectedValue == null)
             {
                 var MessageDialog = new MessageDialog
                 {
@@ -171,61 +170,57 @@ namespace RMAInforme
             return true;
         }
 
-        private IQueryable<Cambio> Buscar()
+        private void IniciarBusqueda()
         {
             if (ComprobarOpciones())
             {
                 using (new WaitCursor())
                 {
-                    if (PingServer("DESKTOP"))
+                    if (PingServer("LT-DAN"))
                     {
-                        ListaResultadoBusqueda = context.Cambio.Select(s => s);
+                        keyword = tbSearchBox.Text;
+                        campoSeleccionado = cbCampo.SelectedValue.ToString();
+                        periodoInicialSeleccionado = dpInicial.SelectedDate;
+                        periodoFinalSeleccionado = dpFinal.SelectedDate;
+                        sectorSeleccionado = cbSector.SelectedValue.ToString();
+                        buscarValorExacto = cbPresicion.SelectedValue.ToString();
+                        origenDatos = cbOrigenDatos.SelectedValue.ToString();
+
+                        if (origenDatos == "BASE DE DATOS")
+                        {
+                            BuscarEnBaseDeDatos();
+                        }
+                        else
+                        {
+                            BuscarEnListaLocal();
+                        }
+
                         int TotalResultadosBusqueda = ListaResultadoBusqueda.Count();
                         dgListaCambios.ItemsSource = ListaResultadoBusqueda.ToList();
-                        sbText.Text = TotalResultadosBusqueda + " registros encontrados.";
+
+                        if (TotalResultadosBusqueda == 1)
+                        {
+                            sbText.Text = TotalResultadosBusqueda + " registro encontrado.";
+                        }
+                        else
+                        {
+                            sbText.Text = TotalResultadosBusqueda + " registros encontrados.";
+                        }
 
                     }
                 }
             }
-
-            IQueryable<Cambio> ResultadoBusqueda = null;
-
-            return ResultadoBusqueda;
         }
 
-        private void CbCampo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void BuscarEnListaLocal()
         {
-            campoSeleccionado = cbCampo.SelectedValue.ToString();
+            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.IdCambio == 12).Select(s => s);
         }
 
-        private void CbPresicion_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void BuscarEnBaseDeDatos()
         {
-            var valorSeleccionado = cbPresicion.SelectedValue.ToString();
-            switch (valorSeleccionado)
-            {
-                case "EXACTA":
-                    buscarValorExacto = true;
-                    break;
-
-                default:
-                    buscarValorExacto = false;
-                    break;
-            }
-        }
-
-        private void CbOrigenDatos_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var valorSeleccionado = cbOrigenDatos.SelectedValue.ToString();
-            switch (valorSeleccionado)
-            {
-                case "BASE DE DATOS":
-                    origenEsBaseDatos = true;
-                    break;
-
-                default:
-                    origenEsBaseDatos = false;
-                    break;
-            }
+            PRDB context = new PRDB();
+            ListaResultadoBusqueda = context.Cambio.Select(s => s);
         }
 
         private void CbPeriodo_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -269,21 +264,6 @@ namespace RMAInforme
             }
         }
 
-        private void CbSector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            sectorSeleccionado = cbSector.SelectedValue.ToString();
-        }
-
-        private void DpInicial_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            periodoInicialSeleccionado = dpInicial.SelectedDate.ToString();
-        }
-
-        private void DpFinal_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            periodoFinalSeleccionado = dpFinal.SelectedDate.ToString();
-        }
-
         public class WaitCursor : IDisposable
         {
             private Cursor _previousCursor;
@@ -314,21 +294,44 @@ namespace RMAInforme
                     return true;
                 }
 
-                return false;
-            }
-            catch (System.Net.Sockets.SocketException)
-            {
                 var MessageDialog = new MessageDialog
                 {
                     Titulo = { Text = "Oops!" },
-                    Mensaje = { Text = "No se pudo contactar al servidor." }
+                    Mensaje = { Text = "No se pudo contactar al servidor 1." }
+                };
+                DialogHost.Show(MessageDialog, "mainDialogHost");
+                return false;
+            }
+            catch (Exception)
+            {
+                //System.Net.Sockets.SocketException
+                var MessageDialog = new MessageDialog
+                {
+                    Titulo = { Text = "Oops!" },
+                    Mensaje = { Text = "No se pudo contactar al servidor 2." }
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
             }
         }
 
+        private void CbOrigenDatos_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbOrigenDatos.SelectedValue.ToString() == "LISTA ACTUAL")
+            {
+                if (ListaResultadoBusqueda == null)
+                {
+                    var MessageDialog = new MessageDialog
+                    {
+                        Titulo = { Text = "Oops!" },
+                        Mensaje = { Text = "Realice primero una búsqueda en la base de datos." }
+                    };
+                    DialogHost.Show(MessageDialog, "mainDialogHost");
 
+                    cbOrigenDatos.SelectedValue = null;
+                }
+            }
+        }
 
 
 
