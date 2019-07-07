@@ -129,7 +129,6 @@
     <Compile Include="StatsWindow.xaml.cs">
       <DependentUpon>StatsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SubStringExtensions.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="REGISTROS RMA" Width="900" Height="450" MinHeight="450" MinWidth="900" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        Title="REGISTROS RMA" Width="1000" Height="480" MinHeight="480" MinWidth="480" WindowStartupLocation="CenterScreen" WindowState="Maximized">
 
     <Grid>
 
@@ -22,44 +22,41 @@
 
                 <Grid Grid.Row="0" Background="#FFE6E6E6">
 
-                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,18,0,0" Background="WhiteSmoke" Width="200">
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,7,0,0" Width="160">
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="tbSearchBox" Grid.Column="0" ToolTip="Colocar un asterisco ( * ) para buscar todos los resultados." KeyDown="TbSearchBox_KeyDown" materialDesign:HintAssist.Hint="KEYWORD" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontWeight="Bold" />
 
-                        <TextBox Name="tbSearchBox" Grid.Column="0" Margin="5,0,0,0" KeyDown="TbSearchBox_KeyDown" materialDesign:HintAssist.Hint="KEYWORD" materialDesign:TextFieldAssist.DecorationVisibility="Hidden" BorderThickness="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="164" />
-
-                        <Button Name="btnBuscar" Grid.Column="1" IsDefault="True" Click="BtnBuscar_Click" Style="{DynamicResource MaterialDesignToolButton}" Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=SearchBox, Path=Text}" Height="24" Width="24" HorizontalAlignment="Right">
+                        <Button x:Name="btnBuscar" IsDefault="True" Click="BtnBuscar_Click" Style="{DynamicResource MaterialDesignToolButton}" Command="{Binding SearchCommand}" CommandParameter="{Binding Text, ElementName=SearchBox}" Height="24" Width="24" HorizontalAlignment="Right" VerticalAlignment="Center">
                             <materialDesign:PackIcon Kind="Magnify" Opacity=".56" />
                         </Button>
 
                     </Grid>
 
-                    <ComboBox Name="cbCampo" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="CAMPO" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Padding="0,6" Width="200" />
+                    <ComboBox Name="cbCampo" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="CAMPO" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Padding="0,6" Width="160" />
 
-                    <ComboBox Name="cbPresicion" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="PRESICION" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="220,2,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
+                    <ComboBox Name="cbPresicion" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="PRESICION" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="180,5,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
 
-                    <ComboBox Name="cbOrigenDatos" Style="{StaticResource MaterialDesignFloatingHintComboBox}" SelectionChanged="CbOrigenDatos_SelectionChanged" materialDesign:HintAssist.Hint="ORIGEN DE DATOS" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="140" Margin="220,0,0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
+                    <ComboBox Name="cbOrigenDatos" Style="{StaticResource MaterialDesignFloatingHintComboBox}" SelectionChanged="CbOrigenDatos_SelectionChanged" materialDesign:HintAssist.Hint="ORIGEN DE DATOS" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="140" Margin="180,0,0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
 
-                    <ComboBox Name="cbPeriodo" Style="{StaticResource MaterialDesignFloatingHintComboBox}" SelectionChanged="CbPeriodo_SelectionChanged" materialDesign:HintAssist.Hint="PERIODO" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="370,2,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
+                    <ComboBox Name="cbPeriodo" Style="{StaticResource MaterialDesignFloatingHintComboBox}" SelectionChanged="CbPeriodo_SelectionChanged" materialDesign:HintAssist.Hint="PERIODO" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="630,5,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
 
-                    <ComboBox Name="cbSector" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="SECTOR" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="140" Margin="370,0,0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
+                    <ComboBox Name="cbEstado" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="ESTADO" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="140" Margin="330,0,0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
 
-                    <DatePicker Name="dpInicial" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" IsEnabled="False" materialDesign:HintAssist.Hint="INICIAL"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="520,2,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Height="40"/>
+                    <ComboBox Name="cbSector" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="SECTOR" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="330,5,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
 
-                    <DatePicker Name="dpFinal" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" IsEnabled="False" materialDesign:HintAssist.Hint="FINAL"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="140" Margin="520,0,0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Height="40"/>
+                    <DatePicker Name="dpInicial" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" IsEnabled="False" materialDesign:HintAssist.Hint="INICIAL"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="480,5,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Height="40"/>
 
-                    <Button Name="btnCancelarCambio" IsEnabled="False" Width="64" Height="64" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,149,0" >
+                    <DatePicker Name="dpFinal" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" IsEnabled="False" materialDesign:HintAssist.Hint="FINAL"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="140" Margin="480,0,0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Height="40"/>
+
+                    <Button Name="btnCancelarCambio" Width="64" Height="64" HorizontalAlignment="Right" Click="BtnCancelarCambio_Click" VerticalAlignment="Center" Margin="0,0,149,0" >
                         <materialDesign:PackIcon Kind="Cancel" Opacity="1" Width="32" Height="32" />
                     </Button>
 
-                    <Button Name="btnEstadisticas" IsEnabled="False" Width="64" Height="64" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,79,0" >
+                    <Button Name="btnEstadisticas" Width="64" Height="64" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,79,0" Click="BtnEstadisticas_Click" >
                         <materialDesign:PackIcon Kind="ChartPie" Opacity="1" Width="32" Height="32" />
                     </Button>
 
-                    <Button Name="btnExportarPlanilla" IsEnabled="False" Width="64" Height="64" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" >
+                    <Button Name="btnExportarPlanilla" Width="64" Height="64" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Click="BtnExportarPlanilla_Click" >
                         <materialDesign:PackIcon Kind="FileExcel" Opacity="1" Width="32" Height="32" />
                     </Button>
 
@@ -67,7 +64,7 @@
 
                 <Grid Grid.Row="1">
 
-                    <DataGrid Name="dgListaCambios">
+                    <DataGrid Name="dgListaCambios" SelectionChanged="DgListaCambios_SelectionChanged">
 
                         <DataGrid.Columns>
 
@@ -115,7 +112,7 @@
 
                 <StatusBar Grid.Row="2" Background="WhiteSmoke" VerticalAlignment="Bottom" Height="26">
 
-                    <TextBlock Name="sbText" Style="{StaticResource MaterialDesignBody2TextBlock}" Text="Configure las opciones y realice una búsqueda." />
+                    <TextBlock Name="tbStatusBarText" Style="{StaticResource MaterialDesignBody2TextBlock}" Text="Configure las opciones y realice una búsqueda." />
 
                 </StatusBar>
 

@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using RMAInforme.DataAccessLayer;
+using System;
+using System.Linq;
 using System.Windows.Controls;
 
 namespace RMAInforme
@@ -8,35 +10,44 @@ namespace RMAInforme
     /// </summary>
     public partial class PasswordWindow : UserControl
     {
-        public PasswordWindow()
+        private Cambio cambioSeleccionado;
+        private string estadoCambioSeleccionado;
+        public PasswordWindow(Cambio _cambioSeleccionado)
         {
             InitializeComponent();
-            Pass.Focus();
+            pbPassword.Focus();
+            cambioSeleccionado = _cambioSeleccionado;
+            estadoCambioSeleccionado = _cambioSeleccionado.EstadoCambio;
         }
 
-        public string ResponseText
+        private void BtnAceptar_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            get { return ObsText.Text; }
-            set { ObsText.Text = value; }
-        }
-
-        private void OKButton_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            if (Pass.Password == "3X0")
+            if (pbPassword.Password == "EXO1010_")
             {
-                OKButton.CommandParameter = true;
-                return;
+                CambiarEstado();
+                btnAceptar.CommandParameter = true;
             }
             else
             {
-                MessageBox.Show("Contraseña Incorrecta!");
                 return;
             }
+
         }
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        private void CambiarEstado()
         {
-            return;
+            PRDB context = new PRDB();
+            Cambio cambioModificado = context.Cambio.Where(w => w.ID == cambioSeleccionado.ID).Single();
+            if (estadoCambioSeleccionado == "CANCELADO")
+            {
+                cambioModificado.EstadoCambio = "APROBADO";
+            }
+            else
+            {
+                cambioModificado.EstadoCambio = "CANCELADO";
+            }
+
+            context.SaveChanges();
         }
     }
 }

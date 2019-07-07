@@ -14,7 +14,7 @@
         <!--<Setter Property="ColumnWidth" Value="*"/>-->
         <Setter Property="EnableColumnVirtualization" Value="True"/>
         <Setter Property="EnableRowVirtualization" Value="True"/>
-        <!--<Setter Property="FontFamily" Value="Consolas"/>-->
+        <Setter Property="FontFamily" Value="Consolas"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="IsReadOnly" Value="True"/>
         <!--<Setter Property="Margin" Value="0"/>-->

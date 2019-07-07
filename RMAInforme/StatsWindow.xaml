@@ -6,7 +6,7 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Width="1200"
+        Width="1000"
         Height="500" >
 
     <Grid>
@@ -16,6 +16,11 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="72"/>
+            </Grid.RowDefinitions>
 
             <GroupBox Header="Relación de la búsqueda en el período" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
                 <Grid Grid.Column="0" Grid.Row="1" Background="Transparent">

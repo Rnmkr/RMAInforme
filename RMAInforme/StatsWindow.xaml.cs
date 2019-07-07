@@ -113,7 +113,7 @@ namespace RMAInforme
 
             FillMostFrequent(_mostFrequent);
 
-            Chart3Label.Text = "MODELOS CON MAS REGISTROS DE '" + KeywordBusqueda + "' (SOBRE EL TOTAL DE REGISTROS DE '" + KeywordBusqueda + "')";
+            Chart3Label.Text = "MODELOS CON MAS REGISTROS DE '" + KeywordBusqueda + "'" + Environment.NewLine + "DESDE INICIO DE BASE DE DATOS (06/03/2018)";
             TitleFourthValueChart3 = "RESTO DE MODELOS";
         }
 
@@ -131,7 +131,7 @@ namespace RMAInforme
 
             FillMostFrequent(_mostFrequent);
 
-            Chart3Label.Text = "FALLAS DE '" + KeywordBusqueda + "' CON MAS REGISTROS (SOBRE EL TOTAL DE REGISTROS DE '" + KeywordBusqueda + "')";
+            Chart3Label.Text = "FALLAS DE '" + KeywordBusqueda + "' CON MAS REGISTROS" + Environment.NewLine + "DESDE INICIO DE BASE DE DATOS (06/03/2018)";
             TitleFourthValueChart3 = "RESTO DE FALLAS";
         }
 
@@ -149,7 +149,7 @@ namespace RMAInforme
 
             FillMostFrequent(_mostFrequent);
 
-            Chart3Label.Text = "MODELOS DE '" + KeywordBusqueda + "' CON MAS REGISTROS (SOBRE EL TOTAL DE REGISTROS DE '" + KeywordBusqueda + "')";
+            Chart3Label.Text = "MODELOS DE '" + KeywordBusqueda + "' CON MAS REGISTROS" + Environment.NewLine + "DESDE INICIO DE BASE DE DATOS (06/03/2018)";
             TitleFourthValueChart3 = "RESTO DE MODELOS";
         }
 
@@ -167,7 +167,7 @@ namespace RMAInforme
 
             FillMostFrequent(_mostFrequent);
 
-            Chart3Label.Text = "MODELOS DE '" + KeywordBusqueda + "' CON MAS REGISTROS (SOBRE EL TOTAL DE REGISTROS DE '" + KeywordBusqueda + "')";
+            Chart3Label.Text = "MODELOS DE '" + KeywordBusqueda + "' CON MAS REGISTROS" + Environment.NewLine + "DESDE INICIO DE BASE DE DATOS (06/03/2018)";
             TitleFourthValueChart3 = "RESTO DE MODELOS";
         }
 
@@ -188,7 +188,7 @@ namespace RMAInforme
 
             RestoChart3 = TotalMismo - (Top3A + Top3B + Top3C);
 
-            Chart3Label.Text = "COMPONENTES DE '" + KeywordBusqueda + "' CON MAS REGISTROS" + Environment.NewLine + "(SOBRE EL TOTAL DE REGISTROS DE '" + KeywordBusqueda + "')";
+            Chart3Label.Text = "COMPONENTES DE '" + KeywordBusqueda + "' CON MAS REGISTROS" + Environment.NewLine + "DESDE INICIO DE BASE DE DATOS (06/03/2018)";
             TitleFourthValueChart3 = "RESTO DE CATEGORIAS";
         }
 
@@ -269,7 +269,7 @@ namespace RMAInforme
 
             };
 
-            Chart1Label.Text = TotalTodosEnFechaBusqueda + " REGISTROS ENTRE " + FechaInicioBusqueda[0] + " Y " + FechaFinalBusqueda[0];
+            Chart1Label.Text = TotalTodosEnFechaBusqueda + " REGISTROS DE TODOS LOS PRODUCTOS"  + Environment.NewLine + "ENTRE " + FechaInicioBusqueda[0] + " Y " + FechaFinalBusqueda[0];
             PieChart1.Series = Piechart1;
         }
 
@@ -303,7 +303,7 @@ namespace RMAInforme
                 }
             };
 
-            Chart2Label.Text = TotalMismo + " REGISTROS DE '" + KeywordBusqueda + "' DESDE INICIO DE BASE DE DATOS (06/03/2018)";
+            Chart2Label.Text = TotalMismo + " REGISTROS DE '" + KeywordBusqueda + "'" + Environment.NewLine + "DESDE INICIO DE BASE DE DATOS (06/03/2018)";
             PieChart2.Series = Piechart2;
         }
 
