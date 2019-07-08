@@ -555,7 +555,7 @@ namespace RMAInforme
             }
         }
 
-        public  bool PingServer(string ServerHostName)
+        public bool PingServer(string ServerHostName)
         {
             try
             {
@@ -655,12 +655,12 @@ namespace RMAInforme
         private void ExportarLista()
         {
 
-                Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-                dlg.FileName = "Resultados de Búsqueda";
-                dlg.DefaultExt = ".xslx";
-                dlg.Filter = "Documentos Excel (.xlsx)|*.xlsx";
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = "Resultados de Búsqueda";
+            dlg.DefaultExt = ".xslx";
+            dlg.Filter = "Documentos Excel (.xlsx)|*.xlsx";
 
-                Nullable<bool> result = dlg.ShowDialog();
+            Nullable<bool> result = dlg.ShowDialog();
 
             if (result == true)
             {
@@ -753,15 +753,63 @@ namespace RMAInforme
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
             }
-            else
+
+            switch (campoSeleccionado)
             {
-                MostrarEstadisticas();
+                case "ARTICULO":
+                    CargarValoresArticulo();
+                    break;
+
+                case "CATEGORIA":
+                    CargarValoresCategoria();
+                    break;
+
+                case "MODELO":
+                    CargarValoresModelo();
+                    break;
+
+                case "PRODUCTO":
+                    CargarValoresProducto();
+                    break;
+
+                default:
+                    var MessageDialog = new MessageDialog
+                    {
+                        Titulo = { Text = "Oops!" },
+                        Mensaje = { Text = "Por el momento, la aplicación no muestra estadísticas para el campo seleccionado." + Environment.NewLine + Environment.NewLine + "Los campos habilitados son:" + Environment.NewLine + "ARTICULO, CATEGORIA, MODELO y PRODUCTO." }
+                    };
+                    DialogHost.Show(MessageDialog, "mainDialogHost");
+                    break;
             }
+        }
+
+        private void CargarValoresProducto()
+        {
+
+            MostrarEstadisticas();
+        }
+
+        private void CargarValoresModelo()
+        {
+
+            MostrarEstadisticas();
+        }
+
+        private void CargarValoresCategoria()
+        {
+
+            MostrarEstadisticas();
+        }
+
+        private void CargarValoresArticulo()
+        {
+
+            MostrarEstadisticas();
         }
 
         private void MostrarEstadisticas()
         {
-            DialogHost.Show(new StatsWindow(cantidadResultadoBusqueda, keyword, campoSeleccionado, periodoInicialSeleccionado, periodoFinalSeleccionado), "mainDialogHost");
+            //DialogHost.Show(new StatsWindow {valor1a, valor1b, valor2a, valor2b, valor3a, valor3b, valor3c, valorT, valorP, valorS }, "mainDialogHost");
         }
     }
 }
