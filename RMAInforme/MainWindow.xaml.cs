@@ -809,6 +809,7 @@ namespace RMAInforme
 
         private void MostrarEstadisticas()
         {
+            //FIJATESE
             //DialogHost.Show(new StatsWindow {valor1a, valor1b, valor2a, valor2b, valor3a, valor3b, valor3c, valorT, valorP, valorS }, "mainDialogHost");
         }
     }
