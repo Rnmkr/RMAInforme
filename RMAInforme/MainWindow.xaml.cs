@@ -28,12 +28,26 @@ namespace RMAInforme
         private DateTime? periodoFinalSeleccionado;
         private string sectorSeleccionado;
         private string keyword;
-        private string nombreServidor = "DESKTOP";
+        private string nombreServidor = "LT-DAN";
         private int keywordINT;
         private string estadoSeleccionado;
         private Cambio cambioSeleccionado;
         private int cantidadResultadoBusqueda;
-        private bool parametroReturn;
+        private object parametroCambioEstado;
+        private string ContraseñaCambio = "EXO1010_";
+        private PRDB context;
+        private int cantidadTotalItem;
+        private int cantidadTodosFechaBusqueda;
+        private int cantidadTotalTodos;
+        private int cantidadRelevante1;
+        private int cantidadRelevante2;
+        private int cantidadRelevante3;
+        private string campoChart3;
+        private string FechaInicial;
+        private string FechaFinal;
+        private string nombreRelevante1;
+        private string nombreRelevante2;
+        private string nombreRelevante3;
 
         public MainWindow()
         {
@@ -276,8 +290,9 @@ namespace RMAInforme
 
             if (origenSeleccionado == "BASE DE DATOS")
             {
-                PRDB context = new PRDB();
+                context = new PRDB();
                 ListaResultadoBusqueda = context.Cambio.Where(w => w.FechaCambio >= periodoInicialSeleccionado && w.FechaCambio <= periodoFinalSeleccionado).Select(s => s);
+                cantidadTodosFechaBusqueda = ListaResultadoBusqueda.Count();
             }
             else
             {
@@ -560,6 +575,7 @@ namespace RMAInforme
             try
             {
                 IPAddress[] ip = Dns.GetHostAddresses(ServerHostName);
+
                 Ping pingSender = new Ping();
                 PingReply reply = pingSender.Send(ip[0]);
 
@@ -607,7 +623,7 @@ namespace RMAInforme
             }
         }
 
-        private void BtnCancelarCambio_Click(object sender, RoutedEventArgs e)
+        private async void BtnCancelarCambio_ClickAsync(object sender, RoutedEventArgs e)
         {
             if (cambioSeleccionado == null)
             {
@@ -616,18 +632,52 @@ namespace RMAInforme
                     Titulo = { Text = "Oops!" },
                     Mensaje = { Text = "Seleccione un cambio primero." }
                 };
-                DialogHost.Show(MessageDialog, "mainDialogHost");
+                var x = await DialogHost.Show(MessageDialog);
                 return;
             }
             else
             {
-                DialogHost.Show(new PasswordWindow(cambioSeleccionado), "mainDialogHost", null, OnDialogCancelarCambioClosing);
+                parametroCambioEstado = await DialogHost.Show(new PasswordWindow());
             }
+            CambiarEstado(parametroCambioEstado);
         }
 
-        private void OnDialogCancelarCambioClosing(object sender, DialogClosingEventArgs eventArgs)
+        private void CambiarEstado(object result)
         {
-            parametroReturn = (bool?)eventArgs.Parameter ?? false;
+            if ((string)result == ContraseñaCambio)
+            {
+                Cambio cambioModificado = context.Cambio.Where(w => w.ID == cambioSeleccionado.ID).Single();
+
+                if (cambioSeleccionado.EstadoCambio == "APROBADO")
+                {
+                    cambioModificado.EstadoCambio = "CANCELADO";
+                }
+                else
+                {
+                    cambioModificado.EstadoCambio = "APROBADO";
+                }
+
+                cambioModificado.FechaModificacion = DateTime.Now;
+                cambioModificado.SupervisorModificacion = "Sanchez Sebastian";
+                context.SaveChanges();
+
+                var MessageDialog = new MessageDialog
+                {
+                    Titulo = { Text = "Oops!" },
+                    Mensaje = { Text = "El estado se cambió correctamente." }
+                };
+                DialogHost.Show(MessageDialog);
+                Buscar();
+            }
+            else
+            {
+                var MessageDialog = new MessageDialog
+                {
+                    Titulo = { Text = "Oops!" },
+                    Mensaje = { Text = "Contraseña incorrecta. No se realizaron cambios." }
+                };
+                DialogHost.Show(MessageDialog);
+            }
         }
 
         private void DgListaCambios_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -752,24 +802,45 @@ namespace RMAInforme
                     Mensaje = { Text = "Realice una búsqueda primero." }
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
+                return;
             }
+
+
+            FechaInicial = periodoInicialSeleccionado.Value.ToShortDateString();
+            FechaFinal = periodoFinalSeleccionado.Value.ToShortDateString();
 
             switch (campoSeleccionado)
             {
                 case "ARTICULO":
-                    CargarValoresArticulo();
+                    using (new WaitCursor())
+                    {
+                        CargarValoresArticulo();
+                    }
+                    MostrarEstadisticas();
                     break;
 
                 case "CATEGORIA":
-                    CargarValoresCategoria();
+                    using (new WaitCursor())
+                    {
+                        CargarValoresCategoria();
+                    }
+                    MostrarEstadisticas();
                     break;
 
                 case "MODELO":
-                    CargarValoresModelo();
+                    using (new WaitCursor())
+                    {
+                        CargarValoresModelo();
+                    }
+                    MostrarEstadisticas();
                     break;
 
                 case "PRODUCTO":
-                    CargarValoresProducto();
+                    using (new WaitCursor())
+                    {
+                        CargarValoresProducto();
+                    }
+                    MostrarEstadisticas();
                     break;
 
                 default:
@@ -783,34 +854,237 @@ namespace RMAInforme
             }
         }
 
-        private void CargarValoresProducto()
+        private void CargarValoresArticulo()
         {
+            IQueryable<Cambio> listaMismo = context.Cambio.Where(w => w.ArticuloItem == keyword);
+            listaMismo = listaMismo.Where(w => w.EstadoCambio == "APROBADO");
+            listaMismo = listaMismo.Where(w => w.SectorCambio == "PRODUCCION");
+            cantidadTotalItem = listaMismo.Count();
+            cantidadTotalTodos = context.Cambio.Select(s => s).Count();
 
-            MostrarEstadisticas();
-        }
+            List<string> relevantes = listaMismo
+                    .GroupBy(g => g.DescripcionFalla)
+                    .OrderByDescending(o => o.Count())
+                    .Take(3)
+                    .Select(s => s.Key).ToList();
 
-        private void CargarValoresModelo()
-        {
+            if (relevantes.Count < 3)
+            {
+                int Length = (3 - relevantes.Count);
+                for (int i = 0; i < Length; i++)
+                {
+                    relevantes.Add("N/A");
+                }
+            }
 
-            MostrarEstadisticas();
+            nombreRelevante1 = relevantes[0];
+            nombreRelevante2 = relevantes[1];
+            nombreRelevante3 = relevantes[2];
+
+            if (nombreRelevante1 == "N/A")
+            {
+                cantidadRelevante1 = 0;
+            }
+            else
+            {
+                cantidadRelevante1 = listaMismo.Where(w => w.DescripcionFalla == nombreRelevante1).Count();
+            }
+
+            if (nombreRelevante2 == "N/A")
+            {
+                cantidadRelevante2 = 0;
+            }
+            else
+            {
+                cantidadRelevante2 = listaMismo.Where(w => w.DescripcionFalla == nombreRelevante2).Count();
+            }
+
+            if (nombreRelevante3 == "N/A")
+            {
+                cantidadRelevante3 = 0;
+            }
+            else
+            {
+                cantidadRelevante3 = listaMismo.Where(w => w.DescripcionFalla == nombreRelevante3).Count();
+            }
+
+            campoChart3 = "FALLAS";
         }
 
         private void CargarValoresCategoria()
         {
+            IQueryable<Cambio> listaMismo = context.Cambio.Where(w => w.CategoriaItem == keyword);
+            listaMismo = listaMismo.Where(w => w.EstadoCambio == "APROBADO");
+            listaMismo = listaMismo.Where(w => w.SectorCambio == "PRODUCCION");
+            cantidadTotalItem = listaMismo.Count();
+            cantidadTotalTodos = context.Cambio.Select(s => s).Count();
 
-            MostrarEstadisticas();
+            List<string> relevantes = listaMismo
+                    .GroupBy(g => g.Modelo)
+                    .OrderByDescending(o => o.Count())
+                    .Take(3)
+                    .Select(s => s.Key).ToList();
+
+            if (relevantes.Count < 3)
+            {
+                int Length = (3 - relevantes.Count);
+                for (int i = 0; i < Length; i++)
+                {
+                    relevantes.Add("N/A");
+                }
+            }
+
+            nombreRelevante1 = relevantes[0];
+            nombreRelevante2 = relevantes[1];
+            nombreRelevante3 = relevantes[2];
+
+            if (nombreRelevante1 == "N/A")
+            {
+                cantidadRelevante1 = 0;
+            }
+            else
+            {
+                cantidadRelevante1 = listaMismo.Where(w => w.Modelo == nombreRelevante1).Count();
+            }
+
+            if (nombreRelevante2 == "N/A")
+            {
+                cantidadRelevante2 = 0;
+            }
+            else
+            {
+                cantidadRelevante2 = listaMismo.Where(w => w.Modelo == nombreRelevante2).Count();
+            }
+
+            if (nombreRelevante3 == "N/A")
+            {
+                cantidadRelevante3 = 0;
+            }
+            else
+            {
+                cantidadRelevante3 = listaMismo.Where(w => w.Modelo == nombreRelevante3).Count();
+            }
+
+            campoChart3 = "MODELOS";
         }
 
-        private void CargarValoresArticulo()
+        private void CargarValoresModelo()
         {
+            IQueryable<Cambio> listaMismo = context.Cambio.Where(w => w.Modelo == keyword);
+            listaMismo = listaMismo.Where(w => w.EstadoCambio == "APROBADO");
+            listaMismo = listaMismo.Where(w => w.SectorCambio == "PRODUCCION");
+            cantidadTotalItem = listaMismo.Count();
+            cantidadTotalTodos = context.Cambio.Select(s => s).Count();
 
-            MostrarEstadisticas();
+            List<string> relevantes = listaMismo
+                    .GroupBy(g => g.CategoriaItem)
+                    .OrderByDescending(o => o.Count())
+                    .Take(3)
+                    .Select(s => s.Key).ToList();
+
+            if (relevantes.Count < 3)
+            {
+                int Length = (3 - relevantes.Count);
+                for (int i = 0; i < Length; i++)
+                {
+                    relevantes.Add("N/A");
+                }
+            }
+
+            nombreRelevante1 = relevantes[0];
+            nombreRelevante2 = relevantes[1];
+            nombreRelevante3 = relevantes[2];
+
+            if (nombreRelevante1 == "N/A")
+            {
+                cantidadRelevante1 = 0;
+            }
+            else
+            {
+                cantidadRelevante1 = listaMismo.Where(w => w.CategoriaItem == nombreRelevante1).Count();
+            }
+
+            if (nombreRelevante2 == "N/A")
+            {
+                cantidadRelevante2 = 0;
+            }
+            else
+            {
+                cantidadRelevante2 = listaMismo.Where(w => w.CategoriaItem == nombreRelevante2).Count();
+            }
+
+            if (nombreRelevante3 == "N/A")
+            {
+                cantidadRelevante3 = 0;
+            }
+            else
+            {
+                cantidadRelevante3 = listaMismo.Where(w => w.CategoriaItem == nombreRelevante3).Count();
+            }
+
+            campoChart3 = "CATEGORIAS";
+        }
+
+        private void CargarValoresProducto()
+        {
+            IQueryable<Cambio> listaMismo = context.Cambio.Where(w => w.Producto == keyword);
+            listaMismo = listaMismo.Where(w => w.EstadoCambio == "APROBADO");
+            listaMismo = listaMismo.Where(w => w.SectorCambio == "PRODUCCION");
+            cantidadTotalItem = listaMismo.Count();
+            cantidadTotalTodos = context.Cambio.Select(s => s).Count();
+
+            List<string> relevantes = listaMismo
+                    .GroupBy(g => g.Modelo)
+                    .OrderByDescending(o => o.Count())
+                    .Take(3)
+                    .Select(s => s.Key).ToList();
+
+            if (relevantes.Count < 3)
+            {
+                int Length = (3 - relevantes.Count);
+                for (int i = 0; i < Length; i++)
+                {
+                    relevantes.Add("N/A");
+                }
+            }
+
+            nombreRelevante1 = relevantes[0];
+            nombreRelevante2 = relevantes[1];
+            nombreRelevante3 = relevantes[2];
+
+            if (nombreRelevante1 == "N/A")
+            {
+                cantidadRelevante1 = 0;
+            }
+            else
+            {
+                cantidadRelevante1 = listaMismo.Where(w => w.Modelo == nombreRelevante1).Count();
+            }
+
+            if (nombreRelevante2 == "N/A")
+            {
+                cantidadRelevante2 = 0;
+            }
+            else
+            {
+                cantidadRelevante2 = listaMismo.Where(w => w.Modelo == nombreRelevante2).Count();
+            }
+
+            if (nombreRelevante3 == "N/A")
+            {
+                cantidadRelevante3 = 0;
+            }
+            else
+            {
+                cantidadRelevante3 = listaMismo.Where(w => w.Modelo == nombreRelevante3).Count();
+            }
+
+            campoChart3 = "MODELOS";
         }
 
         private void MostrarEstadisticas()
         {
-            //FIJATESE
-            //DialogHost.Show(new StatsWindow {valor1a, valor1b, valor2a, valor2b, valor3a, valor3b, valor3c, valorT, valorP, valorS }, "mainDialogHost");
+            DialogHost.Show(new StatsWindow(keyword, cantidadResultadoBusqueda, cantidadTotalItem, cantidadTodosFechaBusqueda, cantidadTotalTodos, cantidadRelevante1, cantidadRelevante2, cantidadRelevante3, nombreRelevante1, nombreRelevante2, nombreRelevante3, campoChart3, FechaInicial, FechaFinal));
         }
     }
 }

@@ -22,7 +22,7 @@
                 <RowDefinition Height="72"/>
             </Grid.RowDefinitions>
 
-            <GroupBox Header="Relación de la búsqueda en el período" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
+            <GroupBox Header="Relación de la búsqueda sobre período definido" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
                 <Grid Grid.Column="0" Grid.Row="1" Background="Transparent">
                     <TextBlock x:Name="Chart1Label" Text="aaa" Margin="5" FontWeight="Bold"  TextWrapping="Wrap" FontSize="11"/>
                     <lvc:PieChart x:Name="PieChart1" Grid.Column="1" Grid.Row="0" DisableAnimations="True" LegendLocation="Top" FontSize="12" FontWeight="Bold" Hoverable="False" DataTooltip="{x:Null}" Margin="25,50,25,25" FontFamily="Consolas">
@@ -42,7 +42,7 @@
                 </Grid>
             </GroupBox>
 
-            <GroupBox Grid.Column="1" Header="Relación del período de la búsqueda sobre el total" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
+            <GroupBox Grid.Column="1" Header="Relación de la búsqueda sobre el total" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
                 <Grid Grid.Column="1" Grid.Row="1" Background="Transparent">
                     <TextBlock x:Name="Chart2Label" Text="bbb" Grid.Row="0" Grid.Column="1" Margin="5" FontWeight="Bold"  TextWrapping="Wrap" FontSize="11" />
                     <lvc:PieChart x:Name="PieChart2" Grid.Column="1" Grid.Row="0" DisableAnimations="True" FontWeight="Bold" LegendLocation="Top" FontSize="11" Hoverable="False" DataTooltip="{x:Null}"  Margin="25,50,25,25"  FontFamily="Consolas">
@@ -87,8 +87,8 @@
             </GroupBox>
         
         </Grid>
-
-        <Button Grid.Row="0" Grid.Column="3" HorizontalAlignment="Right" Margin="5,5,10,10" VerticalAlignment="Bottom" Width="54" Click="ButtonSave_Click" Height="54" FontFamily="Consolas">
+        <TextBlock Text="TOMANDO EN CUENTA SOLO LOS CAMBIOS APROBADOS PARA EL SECTOR PRODUCCIÓN" Grid.Row="0" Grid.Column="1" Margin="10,5,5,25" FontWeight="Bold" Foreground="DimGray" TextWrapping="Wrap" FontSize="11" VerticalAlignment="Bottom" HorizontalAlignment="Left" />
+        <Button Name="btnSave" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Right" Margin="5,5,10,10" VerticalAlignment="Bottom" Width="54" Click="BtnSave_Click" Height="54" FontFamily="Consolas">
             <materialDesign:PackIcon Kind="ContentSaveOutline" Height="24" Width="24" />
         </Button>
     
