@@ -264,41 +264,53 @@ namespace RMAInforme
         {
             if (ComprobarOpciones())
             {
+                keyword = tbSearchBox.Text;
+                campoSeleccionado = cbCampo.SelectedValue.ToString();
+                periodoInicialSeleccionado = dpInicial.SelectedDate;
+                periodoFinalSeleccionado = dpFinal.SelectedDate;
+                sectorSeleccionado = cbSector.SelectedValue.ToString();
+                precisionSeleccionada = cbPresicion.SelectedValue.ToString();
+                origenSeleccionado = cbOrigenDatos.SelectedValue.ToString();
+                estadoSeleccionado = cbEstado.SelectedValue.ToString();
+
                 using (new WaitCursor())
                 {
-                    if (PingServer(nombreServidor))
+                    periodoFinalSeleccionado = periodoFinalSeleccionado.Value.AddDays(1);
+
+                    if (origenSeleccionado == "BASE DE DATOS")
                     {
-                        keyword = tbSearchBox.Text;
-                        campoSeleccionado = cbCampo.SelectedValue.ToString();
-                        periodoInicialSeleccionado = dpInicial.SelectedDate;
-                        periodoFinalSeleccionado = dpFinal.SelectedDate;
-                        sectorSeleccionado = cbSector.SelectedValue.ToString();
-                        precisionSeleccionada = cbPresicion.SelectedValue.ToString();
-                        origenSeleccionado = cbOrigenDatos.SelectedValue.ToString();
-                        estadoSeleccionado = cbEstado.SelectedValue.ToString();
-
-                        Buscar();
-
+                        if (PingServer(nombreServidor))
+                        {
+                            BuscarBaseDatos();
+                        }
+                    }
+                    else
+                    {
+                        BuscarLocal();
                     }
                 }
             }
         }
 
-        private void Buscar() //falta contemplar un resultado de busqueda NULL
+        private void BuscarBaseDatos() //falta contemplar un resultado de busqueda NULL
         {
-            periodoFinalSeleccionado = periodoFinalSeleccionado.Value.AddDays(1);
+            context = new PRDB();
+            ListaResultadoBusqueda = context.Cambio.Where(w => w.FechaCambio >= periodoInicialSeleccionado && w.FechaCambio <= periodoFinalSeleccionado).Select(s => s);
+            cantidadTodosFechaBusqueda = ListaResultadoBusqueda.Count();
 
-            if (origenSeleccionado == "BASE DE DATOS")
-            {
-                context = new PRDB();
-                ListaResultadoBusqueda = context.Cambio.Where(w => w.FechaCambio >= periodoInicialSeleccionado && w.FechaCambio <= periodoFinalSeleccionado).Select(s => s);
-                cantidadTodosFechaBusqueda = ListaResultadoBusqueda.Count();
-            }
-            else
-            {
-                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.FechaCambio >= periodoInicialSeleccionado && w.FechaCambio <= periodoFinalSeleccionado).Select(s => s);
-            }
+            FiltradoInicial();
+        }
 
+        private void BuscarLocal()
+        {
+            ////ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.FechaCambio >= periodoInicialSeleccionado && w.FechaCambio <= periodoFinalSeleccionado).Select(s => s);
+            //ListaResultadoBusqueda = ListaResultadoBusqueda.Select(s => s);
+
+            FiltradoInicial();
+        }
+
+        private void FiltradoInicial()
+        {
             if (keyword != "*")
             {
                 BuscarKeyword();
@@ -318,6 +330,22 @@ namespace RMAInforme
             else
             {
                 tbStatusBarText.Text = cantidadResultadoBusqueda + " registros encontrados.";
+            }
+        }
+        private void FiltrarSector()
+        {
+            switch (sectorSeleccionado)
+            {
+                case "PRODUCCION":
+                    ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.SectorCambio == "PRODUCCION").Select(s => s);
+                    break;
+
+                case "SERVICIO TECNICO":
+                    ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.SectorCambio == "SERVICIO TECNICO").Select(s => s);
+                    break;
+
+                default:
+                    break;
             }
         }
 
@@ -495,23 +523,6 @@ namespace RMAInforme
             }
         }
 
-        private void FiltrarSector()
-        {
-            switch (sectorSeleccionado)
-            {
-                case "PRODUCCION":
-                    ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.SectorCambio == "PRODUCCION").Select(s => s);
-                    break;
-
-                case "SERVICIO TECNICO":
-                    ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.SectorCambio == "SERVICIO TECNICO").Select(s => s);
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
         private void CbPeriodo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var valorSeleccionado = cbPeriodo.SelectedValue.ToString();
@@ -667,7 +678,7 @@ namespace RMAInforme
                     Mensaje = { Text = "El estado se cambió correctamente." }
                 };
                 DialogHost.Show(MessageDialog);
-                Buscar();
+                BuscarBaseDatos();
             }
             else
             {
