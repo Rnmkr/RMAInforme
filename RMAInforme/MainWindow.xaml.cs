@@ -94,38 +94,6 @@ namespace RMAInforme
             }
         }
 
-        private void IniciarBusqueda()
-        {
-            if (ComprobarOpciones())
-            {
-                keyword = tbSearchBox.Text;
-                campoSeleccionado = cbCampo.SelectedValue.ToString();
-                periodoInicialSeleccionado = dpInicial.SelectedDate;
-                periodoFinalSeleccionado = dpFinal.SelectedDate;
-                sectorSeleccionado = cbSector.SelectedValue.ToString();
-                precisionSeleccionada = cbPresicion.SelectedValue.ToString();
-                origenSeleccionado = cbOrigenDatos.SelectedValue.ToString();
-                estadoSeleccionado = cbEstado.SelectedValue.ToString();
-
-                using (new WaitCursor())
-                {
-                    periodoFinalSeleccionado = periodoFinalSeleccionado.Value.AddDays(1);
-
-                    if (origenSeleccionado == "BASE DE DATOS")
-                    {
-                        if (PingServer(nombreServidor))
-                        {
-                            BuscarBaseDatos();
-                        }
-                    }
-                    else
-                    {
-                        BuscarLocal();
-                    }
-                }
-            }
-        }
-
         private bool ComprobarOpciones()
         {
             if (cbCampo.SelectedValue == null)
@@ -292,6 +260,37 @@ namespace RMAInforme
             return true;
         }
 
+        private void IniciarBusqueda()
+        {
+            if (ComprobarOpciones())
+            {
+                keyword = tbSearchBox.Text;
+                campoSeleccionado = cbCampo.SelectedValue.ToString();
+                periodoInicialSeleccionado = dpInicial.SelectedDate;
+                periodoFinalSeleccionado = dpFinal.SelectedDate;
+                sectorSeleccionado = cbSector.SelectedValue.ToString();
+                precisionSeleccionada = cbPresicion.SelectedValue.ToString();
+                origenSeleccionado = cbOrigenDatos.SelectedValue.ToString();
+                estadoSeleccionado = cbEstado.SelectedValue.ToString();
+
+                using (new WaitCursor())
+                {
+                    periodoFinalSeleccionado = periodoFinalSeleccionado.Value.AddDays(1);
+
+                    if (origenSeleccionado == "BASE DE DATOS")
+                    {
+                        if (PingServer(nombreServidor))
+                        {
+                            BuscarBaseDatos();
+                        }
+                    }
+                    else
+                    {
+                        BuscarLocal();
+                    }
+                }
+            }
+        }
 
         private void BuscarBaseDatos() //falta contemplar un resultado de busqueda NULL
         {
