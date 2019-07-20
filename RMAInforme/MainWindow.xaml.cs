@@ -218,7 +218,8 @@ namespace RMAInforme
             }
 
             tbSearchBox.Text = tbSearchBox.Text.ToUpper();
-            if (string.IsNullOrWhiteSpace(tbSearchBox.Text))
+            keyword = tbSearchBox.Text;
+            if (string.IsNullOrWhiteSpace(keyword))
             {
                 var MessageDialog = new MessageDialog
                 {
@@ -303,7 +304,9 @@ namespace RMAInforme
 
         private void BuscarLocal()
         {
-            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.FechaCambio >= periodoInicialSeleccionado && w.FechaCambio <= periodoFinalSeleccionado).Select(s => s);
+            ////ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.FechaCambio >= periodoInicialSeleccionado && w.FechaCambio <= periodoFinalSeleccionado).Select(s => s);
+            //ListaResultadoBusqueda = ListaResultadoBusqueda.Select(s => s);
+
             FiltradoInicial();
         }
 
