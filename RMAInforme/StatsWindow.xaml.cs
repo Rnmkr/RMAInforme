@@ -94,6 +94,10 @@ namespace RMAInforme
         private void CargarChart2()
         {
             int restoMismo = (cantidadTotalItem - cantidadResultadoBusqueda);
+            if (restoMismo < 0)
+            {
+                restoMismo = 0;
+            }
 
             SeriesCollection Piechart2 = new SeriesCollection
             {
@@ -106,7 +110,7 @@ namespace RMAInforme
                     FontSize = 12,
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "'" + keyword+ "'" + " ENTRE " + FechaInicial + " Y " + FechaFinal
+                    Title = "'" + keyword + "'" + " ENTRE " + FechaInicial + " Y " + FechaFinal
 
                 },
                 new PieSeries

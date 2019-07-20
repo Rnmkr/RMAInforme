@@ -27,7 +27,7 @@ namespace RMAInforme
         private DateTime? periodoInicialSeleccionado;
         private DateTime? periodoFinalSeleccionado;
         private string sectorSeleccionado;
-        private string nombreServidor = "JENNY";
+        private string nombreServidor = "DESKTOP";
         private int keywordINT;
         private string stringBusqueda;
         private string estadoSeleccionado;
@@ -850,7 +850,7 @@ namespace RMAInforme
 
 
             FechaInicial = periodoInicialSeleccionado.Value.ToShortDateString();
-            FechaFinal = periodoFinalSeleccionado.Value.ToShortDateString();
+            FechaFinal = periodoFinalSeleccionado.Value.AddDays(-1).ToShortDateString();
 
             switch (campoSeleccionado)
             {
@@ -1127,6 +1127,17 @@ namespace RMAInforme
 
         private void MostrarEstadisticas()
         {
+            if (ListaResultadoBusqueda == null || ListaResultadoBusqueda.Count() < 1)
+            {
+                var MessageDialog = new MessageDialog
+                {
+                    Titulo = { Text = "Oops!" },
+                    Mensaje = { Text = "Datos insuficientes para mostrar estadísticas." }
+                };
+                DialogHost.Show(MessageDialog, "mainDialogHost");
+                return;
+            }
+
             DialogHost.Show(new StatsWindow(stringBusqueda, cantidadResultadoBusqueda, cantidadTotalItem, cantidadTodosFechaBusqueda, cantidadTotalTodos, cantidadRelevante1, cantidadRelevante2, cantidadRelevante3, nombreRelevante1, nombreRelevante2, nombreRelevante3, campoChart3, FechaInicial, FechaFinal));
         }
     }
