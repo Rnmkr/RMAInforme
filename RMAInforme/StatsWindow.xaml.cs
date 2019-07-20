@@ -228,3 +228,4 @@ namespace RMAInforme
         public Func<ChartPoint, string> PointLabel { get; set; }
     }
 }
+

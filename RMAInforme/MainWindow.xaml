@@ -24,7 +24,7 @@
 
                     <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,7,0,0" Width="160">
 
-                        <TextBox x:Name="tbSearchBox" Grid.Column="0" ToolTip="Colocar un asterisco ( * ) para buscar todos los resultados." KeyDown="TbSearchBox_KeyDown" materialDesign:HintAssist.Hint="KEYWORD" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontWeight="Bold" />
+                        <TextBox x:Name="tbKeyword" Grid.Column="0" ToolTip="Colocar un asterisco ( * ) para buscar todos los registros." KeyDown="TbSearchBox_KeyDown" materialDesign:HintAssist.Hint="KEYWORD" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontWeight="Bold" />
 
                         <Button x:Name="btnBuscar" IsDefault="True" Click="BtnBuscar_Click" Style="{DynamicResource MaterialDesignToolButton}" Command="{Binding SearchCommand}" CommandParameter="{Binding Text, ElementName=SearchBox}" Height="24" Width="24" HorizontalAlignment="Right" VerticalAlignment="Center">
                             <materialDesign:PackIcon Kind="Magnify" Opacity=".56" />
@@ -48,7 +48,7 @@
 
                     <DatePicker Name="dpFinal" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" IsEnabled="False" materialDesign:HintAssist.Hint="FINAL"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="140" Margin="480,0,0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Height="40"/>
 
-                    <Button Name="btnCancelarCambio" Width="64" Height="64" HorizontalAlignment="Right" Click="BtnCancelarCambio_Click" VerticalAlignment="Center" Margin="0,0,149,0" >
+                    <Button Name="btnCancelarCambio" Width="64" Height="64" HorizontalAlignment="Right" Click="BtnCancelarCambioAsync_Click" VerticalAlignment="Center" Margin="0,0,149,0" >
                         <materialDesign:PackIcon Kind="Cancel" Opacity="1" Width="32" Height="32" />
                     </Button>
 
@@ -100,7 +100,7 @@
 
                             <DataGridTextColumn Header="Estado" Binding="{Binding EstadoCambio}"/>
 
-                            <DataGridTextColumn Header="Supervisor" Binding="{Binding SupervisorCambio}"/>
+                            <DataGridTextColumn Header="Supervisor" Binding="{Binding SupervisorModificacion}"/>
 
                             <DataGridTextColumn Header="Fecha de Modificacion" Binding="{Binding FechaModificacion}"/>
 

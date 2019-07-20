@@ -87,7 +87,6 @@
             </GroupBox>
         
         </Grid>
-        <TextBlock Text="TOMANDO EN CUENTA SOLO LOS CAMBIOS APROBADOS PARA EL SECTOR PRODUCCIÓN" Grid.Row="0" Grid.Column="1" Margin="10,5,5,25" FontWeight="Bold" Foreground="DimGray" TextWrapping="Wrap" FontSize="11" VerticalAlignment="Bottom" HorizontalAlignment="Left" />
         <Button Name="btnSave" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Right" Margin="5,5,10,10" VerticalAlignment="Bottom" Width="54" Click="BtnSave_Click" Height="54" FontFamily="Consolas">
             <materialDesign:PackIcon Kind="ContentSaveOutline" Height="24" Width="24" />
         </Button>

@@ -27,9 +27,9 @@ namespace RMAInforme
         private DateTime? periodoInicialSeleccionado;
         private DateTime? periodoFinalSeleccionado;
         private string sectorSeleccionado;
-        private string keyword;
-        private string nombreServidor = "LT-DAN";
+        private string nombreServidor = "DESKTOP";
         private int keywordINT;
+        private string stringBusqueda;
         private string estadoSeleccionado;
         private Cambio cambioSeleccionado;
         private int cantidadResultadoBusqueda;
@@ -91,6 +91,95 @@ namespace RMAInforme
             if (e.Key == Key.Enter)
             {
                 IniciarBusqueda();
+            }
+        }
+
+        private void IniciarBusqueda()
+        {
+            if (ComprobarOpciones())
+            {
+                using (new WaitCursor())
+                {
+                    string keyword = tbKeyword.Text;
+                    campoSeleccionado = cbCampo.SelectedValue.ToString();
+                    periodoInicialSeleccionado = dpInicial.SelectedDate;
+                    periodoFinalSeleccionado = dpFinal.SelectedDate;
+                    periodoFinalSeleccionado = periodoFinalSeleccionado.Value.AddDays(1);
+                    sectorSeleccionado = cbSector.SelectedValue.ToString();
+                    precisionSeleccionada = cbPresicion.SelectedValue.ToString();
+                    origenSeleccionado = cbOrigenDatos.SelectedValue.ToString();
+                    estadoSeleccionado = cbEstado.SelectedValue.ToString();
+
+                    if (origenSeleccionado == "BASE DE DATOS")
+                    {
+                        if (PingServer(nombreServidor))
+                        {
+                            BuscarBaseDatos();
+                        }
+                    }
+                    else
+                    {
+                        BuscarLocal();
+                    }
+
+                    if (keyword != "*")
+                    {
+                        FiltrarKeyword();
+                    }
+
+                    if (ListaResultadoBusqueda != null)
+                    {
+                        FiltrarSector();
+                    }
+                    else
+                    {
+                        var MessageDialog = new MessageDialog
+                        {
+                            Titulo = { Text = "Oops!" },
+                            Mensaje = { Text = "No hay resultados con ese keyword." }
+                        };
+                        DialogHost.Show(MessageDialog, "mainDialogHost");
+                    }
+
+                    if (ListaResultadoBusqueda != null)
+                    {
+                        FiltrarEstado();
+                    }
+                    else
+                    {
+                        var MessageDialog = new MessageDialog
+                        {
+                            Titulo = { Text = "Oops!" },
+                            Mensaje = { Text = "No hay resultados con ese sector." }
+                        };
+                        DialogHost.Show(MessageDialog, "mainDialogHost");
+                    }
+
+                    if (ListaResultadoBusqueda == null)
+                    {
+                        var MessageDialog = new MessageDialog
+                        {
+                            Titulo = { Text = "Oops!" },
+                            Mensaje = { Text = "No hay resultados con ese estado." }
+                        };
+                        DialogHost.Show(MessageDialog, "mainDialogHost");
+                    }
+                    else
+                    {
+                        cantidadResultadoBusqueda = ListaResultadoBusqueda.Count();
+                        dgListaCambios.ItemsSource = ListaResultadoBusqueda.ToList();
+                        stringBusqueda = tbKeyword.Text;
+
+                        if (cantidadResultadoBusqueda == 1)
+                        {
+                            tbStatusBarText.Text = cantidadResultadoBusqueda + " registro encontrado.";
+                        }
+                        else
+                        {
+                            tbStatusBarText.Text = cantidadResultadoBusqueda + " registros encontrados.";
+                        }
+                    }
+                }
             }
         }
 
@@ -185,8 +274,8 @@ namespace RMAInforme
                 return false;
             }
 
-            tbSearchBox.Text = tbSearchBox.Text.ToUpper();
-            keyword = tbSearchBox.Text;
+
+            string keyword = tbKeyword.Text;
             if (string.IsNullOrWhiteSpace(keyword))
             {
                 var MessageDialog = new MessageDialog
@@ -197,12 +286,13 @@ namespace RMAInforme
                 DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
             }
+            tbKeyword.Text = tbKeyword.Text.ToUpper();
 
             if (cbCampo.SelectedValue.ToString() == "ID DE CAMBIO")
             {
                 try
                 {
-                    keywordINT = Convert.ToInt32(tbSearchBox.Text);
+                    keywordINT = Convert.ToInt32(tbKeyword.Text);
 
                 }
                 catch (FormatException)
@@ -222,7 +312,7 @@ namespace RMAInforme
             {
                 try
                 {
-                    Convert.ToInt32(tbSearchBox.Text);
+                    Convert.ToInt32(tbKeyword.Text);
 
                 }
                 catch (FormatException)
@@ -242,7 +332,7 @@ namespace RMAInforme
             {
                 try
                 {
-                    Convert.ToInt32(tbSearchBox.Text);
+                    Convert.ToInt32(tbKeyword.Text);
 
                 }
                 catch (FormatException)
@@ -260,114 +350,22 @@ namespace RMAInforme
             return true;
         }
 
-        private void IniciarBusqueda()
-        {
-            if (ComprobarOpciones())
-            {
-                keyword = tbSearchBox.Text;
-                campoSeleccionado = cbCampo.SelectedValue.ToString();
-                periodoInicialSeleccionado = dpInicial.SelectedDate;
-                periodoFinalSeleccionado = dpFinal.SelectedDate;
-                sectorSeleccionado = cbSector.SelectedValue.ToString();
-                precisionSeleccionada = cbPresicion.SelectedValue.ToString();
-                origenSeleccionado = cbOrigenDatos.SelectedValue.ToString();
-                estadoSeleccionado = cbEstado.SelectedValue.ToString();
-
-                using (new WaitCursor())
-                {
-                    periodoFinalSeleccionado = periodoFinalSeleccionado.Value.AddDays(1);
-
-                    if (origenSeleccionado == "BASE DE DATOS")
-                    {
-                        if (PingServer(nombreServidor))
-                        {
-                            BuscarBaseDatos();
-                        }
-                    }
-                    else
-                    {
-                        BuscarLocal();
-                    }
-                }
-            }
-        }
-
-        private void BuscarBaseDatos() //falta contemplar un resultado de busqueda NULL
+        private void BuscarBaseDatos()
         {
             context = new PRDB();
             ListaResultadoBusqueda = context.Cambio.Where(w => w.FechaCambio >= periodoInicialSeleccionado && w.FechaCambio <= periodoFinalSeleccionado).Select(s => s);
             cantidadTodosFechaBusqueda = ListaResultadoBusqueda.Count();
-
-            FiltradoInicial();
         }
 
         private void BuscarLocal()
         {
-            ////ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.FechaCambio >= periodoInicialSeleccionado && w.FechaCambio <= periodoFinalSeleccionado).Select(s => s);
-            //ListaResultadoBusqueda = ListaResultadoBusqueda.Select(s => s);
-
-            FiltradoInicial();
+            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.FechaCambio >= periodoInicialSeleccionado && w.FechaCambio <= periodoFinalSeleccionado).Select(s => s);
+            cantidadTodosFechaBusqueda = ListaResultadoBusqueda.Count();
         }
 
-        private void FiltradoInicial()
+        private void FiltrarKeyword()
         {
-            if (keyword != "*")
-            {
-                BuscarKeyword();
-            }
-
-            FiltrarSector();
-
-            FiltrarEstado();
-
-            cantidadResultadoBusqueda = ListaResultadoBusqueda.Count();
-            dgListaCambios.ItemsSource = ListaResultadoBusqueda.ToList();
-
-            if (cantidadResultadoBusqueda == 1)
-            {
-                tbStatusBarText.Text = cantidadResultadoBusqueda + " registro encontrado.";
-            }
-            else
-            {
-                tbStatusBarText.Text = cantidadResultadoBusqueda + " registros encontrados.";
-            }
-        }
-        private void FiltrarSector()
-        {
-            switch (sectorSeleccionado)
-            {
-                case "PRODUCCION":
-                    ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.SectorCambio == "PRODUCCION").Select(s => s);
-                    break;
-
-                case "SERVICIO TECNICO":
-                    ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.SectorCambio == "SERVICIO TECNICO").Select(s => s);
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        private void FiltrarEstado()
-        {
-            switch (estadoSeleccionado)
-            {
-                case "APROBADO":
-                    ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.EstadoCambio == "APROBADO").Select(s => s);
-                    break;
-
-                case "CANCELADO":
-                    ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.EstadoCambio == "CANCELADO").Select(s => s);
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        private void BuscarKeyword()
-        {
+            string keyword = tbKeyword.Text;
             switch (campoSeleccionado)
             {
 
@@ -523,6 +521,40 @@ namespace RMAInforme
             }
         }
 
+        private void FiltrarSector()
+        {
+            switch (sectorSeleccionado)
+            {
+                case "PRODUCCION":
+                    ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.SectorCambio == "PRODUCCION").Select(s => s);
+                    break;
+
+                case "SERVICIO TECNICO":
+                    ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.SectorCambio == "SERVICIO TECNICO").Select(s => s);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        private void FiltrarEstado()
+        {
+            switch (estadoSeleccionado)
+            {
+                case "APROBADO":
+                    ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.EstadoCambio == "APROBADO").Select(s => s);
+                    break;
+
+                case "CANCELADO":
+                    ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.EstadoCambio == "CANCELADO").Select(s => s);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
         private void CbPeriodo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var valorSeleccionado = cbPeriodo.SelectedValue.ToString();
@@ -634,7 +666,7 @@ namespace RMAInforme
             }
         }
 
-        private async void BtnCancelarCambio_ClickAsync(object sender, RoutedEventArgs e)
+        private async void BtnCancelarCambioAsync_Click(object sender, RoutedEventArgs e)
         {
             if (cambioSeleccionado == null)
             {
@@ -867,7 +899,7 @@ namespace RMAInforme
 
         private void CargarValoresArticulo()
         {
-            IQueryable<Cambio> listaMismo = context.Cambio.Where(w => w.ArticuloItem == keyword);
+            IQueryable<Cambio> listaMismo = context.Cambio.Where(w => w.ArticuloItem == stringBusqueda);
             listaMismo = listaMismo.Where(w => w.EstadoCambio == "APROBADO");
             listaMismo = listaMismo.Where(w => w.SectorCambio == "PRODUCCION");
             cantidadTotalItem = listaMismo.Count();
@@ -924,7 +956,7 @@ namespace RMAInforme
 
         private void CargarValoresCategoria()
         {
-            IQueryable<Cambio> listaMismo = context.Cambio.Where(w => w.CategoriaItem == keyword);
+            IQueryable<Cambio> listaMismo = context.Cambio.Where(w => w.CategoriaItem == stringBusqueda);
             listaMismo = listaMismo.Where(w => w.EstadoCambio == "APROBADO");
             listaMismo = listaMismo.Where(w => w.SectorCambio == "PRODUCCION");
             cantidadTotalItem = listaMismo.Count();
@@ -981,7 +1013,7 @@ namespace RMAInforme
 
         private void CargarValoresModelo()
         {
-            IQueryable<Cambio> listaMismo = context.Cambio.Where(w => w.Modelo == keyword);
+            IQueryable<Cambio> listaMismo = context.Cambio.Where(w => w.Modelo == stringBusqueda);
             listaMismo = listaMismo.Where(w => w.EstadoCambio == "APROBADO");
             listaMismo = listaMismo.Where(w => w.SectorCambio == "PRODUCCION");
             cantidadTotalItem = listaMismo.Count();
@@ -1038,7 +1070,7 @@ namespace RMAInforme
 
         private void CargarValoresProducto()
         {
-            IQueryable<Cambio> listaMismo = context.Cambio.Where(w => w.Producto == keyword);
+            IQueryable<Cambio> listaMismo = context.Cambio.Where(w => w.Producto == stringBusqueda);
             listaMismo = listaMismo.Where(w => w.EstadoCambio == "APROBADO");
             listaMismo = listaMismo.Where(w => w.SectorCambio == "PRODUCCION");
             cantidadTotalItem = listaMismo.Count();
@@ -1095,7 +1127,7 @@ namespace RMAInforme
 
         private void MostrarEstadisticas()
         {
-            DialogHost.Show(new StatsWindow(keyword, cantidadResultadoBusqueda, cantidadTotalItem, cantidadTodosFechaBusqueda, cantidadTotalTodos, cantidadRelevante1, cantidadRelevante2, cantidadRelevante3, nombreRelevante1, nombreRelevante2, nombreRelevante3, campoChart3, FechaInicial, FechaFinal));
+            DialogHost.Show(new StatsWindow(stringBusqueda, cantidadResultadoBusqueda, cantidadTotalItem, cantidadTodosFechaBusqueda, cantidadTotalTodos, cantidadRelevante1, cantidadRelevante2, cantidadRelevante3, nombreRelevante1, nombreRelevante2, nombreRelevante3, campoChart3, FechaInicial, FechaFinal));
         }
     }
 }
