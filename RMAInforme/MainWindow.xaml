@@ -26,7 +26,7 @@
 
                         <TextBox x:Name="tbKeyword" Grid.Column="0" ToolTip="Colocar un asterisco ( * ) para buscar todos los registros." KeyDown="TbSearchBox_KeyDown" materialDesign:HintAssist.Hint="KEYWORD" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontWeight="Bold" />
 
-                        <Button x:Name="btnBuscar" IsDefault="True" Click="BtnBuscar_Click" Style="{DynamicResource MaterialDesignToolButton}" Command="{Binding SearchCommand}" CommandParameter="{Binding Text, ElementName=SearchBox}" Height="24" Width="24" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Button x:Name="btnBuscar" IsDefault="True" Click="BtnBuscar_Click" Style="{DynamicResource MaterialDesignToolButton}" Height="24" Width="24" HorizontalAlignment="Right" VerticalAlignment="Center">
                             <materialDesign:PackIcon Kind="Magnify" Opacity=".56" />
                         </Button>
 

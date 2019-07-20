@@ -27,7 +27,7 @@ namespace RMAInforme
         private DateTime? periodoInicialSeleccionado;
         private DateTime? periodoFinalSeleccionado;
         private string sectorSeleccionado;
-        private string nombreServidor = "DESKTOP";
+        private string nombreServidor = "JENNY";
         private int keywordINT;
         private string stringBusqueda;
         private string estadoSeleccionado;
