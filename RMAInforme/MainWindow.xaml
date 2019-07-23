@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="REGISTROS RMA" Width="1000" Height="480" MinHeight="480" MinWidth="480" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        Title="REGISTROS RMA" Width="1366" Height="480" MinHeight="480" MinWidth="480" WindowStartupLocation="CenterScreen" WindowState="Maximized">
 
     <Grid>
 
@@ -22,7 +22,20 @@
 
                 <Grid Grid.Row="0" Background="#FFE6E6E6">
 
-                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,7,0,0" Width="160">
+                    <StackPanel VerticalAlignment="Center" Margin="10,0,0,0" HorizontalAlignment="Left">
+
+                        <Button Name="btnBack" Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" ToolTip="MaterialDesignFloatingActionMiniLightButton" Margin="0" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Click="BtnBack_Click" >
+                            <materialDesign:PackIcon Kind="ArrowBack" Height="24" Width="24" />
+                        </Button>
+
+                        <Button Name="btnForward" Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" ToolTip="MaterialDesignFloatingActionMiniLightButton" Margin="0,5,0,0" Width="32" Height="32" HorizontalAlignment="Right" VerticalAlignment="Center" Click="BtnForward_Click" >
+                            <materialDesign:PackIcon Kind="ArrowRight" Height="24" Width="24" />
+                        </Button>
+
+                    </StackPanel>
+
+
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="55,7,0,0" Width="160">
 
                         <TextBox x:Name="tbKeyword" Grid.Column="0" ToolTip="Colocar un asterisco ( * ) para buscar todos los registros." KeyDown="TbSearchBox_KeyDown" materialDesign:HintAssist.Hint="KEYWORD" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontWeight="Bold" />
 
@@ -32,21 +45,21 @@
 
                     </Grid>
 
-                    <ComboBox Name="cbCampo" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="CAMPO" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Padding="0,6" Width="160" />
+                    <ComboBox Name="cbCampo" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="CAMPO" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="55,0,0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Padding="0,6" Width="160" />
 
-                    <ComboBox Name="cbPresicion" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="PRESICION" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="180,5,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
+                    <ComboBox Name="cbPresicion" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="PRESICION" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="225,5,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
 
-                    <ComboBox Name="cbOrigenDatos" Style="{StaticResource MaterialDesignFloatingHintComboBox}" SelectionChanged="CbOrigenDatos_SelectionChanged" materialDesign:HintAssist.Hint="ORIGEN DE DATOS" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="140" Margin="180,0,0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
+                    <ComboBox Name="cbOrigenDatos" Style="{StaticResource MaterialDesignFloatingHintComboBox}" SelectionChanged="CbOrigenDatos_SelectionChanged" materialDesign:HintAssist.Hint="ORIGEN DE DATOS" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="140" Margin="225,0,0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
 
-                    <ComboBox Name="cbPeriodo" Style="{StaticResource MaterialDesignFloatingHintComboBox}" SelectionChanged="CbPeriodo_SelectionChanged" materialDesign:HintAssist.Hint="PERIODO" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="630,5,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
+                    <ComboBox Name="cbPeriodo" Style="{StaticResource MaterialDesignFloatingHintComboBox}" SelectionChanged="CbPeriodo_SelectionChanged" materialDesign:HintAssist.Hint="PERIODO" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="675,5,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
 
-                    <ComboBox Name="cbEstado" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="ESTADO" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="140" Margin="330,0,0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
+                    <ComboBox Name="cbEstado" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="ESTADO" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="140" Margin="375,0,0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
 
-                    <ComboBox Name="cbSector" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="SECTOR" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="330,5,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
+                    <ComboBox Name="cbSector" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:HintAssist.Hint="SECTOR" HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="375,5,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
 
-                    <DatePicker Name="dpInicial" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" IsEnabled="False" materialDesign:HintAssist.Hint="INICIAL"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="480,5,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Height="40"/>
+                    <DatePicker Name="dpInicial" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" IsEnabled="False" materialDesign:HintAssist.Hint="INICIAL"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="525,5,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Height="40"/>
 
-                    <DatePicker Name="dpFinal" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" IsEnabled="False" materialDesign:HintAssist.Hint="FINAL"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="140" Margin="480,0,0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Height="40"/>
+                    <DatePicker Name="dpFinal" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" IsEnabled="False" materialDesign:HintAssist.Hint="FINAL"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="140" Margin="525,0,0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Height="40"/>
 
                     <Button Name="btnCancelarCambio" Width="64" Height="64" HorizontalAlignment="Right" Click="BtnCancelarCambioAsync_Click" VerticalAlignment="Center" Margin="0,0,149,0" >
                         <materialDesign:PackIcon Kind="Cancel" Opacity="1" Width="32" Height="32" />

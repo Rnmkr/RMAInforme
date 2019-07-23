@@ -27,7 +27,7 @@ namespace RMAInforme
         private DateTime? periodoInicialSeleccionado;
         private DateTime? periodoFinalSeleccionado;
         private string sectorSeleccionado;
-        private string nombreServidor = "BUBBA";
+        private string nombreServidor = "LT-DAN";
         private int keywordINT;
         private string stringBusqueda;
         private string estadoSeleccionado;
@@ -166,18 +166,7 @@ namespace RMAInforme
                     }
                     else
                     {
-                        cantidadResultadoBusqueda = ListaResultadoBusqueda.Count();
-                        dgListaCambios.ItemsSource = ListaResultadoBusqueda.ToList();
-                        stringBusqueda = tbKeyword.Text;
-
-                        if (cantidadResultadoBusqueda == 1)
-                        {
-                            tbStatusBarText.Text = cantidadResultadoBusqueda + " registro encontrado.";
-                        }
-                        else
-                        {
-                            tbStatusBarText.Text = cantidadResultadoBusqueda + " registros encontrados.";
-                        }
+                        AsignarLista();
                     }
                 }
             }
@@ -555,6 +544,22 @@ namespace RMAInforme
             }
         }
 
+        private void AsignarLista()
+        {
+            cantidadResultadoBusqueda = ListaResultadoBusqueda.Count();
+            dgListaCambios.ItemsSource = ListaResultadoBusqueda.ToList();
+            stringBusqueda = tbKeyword.Text;
+
+            if (cantidadResultadoBusqueda == 1)
+            {
+                tbStatusBarText.Text = cantidadResultadoBusqueda + " registro encontrado.";
+            }
+            else
+            {
+                tbStatusBarText.Text = cantidadResultadoBusqueda + " registros encontrados.";
+            }
+        }
+
         private void CbPeriodo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var valorSeleccionado = cbPeriodo.SelectedValue.ToString();
@@ -870,6 +875,14 @@ namespace RMAInforme
                     MostrarEstadisticas();
                     break;
 
+                case "LEGAJO":
+                    using (new WaitCursor())
+                    {
+                        CargarValoresLegajo("0");
+                    }
+                    MostrarEstadisticas();
+                    break;
+
                 case "MODELO":
                     using (new WaitCursor())
                     {
@@ -886,11 +899,19 @@ namespace RMAInforme
                     MostrarEstadisticas();
                     break;
 
+                case "TECNICO":
+                    using (new WaitCursor())
+                    {
+                        CargarValoresTecnico();
+                    }
+                    MostrarEstadisticas();
+                    break;
+
                 default:
                     var MessageDialog = new MessageDialog
                     {
                         Titulo = { Text = "Oops!" },
-                        Mensaje = { Text = "Por el momento, la aplicación no muestra estadísticas para el campo seleccionado." + Environment.NewLine + Environment.NewLine + "Los campos habilitados son:" + Environment.NewLine + "ARTICULO, CATEGORIA, MODELO y PRODUCTO." }
+                        Mensaje = { Text = "Por el momento, la aplicación no muestra estadísticas para el campo seleccionado." + Environment.NewLine + Environment.NewLine + "Los campos habilitados son:" + Environment.NewLine + "ARTICULO, CATEGORIA, MODELO, PRODUCTO, LEGAJO/TECNICO." }
                     };
                     DialogHost.Show(MessageDialog, "mainDialogHost");
                     break;
@@ -1125,6 +1146,88 @@ namespace RMAInforme
             campoChart3 = "MODELOS";
         }
 
+        private void CargarValoresLegajo(string leg)
+        {
+
+            if (leg == "0")
+            {
+                leg = stringBusqueda;
+            }
+
+            IQueryable<Cambio> listaMismo = context.Cambio.Where(w => w.Legajo == leg);
+            listaMismo = listaMismo.Where(w => w.EstadoCambio == "APROBADO");
+            listaMismo = listaMismo.Where(w => w.SectorCambio == "PRODUCCION");
+            cantidadTotalItem = listaMismo.Count();
+            cantidadTotalTodos = context.Cambio.Select(s => s).Count();
+
+            List<string> relevantes = listaMismo
+                    .GroupBy(g => g.Modelo)
+                    .OrderByDescending(o => o.Count())
+                    .Take(3)
+                    .Select(s => s.Key).ToList();
+
+            if (relevantes.Count < 3)
+            {
+                int Length = (3 - relevantes.Count);
+                for (int i = 0; i < Length; i++)
+                {
+                    relevantes.Add("N/A");
+                }
+            }
+
+            nombreRelevante1 = relevantes[0];
+            nombreRelevante2 = relevantes[1];
+            nombreRelevante3 = relevantes[2];
+
+            if (nombreRelevante1 == "N/A")
+            {
+                cantidadRelevante1 = 0;
+            }
+            else
+            {
+                cantidadRelevante1 = listaMismo.Where(w => w.Modelo == nombreRelevante1).Count();
+            }
+
+            if (nombreRelevante2 == "N/A")
+            {
+                cantidadRelevante2 = 0;
+            }
+            else
+            {
+                cantidadRelevante2 = listaMismo.Where(w => w.Modelo == nombreRelevante2).Count();
+            }
+
+            if (nombreRelevante3 == "N/A")
+            {
+                cantidadRelevante3 = 0;
+            }
+            else
+            {
+                cantidadRelevante3 = listaMismo.Where(w => w.Modelo == nombreRelevante3).Count();
+            }
+
+            campoChart3 = "MODELOS";
+        }
+
+        private void CargarValoresTecnico()
+        {
+            try
+            {
+                string legajoTecnico = ListaResultadoBusqueda.Select(s => s.Legajo).Distinct().SingleOrDefault();
+                CargarValoresLegajo(legajoTecnico);
+            }
+            catch (InvalidOperationException)
+            {
+                var MessageDialog = new MessageDialog
+                {
+                    Titulo = { Text = "Oops!" },
+                    Mensaje = { Text = "Hay mas de un técnico en la lista." }
+                };
+                DialogHost.Show(MessageDialog, "mainDialogHost");
+            }
+
+        }
+
         private void MostrarEstadisticas()
         {
             if (ListaResultadoBusqueda == null || ListaResultadoBusqueda.Count() < 1)
@@ -1139,6 +1242,14 @@ namespace RMAInforme
             }
 
             DialogHost.Show(new StatsWindow(stringBusqueda, cantidadResultadoBusqueda, cantidadTotalItem, cantidadTodosFechaBusqueda, cantidadTotalTodos, cantidadRelevante1, cantidadRelevante2, cantidadRelevante3, nombreRelevante1, nombreRelevante2, nombreRelevante3, campoChart3, FechaInicial, FechaFinal));
+        }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void BtnForward_Click(object sender, RoutedEventArgs e)
+        {
         }
     }
 }
