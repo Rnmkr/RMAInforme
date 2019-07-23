@@ -27,7 +27,7 @@ namespace RMAInforme
         private DateTime? periodoInicialSeleccionado;
         private DateTime? periodoFinalSeleccionado;
         private string sectorSeleccionado;
-        private string nombreServidor = "LT-DAN";
+        private string nombreServidor = "DESKTOP";
         private int keywordINT;
         private string stringBusqueda;
         private string estadoSeleccionado;
@@ -48,6 +48,8 @@ namespace RMAInforme
         private string nombreRelevante1;
         private string nombreRelevante2;
         private string nombreRelevante3;
+        private SnapshotBusqueda[] indiceSnapShot;
+        private int currentIndex = -1;
 
         public MainWindow()
         {
@@ -167,6 +169,7 @@ namespace RMAInforme
                     else
                     {
                         AsignarLista();
+                        CrearNuevoSnapshot();
                     }
                 }
             }
@@ -547,8 +550,22 @@ namespace RMAInforme
         private void AsignarLista()
         {
             cantidadResultadoBusqueda = ListaResultadoBusqueda.Count();
-            dgListaCambios.ItemsSource = ListaResultadoBusqueda.ToList();
-            stringBusqueda = tbKeyword.Text;
+
+            if (cantidadResultadoBusqueda > 0)
+            {
+                dgListaCambios.ItemsSource = ListaResultadoBusqueda.ToList();
+                stringBusqueda = tbKeyword.Text;
+            }
+            else
+            {
+                var MessageDialog = new MessageDialog
+                {
+                    Titulo = { Text = "Oops!" },
+                    Mensaje = { Text = "No se encontraron registros." }
+                };
+                DialogHost.Show(MessageDialog, "mainDialogHost");
+                return;
+            }
 
             if (cantidadResultadoBusqueda == 1)
             {
@@ -558,6 +575,77 @@ namespace RMAInforme
             {
                 tbStatusBarText.Text = cantidadResultadoBusqueda + " registros encontrados.";
             }
+        }
+
+        private void CrearNuevoSnapshot()
+        {
+            int iss = indiceSnapShot.Length;
+
+            if (iss == 0)
+            {
+                SetSnapShot(0);
+            }
+
+            if (iss < 5)
+            {
+                iss += 1;
+                SetSnapShot(iss);
+            }
+
+            if (iss == 5)
+            {
+                for (int i = 4; i > 0; i--)
+                {
+                    indiceSnapShot[i] = indiceSnapShot[i + 1];
+                }
+
+                SetSnapShot(5); 
+            }
+
+
+            currentIndex = iss;
+            if (currentIndex > 0)
+            {
+                btnBack.IsEnabled = true;
+            }
+
+            if (currentIndex == 5)
+            {
+                btnForward.IsEnabled = false;
+            }
+        }
+
+        private void SetSnapShot(int index)
+        {
+            indiceSnapShot[index] = new SnapshotBusqueda
+            {
+                Keyword = tbKeyword.Text,
+                Campo = cbCampo.SelectedValue,
+                Estado = cbEstado.SelectedValue,
+                FechaInicial = dpInicial.SelectedDate,
+                FechaFinal = dpFinal.SelectedDate,
+                Periodo = cbPeriodo.SelectedValue,
+                Presicion = cbPresicion.SelectedValue,
+                Origen = cbOrigenDatos.SelectedValue,
+                Sector = cbSector.SelectedValue,
+                ResultadoBusqueda = ListaResultadoBusqueda
+            };
+        }
+
+        private void AplicarSnapShot(int index)
+        {
+            SnapshotBusqueda sba = indiceSnapShot[index];
+            tbKeyword.Text = sba.Keyword;
+            cbCampo.SelectedValue = sba.Campo;
+            cbOrigenDatos.SelectedValue = sba.Origen;
+            cbEstado.SelectedValue = sba.Estado;
+            cbPeriodo.SelectedValue = sba.Periodo;
+            cbPresicion.SelectedValue = sba.Periodo;
+            cbSector.SelectedValue = sba.Sector;
+            dpInicial.SelectedDate = sba.FechaInicial;
+            dpFinal.SelectedDate = sba.FechaFinal;
+            ListaResultadoBusqueda = sba.ResultadoBusqueda;
+            AsignarLista();
         }
 
         private void CbPeriodo_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1246,10 +1334,38 @@ namespace RMAInforme
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
+            currentIndex -= 1;
+            AplicarSnapShot(currentIndex);
         }
 
         private void BtnForward_Click(object sender, RoutedEventArgs e)
         {
+            currentIndex += 1;
+            AplicarSnapShot(currentIndex);
+        }
+
+        internal class SnapshotBusqueda
+        {
+            public string Keyword { get; set; }
+
+            public object Campo { get; set; }
+
+            public object Presicion { get; set; }
+
+            public object Origen { get; set; }
+
+            public object Estado { get; set; }
+
+            public object Periodo { get; set; }
+
+            public object Sector { get; set; }
+
+            public DateTime? FechaInicial { get; set; }
+
+            public DateTime? FechaFinal { get; set; }
+
+            public IQueryable<Cambio> ResultadoBusqueda { get; set; }
+
         }
     }
 }

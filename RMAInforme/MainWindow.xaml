@@ -24,11 +24,11 @@
 
                     <StackPanel VerticalAlignment="Center" Margin="10,0,0,0" HorizontalAlignment="Left">
 
-                        <Button Name="btnBack" Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" ToolTip="MaterialDesignFloatingActionMiniLightButton" Margin="0" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Click="BtnBack_Click" >
+                        <Button Name="btnBack" IsEnabled="False"  Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" ToolTip="MaterialDesignFloatingActionMiniLightButton" Margin="0" Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Center" Click="BtnBack_Click" >
                             <materialDesign:PackIcon Kind="ArrowBack" Height="24" Width="24" />
                         </Button>
 
-                        <Button Name="btnForward" Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" ToolTip="MaterialDesignFloatingActionMiniLightButton" Margin="0,5,0,0" Width="32" Height="32" HorizontalAlignment="Right" VerticalAlignment="Center" Click="BtnForward_Click" >
+                        <Button Name="btnForward" IsEnabled="False" Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" ToolTip="MaterialDesignFloatingActionMiniLightButton" Margin="0,5,0,0" Width="32" Height="32" HorizontalAlignment="Right" VerticalAlignment="Center" Click="BtnForward_Click" >
                             <materialDesign:PackIcon Kind="ArrowRight" Height="24" Width="24" />
                         </Button>
 
