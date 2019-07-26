@@ -27,7 +27,7 @@ namespace RMAInforme
         private DateTime? periodoInicialSeleccionado;
         private DateTime? periodoFinalSeleccionado;
         private string sectorSeleccionado;
-        private string nombreServidor = "DESKTOP";
+        private string nombreServidor = "LT-DAN";
         private int keywordINT;
         private string stringBusqueda;
         private string estadoSeleccionado;
@@ -48,8 +48,8 @@ namespace RMAInforme
         private string nombreRelevante1;
         private string nombreRelevante2;
         private string nombreRelevante3;
-        private SnapshotBusqueda[] indiceSnapShot;
-        private int currentIndex = -1;
+        private SnapshotBusqueda[] SnapShotArray = new SnapshotBusqueda[6];
+        private int currentIndex;
 
         public MainWindow()
         {
@@ -62,7 +62,7 @@ namespace RMAInforme
 
         private void CompletarCombos()
         {
-            List<string> ListaCampos = new List<string> { "ARTICULO", "CATEGORIA", "CODIGO DE FALLA", "DESCRIPCION DE FALLA", "DESCRIPCION DE ITEM", "ESTADO DE CAMBIO", "ID DE CAMBIO", "LEGAJO", "MODELO", "NUMERO DE PEDIDO", "OBSERVACIONES", "PRODUCTO", "TECNICO", "VERSION" };
+            List<string> ListaCampos = new List<string> { "ARTICULO", "CATEGORIA", "CODIGO DE FALLA", "DESCRIPCION DE FALLA", "DESCRIPCION DE ITEM", "ID DE CAMBIO", "LEGAJO", "MODELO", "NUMERO DE PEDIDO", "OBSERVACIONES", "PRODUCTO", "TECNICO", "VERSION" };
             List<string> ListaPresicion = new List<string> { "EXACTA", "SIMILAR" };
             List<string> ListaOrigenDatos = new List<string> { "BASE DE DATOS", "LISTA ACTUAL" };
             List<string> ListaPeriodo = new List<string> { "HOY", "COMPLETO", "ESPECIFICAR" };
@@ -155,6 +155,7 @@ namespace RMAInforme
                             Mensaje = { Text = "No hay resultados con ese sector." }
                         };
                         DialogHost.Show(MessageDialog, "mainDialogHost");
+                        return;
                     }
 
                     if (ListaResultadoBusqueda == null)
@@ -165,12 +166,12 @@ namespace RMAInforme
                             Mensaje = { Text = "No hay resultados con ese estado." }
                         };
                         DialogHost.Show(MessageDialog, "mainDialogHost");
+                        return;
                     }
-                    else
-                    {
-                        AsignarLista();
-                        CrearNuevoSnapshot();
-                    }
+
+                    CrearNuevoSnapshot();
+                    AsignarLista();
+
                 }
             }
         }
@@ -579,45 +580,46 @@ namespace RMAInforme
 
         private void CrearNuevoSnapshot()
         {
-            int iss = indiceSnapShot.Length;
-
-            if (iss == 0)
+            using (new WaitCursor())
             {
-                SetSnapShot(0);
-            }
 
-            if (iss < 5)
-            {
-                iss += 1;
-                SetSnapShot(iss);
-            }
+                indexlabel.Content = "crearnuevoinicio: " + " current: " + currentIndex.ToString();
+                countlabel.Content = "crearnuevoinicio: " + "count: " + SnapShotArray.Count(c => c != null).ToString();
 
-            if (iss == 5)
-            {
-                for (int i = 4; i > 0; i--)
+
+                if (currentIndex >= 5)
                 {
-                    indiceSnapShot[i] = indiceSnapShot[i + 1];
+                    for (int i = 0; i < 4; i++)
+                    {
+                        SnapShotArray[i] = SnapShotArray[i + 1];
+                    }
+
+                    SnapShotArray[5] = GetSnapShot();
+                    currentIndex = SnapShotArray.Count(c => c != null);
+                }
+                else
+                {
+                    SnapShotArray[currentIndex + 1] = GetSnapShot();
+                    currentIndex = SnapShotArray.Count(c => c != null);
+
+                    if (currentIndex < SnapShotArray.Count(c => c != null))
+                    {
+                        for (int i = currentIndex + 1; i < 4; i++)
+                        {
+                            SnapShotArray[i] = null;
+                        }
+                    }
                 }
 
-                SetSnapShot(5); 
-            }
-
-
-            currentIndex = iss;
-            if (currentIndex > 0)
-            {
-                btnBack.IsEnabled = true;
-            }
-
-            if (currentIndex == 5)
-            {
-                btnForward.IsEnabled = false;
+                SetBackForwardButtonsStatus();
+                indexlabel.Content = "crearnuevo: " + " current: " + currentIndex.ToString();
+                countlabel.Content = "crearnuevo: " + "count: " + SnapShotArray.Count(c => c != null).ToString();
             }
         }
 
-        private void SetSnapShot(int index)
+        private SnapshotBusqueda GetSnapShot()
         {
-            indiceSnapShot[index] = new SnapshotBusqueda
+            var snapshot = new SnapshotBusqueda
             {
                 Keyword = tbKeyword.Text,
                 Campo = cbCampo.SelectedValue,
@@ -630,22 +632,27 @@ namespace RMAInforme
                 Sector = cbSector.SelectedValue,
                 ResultadoBusqueda = ListaResultadoBusqueda
             };
+
+            return snapshot;
         }
 
-        private void AplicarSnapShot(int index)
+        private void SetSnapShot(int index)
         {
-            SnapshotBusqueda sba = indiceSnapShot[index];
+            SnapshotBusqueda sba = SnapShotArray[index];
+
             tbKeyword.Text = sba.Keyword;
             cbCampo.SelectedValue = sba.Campo;
             cbOrigenDatos.SelectedValue = sba.Origen;
             cbEstado.SelectedValue = sba.Estado;
             cbPeriodo.SelectedValue = sba.Periodo;
-            cbPresicion.SelectedValue = sba.Periodo;
+            cbPresicion.SelectedValue = sba.Presicion;
             cbSector.SelectedValue = sba.Sector;
             dpInicial.SelectedDate = sba.FechaInicial;
             dpFinal.SelectedDate = sba.FechaFinal;
             ListaResultadoBusqueda = sba.ResultadoBusqueda;
+
             AsignarLista();
+            SetBackForwardButtonsStatus();
         }
 
         private void CbPeriodo_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1332,16 +1339,49 @@ namespace RMAInforme
             DialogHost.Show(new StatsWindow(stringBusqueda, cantidadResultadoBusqueda, cantidadTotalItem, cantidadTodosFechaBusqueda, cantidadTotalTodos, cantidadRelevante1, cantidadRelevante2, cantidadRelevante3, nombreRelevante1, nombreRelevante2, nombreRelevante3, campoChart3, FechaInicial, FechaFinal));
         }
 
+        private void SetBackForwardButtonsStatus()
+        {
+            if (currentIndex == 1)
+            {
+                btnBack.IsEnabled = false;
+            }
+            else
+            {
+                btnBack.IsEnabled = true;
+            }
+
+            if (currentIndex == SnapShotArray.Count(c => c != null))
+            {
+                btnForward.IsEnabled = false;
+            }
+            else
+            {
+                btnForward.IsEnabled = true;
+            }
+        }
+
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
             currentIndex -= 1;
-            AplicarSnapShot(currentIndex);
+
+            SetSnapShot(currentIndex);
+
+            SetBackForwardButtonsStatus();
+
+            indexlabel.Content = "backbtn: " + " current: " + currentIndex.ToString();
+            countlabel.Content = "backbtn: " + "count: " + SnapShotArray.Count(c => c != null).ToString();
         }
 
         private void BtnForward_Click(object sender, RoutedEventArgs e)
         {
             currentIndex += 1;
-            AplicarSnapShot(currentIndex);
+
+            SetSnapShot(currentIndex);
+
+            SetBackForwardButtonsStatus();
+
+            indexlabel.Content = "forwarbtn: " + " current: " + currentIndex.ToString();
+            countlabel.Content = "forwarbtn: " + "count: " + SnapShotArray.Count(c => c != null).ToString();
         }
 
         internal class SnapshotBusqueda
