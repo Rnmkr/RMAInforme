@@ -58,6 +58,12 @@ namespace RMAInforme
             mainWindow.Title = "INFORME RMA" + " / " + Assembly.GetExecutingAssembly().GetName().Version;
 
             CompletarCombos();
+
+
+            indexVarLabel.Content = "0: " + " indexVar: " + currentIndex.ToString();
+            itemsNumberLabel.Content = "0: " + "itemsNumber: " + SnapShotArray.Count(c => c != null).ToString();
+            arrayIndexLabel.Content = "0: " + "arrayIndex: " + SnapShotArray.Count(c => c == null).ToString();
+
         }
 
         private void CompletarCombos()
@@ -169,9 +175,28 @@ namespace RMAInforme
                         return;
                     }
 
-                    CrearNuevoSnapshot();
-                    AsignarLista();
+                    cantidadResultadoBusqueda = ListaResultadoBusqueda.Count();
 
+                    if (cantidadResultadoBusqueda > 0)
+                    {
+                        CrearNuevoSnapshot();
+                        AsignarLista();
+                    }
+                    else
+                    {
+                        var MessageDialog = new MessageDialog
+                        {
+                            Titulo = { Text = "Oops!" },
+                            Mensaje = { Text = "No se encontraron registros." }
+                        };
+
+                        tbStatusBarText.Text = "0 registros encontrados.";
+
+                        DialogHost.Show(MessageDialog, "mainDialogHost");
+
+
+                        return;
+                    }
                 }
             }
         }
@@ -550,23 +575,8 @@ namespace RMAInforme
 
         private void AsignarLista()
         {
-            cantidadResultadoBusqueda = ListaResultadoBusqueda.Count();
-
-            if (cantidadResultadoBusqueda > 0)
-            {
-                dgListaCambios.ItemsSource = ListaResultadoBusqueda.ToList();
-                stringBusqueda = tbKeyword.Text;
-            }
-            else
-            {
-                var MessageDialog = new MessageDialog
-                {
-                    Titulo = { Text = "Oops!" },
-                    Mensaje = { Text = "No se encontraron registros." }
-                };
-                DialogHost.Show(MessageDialog, "mainDialogHost");
-                return;
-            }
+            dgListaCambios.ItemsSource = ListaResultadoBusqueda.ToList();
+            stringBusqueda = tbKeyword.Text;
 
             if (cantidadResultadoBusqueda == 1)
             {
@@ -583,19 +593,20 @@ namespace RMAInforme
             using (new WaitCursor())
             {
 
-                indexlabel.Content = "crearnuevoinicio: " + " current: " + currentIndex.ToString();
-                countlabel.Content = "crearnuevoinicio: " + "count: " + SnapShotArray.Count(c => c != null).ToString();
+                indexVarLabel.Content = "1: " + " indexVar: " + currentIndex.ToString();
+                itemsNumberLabel.Content = "1: " + "itemsNumber: " + SnapShotArray.Count(c => c != null).ToString();
+                arrayIndexLabel.Content = "1: " + "arrayIndex: " + SnapShotArray.Count(c => c == null).ToString();
 
 
-                if (currentIndex >= 5)
+                if (SnapShotArray.Count(c => c == null) < 2)
                 {
                     for (int i = 0; i < 4; i++)
                     {
                         SnapShotArray[i] = SnapShotArray[i + 1];
                     }
 
+                    currentIndex = 5;
                     SnapShotArray[5] = GetSnapShot();
-                    currentIndex = SnapShotArray.Count(c => c != null);
                 }
                 else
                 {
@@ -604,16 +615,18 @@ namespace RMAInforme
 
                     if (currentIndex < SnapShotArray.Count(c => c != null))
                     {
-                        for (int i = currentIndex + 1; i < 4; i++)
+                        for (int i = currentIndex; i < 4; i++)
                         {
-                            SnapShotArray[i] = null;
+                            SnapShotArray[i + 1] = null;
                         }
                     }
                 }
 
                 SetBackForwardButtonsStatus();
-                indexlabel.Content = "crearnuevo: " + " current: " + currentIndex.ToString();
-                countlabel.Content = "crearnuevo: " + "count: " + SnapShotArray.Count(c => c != null).ToString();
+
+                indexVarLabel.Content = "2: " + " indexVar: " + currentIndex.ToString();
+                itemsNumberLabel.Content = "2: " + "itemsNumber: " + SnapShotArray.Count(c => c != null).ToString();
+                arrayIndexLabel.Content = "2: " + "arrayIndex: " + SnapShotArray.Count(c => c == null).ToString();
             }
         }
 
@@ -1368,8 +1381,9 @@ namespace RMAInforme
 
             SetBackForwardButtonsStatus();
 
-            indexlabel.Content = "backbtn: " + " current: " + currentIndex.ToString();
-            countlabel.Content = "backbtn: " + "count: " + SnapShotArray.Count(c => c != null).ToString();
+            indexVarLabel.Content = "bb: " + " indexVar: " + currentIndex.ToString();
+            itemsNumberLabel.Content = "bb: " + "itemsNumber: " + SnapShotArray.Count(c => c != null).ToString();
+            arrayIndexLabel.Content = "bb: " + "arrayIndex: " + SnapShotArray.Count(c => c == null).ToString();
         }
 
         private void BtnForward_Click(object sender, RoutedEventArgs e)
@@ -1380,8 +1394,9 @@ namespace RMAInforme
 
             SetBackForwardButtonsStatus();
 
-            indexlabel.Content = "forwarbtn: " + " current: " + currentIndex.ToString();
-            countlabel.Content = "forwarbtn: " + "count: " + SnapShotArray.Count(c => c != null).ToString();
+            indexVarLabel.Content = "ff: " + " indexVar: " + currentIndex.ToString();
+            itemsNumberLabel.Content = "ff: " + "itemsNumber: " + SnapShotArray.Count(c => c != null).ToString();
+            arrayIndexLabel.Content = "ff: " + "arrayIndex: " + SnapShotArray.Count(c => c == null).ToString();
         }
 
         internal class SnapshotBusqueda

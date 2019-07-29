@@ -72,8 +72,9 @@
                     <Button Name="btnExportarPlanilla" Width="64" Height="64" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Click="BtnExportarPlanilla_Click" >
                         <materialDesign:PackIcon Kind="FileExcel" Opacity="1" Width="32" Height="32" />
                     </Button>
-                    <Label Name="indexlabel" Content="Label" HorizontalAlignment="Left" Margin="974,5,0,0" VerticalAlignment="Top"/>
-                    <Label Name="countlabel" Content="Label" HorizontalAlignment="Left" Margin="974,36,0,0" VerticalAlignment="Top"/>
+                    <Label Name="indexVarLabel" Content="Label" HorizontalAlignment="Left" Margin="974,5,0,0" VerticalAlignment="Top"/>
+                    <Label Name="itemsNumberLabel" Content="Label" HorizontalAlignment="Left" Margin="974,36,0,0" VerticalAlignment="Top"/>
+                    <Label Name="arrayIndexLabel" Content="Label" HorizontalAlignment="Left" Margin="974,62,0,0" VerticalAlignment="Top"/>
 
                 </Grid>
 
@@ -83,7 +84,7 @@
 
                         <DataGrid.Columns>
 
-                            <DataGridTextColumn Header="Nro. Cambio" Binding="{Binding IdCambio}"/>
+                            <DataGridTextColumn Header="ID de Cambio" Binding="{Binding IdCambio}"/>
 
                             <DataGridTextColumn Header="Legajo" Binding="{Binding Legajo}"/>
 
@@ -91,25 +92,25 @@
 
                             <DataGridTextColumn Header="Fecha de Cambio" Binding="{Binding FechaCambio}"/>
 
-                            <DataGridTextColumn Header="Numero de Pedido" Binding="{Binding NumeroPedido}"/>
+                            <DataGridTextColumn Header="Número de Pedido" Binding="{Binding NumeroPedido}"/>
 
                             <DataGridTextColumn Header="Producto" Binding="{Binding Producto}"/>
 
                             <DataGridTextColumn Header="Modelo" Binding="{Binding Modelo}"/>
 
-                            <DataGridTextColumn Header="Articulo" Binding="{Binding ArticuloItem}"/>
+                            <DataGridTextColumn Header="Artículo" Binding="{Binding ArticuloItem}"/>
 
-                            <DataGridTextColumn Header="Categoria" Binding="{Binding CategoriaItem}"/>
+                            <DataGridTextColumn Header="Categoría" Binding="{Binding CategoriaItem}"/>
 
-                            <DataGridTextColumn Header="Descripcion" Binding="{Binding DescripcionItem}"/>
+                            <DataGridTextColumn Header="Descripción" Binding="{Binding DescripcionItem}"/>
 
-                            <DataGridTextColumn Header="Version" Binding="{Binding VersionItem}"/>
+                            <DataGridTextColumn Header="Versión" Binding="{Binding VersionItem}"/>
 
                             <DataGridTextColumn Header="Sector" Binding="{Binding SectorCambio}"/>
 
                             <DataGridTextColumn Header="Codigo de Falla" Binding="{Binding CodigoFalla}"/>
 
-                            <DataGridTextColumn Header="Descripcion de Falla" Binding="{Binding DescripcionFalla}"/>
+                            <DataGridTextColumn Header="Descripción de Falla" Binding="{Binding DescripcionFalla}"/>
 
                             <DataGridTextColumn Header="Observaciones" Binding="{Binding Observaciones}"/>
 
@@ -117,7 +118,7 @@
 
                             <DataGridTextColumn Header="Supervisor" Binding="{Binding SupervisorModificacion}"/>
 
-                            <DataGridTextColumn Header="Fecha de Modificacion" Binding="{Binding FechaModificacion}"/>
+                            <DataGridTextColumn Header="Fecha de Modificación" Binding="{Binding FechaModificacion}"/>
 
                         </DataGrid.Columns>
 
