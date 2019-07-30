@@ -27,7 +27,7 @@ namespace RMAInforme
         private DateTime? periodoInicialSeleccionado;
         private DateTime? periodoFinalSeleccionado;
         private string sectorSeleccionado;
-        private string nombreServidor = "LT-DAN";
+        private string nombreServidor = "BUBBA";
         private int keywordINT;
         private string stringBusqueda;
         private string estadoSeleccionado;
@@ -1366,7 +1366,7 @@ namespace RMAInforme
 
         private void SetBackForwardButtonsStatus()
         {
-            if (currentIndex == 1)
+            if (currentIndex == 0)
             {
                 btnBack.IsEnabled = false;
             }
