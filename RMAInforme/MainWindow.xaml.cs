@@ -611,6 +611,8 @@ namespace RMAInforme
                             SnapShotArray[i + 1] = null;
                         }
                     }
+
+                    arrayItemsCount = SnapShotArray.Count(c => c != null) - 1;
                 }
 
                 SetBackForwardButtonsStatus();
