@@ -72,9 +72,6 @@
                     <Button Name="btnExportarPlanilla" Width="64" Height="64" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Click="BtnExportarPlanilla_Click" >
                         <materialDesign:PackIcon Kind="FileExcel" Opacity="1" Width="32" Height="32" />
                     </Button>
-                    <Label Name="indexVarLabel" Content="Label" HorizontalAlignment="Left" Margin="974,5,0,0" VerticalAlignment="Top"/>
-                    <Label Name="itemsNumberLabel" Content="Label" HorizontalAlignment="Left" Margin="974,36,0,0" VerticalAlignment="Top"/>
-                    <Label Name="arrayIndexLabel" Content="Label" HorizontalAlignment="Left" Margin="974,62,0,0" VerticalAlignment="Top"/>
 
                 </Grid>
 
