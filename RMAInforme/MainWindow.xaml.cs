@@ -49,7 +49,8 @@ namespace RMAInforme
         private string nombreRelevante2;
         private string nombreRelevante3;
         private SnapshotBusqueda[] SnapShotArray = new SnapshotBusqueda[6];
-        private int currentIndex;
+        private int currentIndex = -1;
+        private int arrayItemsCount;
 
         public MainWindow()
         {
@@ -597,10 +598,11 @@ namespace RMAInforme
                 itemsNumberLabel.Content = "1: " + "itemsNumber: " + SnapShotArray.Count(c => c != null).ToString();
                 arrayIndexLabel.Content = "1: " + "arrayIndex: " + SnapShotArray.Count(c => c == null).ToString();
 
+                
 
-                if (SnapShotArray.Count(c => c == null) < 2)
+                if (currentIndex >= 5)
                 {
-                    for (int i = 0; i < 4; i++)
+                    for (int i = 0; i < 5; i++)
                     {
                         SnapShotArray[i] = SnapShotArray[i + 1];
                     }
@@ -610,12 +612,14 @@ namespace RMAInforme
                 }
                 else
                 {
-                    SnapShotArray[currentIndex + 1] = GetSnapShot();
-                    currentIndex = SnapShotArray.Count(c => c != null);
+                    currentIndex += 1;
+                    SnapShotArray[currentIndex] = GetSnapShot();
 
-                    if (currentIndex < SnapShotArray.Count(c => c != null))
+                    arrayItemsCount = SnapShotArray.Count(c => c != null) - 1;
+
+                    if (currentIndex < arrayItemsCount)
                     {
-                        for (int i = currentIndex; i < 4; i++)
+                        for (int i = currentIndex; i < 5; i++)
                         {
                             SnapShotArray[i + 1] = null;
                         }
@@ -651,18 +655,26 @@ namespace RMAInforme
 
         private void SetSnapShot(int index)
         {
-            SnapshotBusqueda sba = SnapShotArray[index];
+            try
+            {
+                SnapshotBusqueda sba = SnapShotArray[index];
+                tbKeyword.Text = sba.Keyword;
+                cbCampo.SelectedValue = sba.Campo;
+                cbOrigenDatos.SelectedValue = sba.Origen;
+                cbEstado.SelectedValue = sba.Estado;
+                cbPeriodo.SelectedValue = sba.Periodo;
+                cbPresicion.SelectedValue = sba.Presicion;
+                cbSector.SelectedValue = sba.Sector;
+                dpInicial.SelectedDate = sba.FechaInicial;
+                dpFinal.SelectedDate = sba.FechaFinal;
+                ListaResultadoBusqueda = sba.ResultadoBusqueda;
+            }
+            catch (Exception e)
+            {
 
-            tbKeyword.Text = sba.Keyword;
-            cbCampo.SelectedValue = sba.Campo;
-            cbOrigenDatos.SelectedValue = sba.Origen;
-            cbEstado.SelectedValue = sba.Estado;
-            cbPeriodo.SelectedValue = sba.Periodo;
-            cbPresicion.SelectedValue = sba.Presicion;
-            cbSector.SelectedValue = sba.Sector;
-            dpInicial.SelectedDate = sba.FechaInicial;
-            dpFinal.SelectedDate = sba.FechaFinal;
-            ListaResultadoBusqueda = sba.ResultadoBusqueda;
+                MessageBox.Show(e.ToString() + " index: " + index.ToString());
+            }
+
 
             AsignarLista();
             SetBackForwardButtonsStatus();
@@ -1363,7 +1375,7 @@ namespace RMAInforme
                 btnBack.IsEnabled = true;
             }
 
-            if (currentIndex == SnapShotArray.Count(c => c != null))
+            if (currentIndex == arrayItemsCount)
             {
                 btnForward.IsEnabled = false;
             }
