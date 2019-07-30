@@ -59,12 +59,6 @@ namespace RMAInforme
             mainWindow.Title = "INFORME RMA" + " / " + Assembly.GetExecutingAssembly().GetName().Version;
 
             CompletarCombos();
-
-
-            indexVarLabel.Content = "0: " + " indexVar: " + currentIndex.ToString();
-            itemsNumberLabel.Content = "0: " + "itemsNumber: " + SnapShotArray.Count(c => c != null).ToString();
-            arrayIndexLabel.Content = "0: " + "arrayIndex: " + SnapShotArray.Count(c => c == null).ToString();
-
         }
 
         private void CompletarCombos()
@@ -593,13 +587,6 @@ namespace RMAInforme
         {
             using (new WaitCursor())
             {
-
-                indexVarLabel.Content = "1: " + " indexVar: " + currentIndex.ToString();
-                itemsNumberLabel.Content = "1: " + "itemsNumber: " + SnapShotArray.Count(c => c != null).ToString();
-                arrayIndexLabel.Content = "1: " + "arrayIndex: " + SnapShotArray.Count(c => c == null).ToString();
-
-                
-
                 if (currentIndex >= 5)
                 {
                     for (int i = 0; i < 5; i++)
@@ -628,9 +615,6 @@ namespace RMAInforme
 
                 SetBackForwardButtonsStatus();
 
-                indexVarLabel.Content = "2: " + " indexVar: " + currentIndex.ToString();
-                itemsNumberLabel.Content = "2: " + "itemsNumber: " + SnapShotArray.Count(c => c != null).ToString();
-                arrayIndexLabel.Content = "2: " + "arrayIndex: " + SnapShotArray.Count(c => c == null).ToString();
             }
         }
 
@@ -1392,10 +1376,6 @@ namespace RMAInforme
             SetSnapShot(currentIndex);
 
             SetBackForwardButtonsStatus();
-
-            indexVarLabel.Content = "bb: " + " indexVar: " + currentIndex.ToString();
-            itemsNumberLabel.Content = "bb: " + "itemsNumber: " + SnapShotArray.Count(c => c != null).ToString();
-            arrayIndexLabel.Content = "bb: " + "arrayIndex: " + SnapShotArray.Count(c => c == null).ToString();
         }
 
         private void BtnForward_Click(object sender, RoutedEventArgs e)
@@ -1405,10 +1385,6 @@ namespace RMAInforme
             SetSnapShot(currentIndex);
 
             SetBackForwardButtonsStatus();
-
-            indexVarLabel.Content = "ff: " + " indexVar: " + currentIndex.ToString();
-            itemsNumberLabel.Content = "ff: " + "itemsNumber: " + SnapShotArray.Count(c => c != null).ToString();
-            arrayIndexLabel.Content = "ff: " + "arrayIndex: " + SnapShotArray.Count(c => c == null).ToString();
         }
 
         internal class SnapshotBusqueda
