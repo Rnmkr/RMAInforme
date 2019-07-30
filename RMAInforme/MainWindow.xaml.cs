@@ -1265,7 +1265,7 @@ namespace RMAInforme
             cantidadTotalTodos = context.Cambio.Select(s => s).Count();
 
             List<string> relevantes = listaMismo
-                    .GroupBy(g => g.Modelo)
+                    .GroupBy(g => g.Producto)
                     .OrderByDescending(o => o.Count())
                     .Take(3)
                     .Select(s => s.Key).ToList();
@@ -1289,7 +1289,7 @@ namespace RMAInforme
             }
             else
             {
-                cantidadRelevante1 = listaMismo.Where(w => w.Modelo == nombreRelevante1).Count();
+                cantidadRelevante1 = listaMismo.Where(w => w.Producto == nombreRelevante1).Count();
             }
 
             if (nombreRelevante2 == "N/A")
@@ -1298,7 +1298,7 @@ namespace RMAInforme
             }
             else
             {
-                cantidadRelevante2 = listaMismo.Where(w => w.Modelo == nombreRelevante2).Count();
+                cantidadRelevante2 = listaMismo.Where(w => w.Producto == nombreRelevante2).Count();
             }
 
             if (nombreRelevante3 == "N/A")
@@ -1307,7 +1307,7 @@ namespace RMAInforme
             }
             else
             {
-                cantidadRelevante3 = listaMismo.Where(w => w.Modelo == nombreRelevante3).Count();
+                cantidadRelevante3 = listaMismo.Where(w => w.Producto == nombreRelevante3).Count();
             }
 
             campoChart3 = "MODELOS";
