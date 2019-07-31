@@ -27,7 +27,7 @@ namespace RMAInforme
         private DateTime? periodoInicialSeleccionado;
         private DateTime? periodoFinalSeleccionado;
         private string sectorSeleccionado;
-        private string nombreServidor = "DESKTOP";
+        private string nombreServidor = "BUBBA";
         private int keywordINT;
         private string stringBusqueda;
         private string estadoSeleccionado;
@@ -570,6 +570,7 @@ namespace RMAInforme
 
         private void AsignarLista()
         {
+            cantidadResultadoBusqueda = ListaResultadoBusqueda.Count();
             dgListaCambios.ItemsSource = ListaResultadoBusqueda.ToList();
             stringBusqueda = tbKeyword.Text;
 
@@ -660,7 +661,6 @@ namespace RMAInforme
 
                 MessageBox.Show(e.ToString() + " index: " + index.ToString());
             }
-
 
             AsignarLista();
             SetBackForwardButtonsStatus();
@@ -958,7 +958,6 @@ namespace RMAInforme
                 DialogHost.Show(MessageDialog, "mainDialogHost");
                 return;
             }
-
 
             FechaInicial = periodoInicialSeleccionado.Value.ToShortDateString();
             FechaFinal = periodoFinalSeleccionado.Value.AddDays(-1).ToShortDateString();
