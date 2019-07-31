@@ -570,7 +570,7 @@ namespace RMAInforme
 
         private void AsignarLista()
         {
-            cantidadResultadoBusqueda = ListaResultadoBusqueda.Count();
+            cantidadResultadoBusqueda = ListaResultadoBusqueda.Count(); //
             dgListaCambios.ItemsSource = ListaResultadoBusqueda.ToList();
             stringBusqueda = tbKeyword.Text;
 
