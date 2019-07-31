@@ -27,7 +27,7 @@ namespace RMAInforme
         private DateTime? periodoInicialSeleccionado;
         private DateTime? periodoFinalSeleccionado;
         private string sectorSeleccionado;
-        private string nombreServidor = "BUBBA";
+        private string nombreServidor = "DESKTOP";
         private int keywordINT;
         private string stringBusqueda;
         private string estadoSeleccionado;
@@ -963,7 +963,7 @@ namespace RMAInforme
             FechaInicial = periodoInicialSeleccionado.Value.ToShortDateString();
             FechaFinal = periodoFinalSeleccionado.Value.AddDays(-1).ToShortDateString();
 
-            switch (campoSeleccionado)
+            switch (cbCampo.SelectedValue.ToString())
             {
                 case "ARTICULO":
                     using (new WaitCursor())
@@ -1312,7 +1312,7 @@ namespace RMAInforme
                 cantidadRelevante3 = listaMismo.Where(w => w.Producto == nombreRelevante3).Count();
             }
 
-            campoChart3 = "MODELOS";
+            campoChart3 = "PRODUCTOS";
         }
 
         private void CargarValoresTecnico()
@@ -1373,20 +1373,26 @@ namespace RMAInforme
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
-            currentIndex -= 1;
+            using (new WaitCursor())
+            {
+                currentIndex -= 1;
 
-            SetSnapShot(currentIndex);
+                SetSnapShot(currentIndex);
 
-            SetBackForwardButtonsStatus();
+                SetBackForwardButtonsStatus();
+            }
         }
 
         private void BtnForward_Click(object sender, RoutedEventArgs e)
         {
-            currentIndex += 1;
+            using (new WaitCursor())
+            {
+                currentIndex += 1;
 
-            SetSnapShot(currentIndex);
+                SetSnapShot(currentIndex);
 
-            SetBackForwardButtonsStatus();
+                SetBackForwardButtonsStatus();
+            }
         }
 
         internal class SnapshotBusqueda
