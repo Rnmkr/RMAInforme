@@ -27,7 +27,7 @@ namespace RMAInforme
         private DateTime? periodoInicialSeleccionado;
         private DateTime? periodoFinalSeleccionado;
         private string sectorSeleccionado;
-        private string nombreServidor = "BUBBA";
+        private string nombreServidor = "LT-DAN";
         private int keywordINT;
         private string stringBusqueda;
         private string estadoSeleccionado;
@@ -45,6 +45,7 @@ namespace RMAInforme
         private string campoChart3;
         private string FechaInicial;
         private string FechaFinal;
+        private string periodoEstadisticas;
         private string nombreRelevante1;
         private string nombreRelevante2;
         private string nombreRelevante3;
@@ -117,7 +118,16 @@ namespace RMAInforme
                     {
                         if (PingServer(nombreServidor))
                         {
-                            BuscarBaseDatos();
+                            try
+                            {
+                                BuscarBaseDatos();
+                            }
+                            catch (System.ArgumentNullException)
+                            {
+
+                                throw;
+                            }
+
                         }
                     }
                     else
@@ -959,8 +969,33 @@ namespace RMAInforme
                 return;
             }
 
-            FechaInicial = periodoInicialSeleccionado.Value.ToShortDateString();
-            FechaFinal = periodoFinalSeleccionado.Value.AddDays(-1).ToShortDateString();
+            string periodo = cbPeriodo.SelectedValue.ToString();
+            switch (periodo)
+            {
+
+                case "HOY":
+                    periodoEstadisticas = "EN EL DIA DE HOY";
+                    break;
+
+                case "COMPLETO":
+                    periodoEstadisticas = "DESDE INICIO DE BASE DE DATOS (01/01/2018)";
+                    break;
+
+                case "ESPECIFICAR":
+                    periodoEstadisticas = "ENTRE " + periodoInicialSeleccionado.Value.ToShortDateString() + " Y " + periodoFinalSeleccionado.Value.AddDays(-1).ToShortDateString();
+                    break;
+
+
+                default:
+                    periodoEstadisticas = "EN EL MES DE " + periodo;
+                    break;
+            }
+
+            if (tbKeyword.Text == "*")
+            {
+                CargarValoresBusquedaConWildcard();
+                return;
+            }
 
             switch (cbCampo.SelectedValue.ToString())
             {
@@ -1021,6 +1056,22 @@ namespace RMAInforme
                     DialogHost.Show(MessageDialog, "mainDialogHost");
                     break;
             }
+        }
+
+        private void CargarValoresBusquedaConWildcard()
+        {
+            if (ListaResultadoBusqueda == null || ListaResultadoBusqueda.Count() < 1)
+            {
+                var MessageDialog = new MessageDialog
+                {
+                    Titulo = { Text = "Oops!" },
+                    Mensaje = { Text = "Datos insuficientes para mostrar estadísticas." }
+                };
+                DialogHost.Show(MessageDialog, "mainDialogHost");
+                return;
+            }
+
+            DialogHost.Show(new StatsWildcard());
         }
 
         private void CargarValoresArticulo()
@@ -1346,7 +1397,7 @@ namespace RMAInforme
                 return;
             }
 
-            DialogHost.Show(new StatsWindow(stringBusqueda, cantidadResultadoBusqueda, cantidadTotalItem, cantidadTodosFechaBusqueda, cantidadTotalTodos, cantidadRelevante1, cantidadRelevante2, cantidadRelevante3, nombreRelevante1, nombreRelevante2, nombreRelevante3, campoChart3, FechaInicial, FechaFinal));
+            DialogHost.Show(new StatsWindow(stringBusqueda, cantidadResultadoBusqueda, cantidadTotalItem, cantidadTodosFechaBusqueda, cantidadTotalTodos, cantidadRelevante1, cantidadRelevante2, cantidadRelevante3, nombreRelevante1, nombreRelevante2, nombreRelevante3, campoChart3, periodoEstadisticas));
         }
 
         private void SetBackForwardButtonsStatus()

@@ -23,14 +23,13 @@ namespace RMAInforme
         private int cantidadRelevante2;
         private int cantidadRelevante3;
         private string campoChart3;
-        private string FechaInicial;
-        private string FechaFinal;
+        private string periodoEstadisticas;
         private string nombreRelevante1;
         private string nombreRelevante2;
         private string nombreRelevante3;
         private string keyword;
 
-        public StatsWindow(string keyword, int cantidadResultadoBusqueda, int cantidadTotalItem, int cantidadTodosFechaBusqueda, int cantidadTotalTodos, int cantidadRelevante1, int cantidadRelevante2, int cantidadRelevante3, string nombreRelevante1, string nombreRelevante2, string nombreRelevante3, string campoChart3, string FechaInicial, string FechaFinal)
+        public StatsWindow(string keyword, int cantidadResultadoBusqueda, int cantidadTotalItem, int cantidadTodosFechaBusqueda, int cantidadTotalTodos, int cantidadRelevante1, int cantidadRelevante2, int cantidadRelevante3, string nombreRelevante1, string nombreRelevante2, string nombreRelevante3, string campoChart3, string periodoEstadisticas)
         {
             InitializeComponent();
 
@@ -42,14 +41,14 @@ namespace RMAInforme
             this.cantidadRelevante2 = cantidadRelevante2;
             this.cantidadRelevante3 = cantidadRelevante3;
             this.campoChart3 = campoChart3;
-            this.FechaInicial = FechaInicial;
-            this.FechaFinal = FechaFinal;
+            this.periodoEstadisticas = periodoEstadisticas;
             this.nombreRelevante1 = nombreRelevante1;
             this.nombreRelevante2 = nombreRelevante2;
             this.nombreRelevante3 = nombreRelevante3;
             this.keyword = keyword;
             
             PointLabel = chartPoint => string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation, Brushes.Black);
+            PointLabelCart = chartPoint => string.Format("{0}", chartPoint.Y);
 
             CargarChart1();
             CargarChart2();
@@ -64,18 +63,6 @@ namespace RMAInforme
             {
                 new PieSeries
                 {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(cantidadResultadoBusqueda) },
-                    DataLabels = true,
-                    Foreground = Brushes.Black,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 12,
-                    LabelPoint = PointLabel,
-                    LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "'" + keyword + "'"
-                },
-
-                new PieSeries
-                {
                     Values = new ChartValues<ObservableValue> { new ObservableValue(restoFecha) },
                     DataLabels = true,
                     Foreground = Brushes.Black,
@@ -84,10 +71,22 @@ namespace RMAInforme
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
                     Title = "OTROS PRODUCTOS"
+                },
+
+                new PieSeries
+                {
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(cantidadResultadoBusqueda) },
+                    DataLabels = true,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 12,
+                    LabelPoint = PointLabel,
+                    LabelPosition = PieLabelPosition.InsideSlice,
+                    Title = "'" + keyword + "'"
                 }
             };
 
-            Chart1Label.Text = "EN TOTAL SE REGISTRARON " + cantidadTodosFechaBusqueda + " CAMBIOS" + Environment.NewLine + "ENTRE " + FechaInicial + " Y " + FechaFinal;
+            Chart1Label.Text = "EN TOTAL SE REGISTRARON " + cantidadTodosFechaBusqueda + " CAMBIOS" + Environment.NewLine + periodoEstadisticas;
             PieChart1.Series = Piechart1;
         }
 
@@ -103,18 +102,6 @@ namespace RMAInforme
             {
                 new PieSeries
                 {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(cantidadResultadoBusqueda) },
-                    DataLabels = true,
-                    Foreground = Brushes.Black,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 12,
-                    LabelPoint = PointLabel,
-                    LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "'" + keyword + "'" + " ENTRE " + FechaInicial + " Y " + FechaFinal
-
-                },
-                new PieSeries
-                {
                     Values = new ChartValues<ObservableValue> { new ObservableValue(restoMismo) },
                     DataLabels = true,
                     Foreground = Brushes.Black,
@@ -123,6 +110,19 @@ namespace RMAInforme
                     LabelPoint = PointLabel,
                     LabelPosition = PieLabelPosition.InsideSlice,
                     Title = "RESTO DEL TOTAL DE '" + keyword + "'"
+                },
+
+                new PieSeries
+                {
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(cantidadResultadoBusqueda) },
+                    DataLabels = true,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 12,
+                    LabelPoint = PointLabel,
+                    LabelPosition = PieLabelPosition.InsideSlice,
+                    Title = "'" + keyword + "'" + periodoEstadisticas
+
                 }
             };
 
@@ -132,61 +132,194 @@ namespace RMAInforme
 
         private void CargarChart3()
         {
-            int sumaRelevantes = cantidadRelevante1 + cantidadRelevante2 + cantidadRelevante3;
-            int restoRelevantes = cantidadTotalItem - sumaRelevantes;
 
-            SeriesCollection Piechart3 = new SeriesCollection
+            string[] Labels = new[] { "MB 2448", "PA 3759", "MB 1225", "PA 2976", "CO 4588", "CA 5856", "FL 8556", "SKD 1258", "SKD TOP 3716", "MB 2178" };
+            //Formatter = value => value.ToString("N");
+              Func<double, string> Formatter  = value => value.ToString("n");
+
+            SeriesCollection SeriesCollection1 = new SeriesCollection
             {
-                new PieSeries
+                new ColumnSeries
                 {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(cantidadRelevante1) },
-                    DataLabels = true,
-                    Foreground = Brushes.Black,
+                    Title = Labels[0],
+                    Values = new ChartValues<double> { 128 },
+                    LabelPoint = PointLabelCart,
+                    Foreground = Brushes.White,
                     FontFamily = new FontFamily("Consolas"),
-                    FontSize = 12,
-                    LabelPoint = PointLabel,
-                    LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = nombreRelevante1
+                    FontSize = 11,
+                    LabelsPosition = BarLabelPosition.Parallel,
+                    DataLabels = true
                 },
 
-                new PieSeries
+                new ColumnSeries
                 {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(cantidadRelevante2) },
-                    DataLabels = true,
-                    Foreground = Brushes.Black,
+                    Title = Labels[1],
+                    Values = new ChartValues<double> { 114 },
+                    LabelPoint = PointLabelCart,
+                    Foreground = Brushes.White,
                     FontFamily = new FontFamily("Consolas"),
-                    FontSize = 12,
-                    LabelPoint = PointLabel,
-                    LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = nombreRelevante2
+                    FontSize = 11,
+                    LabelsPosition = BarLabelPosition.Parallel,
+                    DataLabels = true
                 },
-                new PieSeries
-                {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(cantidadRelevante3) },
-                    DataLabels = true,
-                    Foreground = Brushes.Black,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 12,
-                    LabelPoint = PointLabel,
-                    LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = nombreRelevante3
 
-                },
-                new PieSeries
+                new ColumnSeries
                 {
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(restoRelevantes) },
-                    DataLabels = true,
-                    Foreground = Brushes.Black,
+                    Title = Labels[2],
+                    Values = new ChartValues<double> { 92 },
+                    LabelPoint = PointLabelCart,
+                    Foreground = Brushes.White,
                     FontFamily = new FontFamily("Consolas"),
-                    FontSize = 12,
-                    LabelPoint = PointLabel,
-                    LabelPosition = PieLabelPosition.InsideSlice,
-                    Title = "RESTO DE " + campoChart3
-                }
+                    FontSize = 11,
+                    LabelsPosition = BarLabelPosition.Parallel,
+                    DataLabels = true
+                },
+
+                new ColumnSeries
+                {
+                    Title = Labels[3],
+                    Values = new ChartValues<double> { 46 },
+                    LabelPoint = PointLabelCart,
+                    Foreground = Brushes.White,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 11,
+                    LabelsPosition = BarLabelPosition.Parallel,
+                    DataLabels = true
+                },
+
+                //new ColumnSeries
+                //{
+                //    Title = Labels[4],
+                //    Values = new ChartValues<double> { 12 },
+                //    LabelPoint = PointLabelCart,
+                //    Foreground = Brushes.White,
+                //    FontFamily = new FontFamily("Consolas"),
+                //    FontSize = 11,
+                //    LabelsPosition = BarLabelPosition.Parallel,
+                //    DataLabels = true
+                //},
+
+                //new ColumnSeries
+                //{
+                //    Title = Labels[5],
+                //    Values = new ChartValues<double> { 12 },
+                //    LabelPoint = PointLabelCart,
+                //    Foreground = Brushes.White,
+                //    FontFamily = new FontFamily("Consolas"),
+                //    FontSize = 11,
+                //    LabelsPosition = BarLabelPosition.Parallel,
+                //    DataLabels = true
+                //},
+
+                //new ColumnSeries
+                //{
+                //    Title = Labels[6],
+                //    Values = new ChartValues<double> { 11 },
+                //    LabelPoint = PointLabelCart,
+                //    Foreground = Brushes.White,
+                //    FontFamily = new FontFamily("Consolas"),
+                //    FontSize = 11,
+                //    LabelsPosition = BarLabelPosition.Parallel,
+                //    DataLabels = true
+                //},
+
+                //new ColumnSeries
+                //{
+                //    Title = Labels[7],
+                //    Values = new ChartValues<double> { 8 },
+                //    LabelPoint = PointLabelCart,
+                //    Foreground = Brushes.White,
+                //    FontFamily = new FontFamily("Consolas"),
+                //    FontSize = 11,
+                //    LabelsPosition = BarLabelPosition.Parallel,
+                //    DataLabels = true
+                //},
+
+                //new ColumnSeries
+                //{
+                //    Title = Labels[8],
+                //    Values = new ChartValues<double> { 5 },
+                //    LabelPoint = PointLabelCart,
+                //    Foreground = Brushes.White,
+                //    FontFamily = new FontFamily("Consolas"),
+                //    FontSize = 11,
+                //    LabelsPosition = BarLabelPosition.Parallel,
+                //    DataLabels = true
+                //},
+
+                //new ColumnSeries
+                //{
+                //    Title = Labels[8],
+                //    Values = new ChartValues<double> { 1 },
+                //    LabelPoint = PointLabelCart,
+                //    Foreground = Brushes.White,
+                //    FontFamily = new FontFamily("Consolas"),
+                //    FontSize = 11,
+                //    LabelsPosition = BarLabelPosition.Parallel,
+                //    DataLabels = true
+                //}
+
             };
 
             Chart3Label.Text = campoChart3 + " DE '" + keyword + "' CON MAS REGISTROS" + Environment.NewLine + "DESDE INICIO DE BASE DE DATOS (01/01/2018)";
-            PieChart3.Series = Piechart3;
+            cartProductos.Series = SeriesCollection1;
+
+            //int sumaRelevantes = cantidadRelevante1 + cantidadRelevante2 + cantidadRelevante3;
+            //int restoRelevantes = cantidadTotalItem - sumaRelevantes;
+
+            //SeriesCollection Piechart3 = new SeriesCollection
+            //{
+            //    new PieSeries
+            //    {
+            //        Values = new ChartValues<ObservableValue> { new ObservableValue(cantidadRelevante1) },
+            //        DataLabels = true,
+            //        Foreground = Brushes.Black,
+            //        FontFamily = new FontFamily("Consolas"),
+            //        FontSize = 12,
+            //        LabelPoint = PointLabel,
+            //        LabelPosition = PieLabelPosition.InsideSlice,
+            //        Title = nombreRelevante1
+            //    },
+
+            //    new PieSeries
+            //    {
+            //        Values = new ChartValues<ObservableValue> { new ObservableValue(cantidadRelevante2) },
+            //        DataLabels = true,
+            //        Foreground = Brushes.Black,
+            //        FontFamily = new FontFamily("Consolas"),
+            //        FontSize = 12,
+            //        LabelPoint = PointLabel,
+            //        LabelPosition = PieLabelPosition.InsideSlice,
+            //        Title = nombreRelevante2
+            //    },
+            //    new PieSeries
+            //    {
+            //        Values = new ChartValues<ObservableValue> { new ObservableValue(cantidadRelevante3) },
+            //        DataLabels = true,
+            //        Foreground = Brushes.Black,
+            //        FontFamily = new FontFamily("Consolas"),
+            //        FontSize = 12,
+            //        LabelPoint = PointLabel,
+            //        LabelPosition = PieLabelPosition.InsideSlice,
+            //        Title = nombreRelevante3
+
+            //    },
+            //    new PieSeries
+            //    {
+            //        Values = new ChartValues<ObservableValue> { new ObservableValue(restoRelevantes) },
+            //        DataLabels = true,
+            //        Foreground = Brushes.Black,
+            //        FontFamily = new FontFamily("Consolas"),
+            //        FontSize = 12,
+            //        LabelPoint = PointLabel,
+            //        LabelPosition = PieLabelPosition.InsideSlice,
+            //        Title = "RESTO DE " + campoChart3
+            //    }
+            //};
+
+            //Chart3Label.Text = campoChart3 + " DE '" + keyword + "' CON MAS REGISTROS" + Environment.NewLine + "DESDE INICIO DE BASE DE DATOS (01/01/2018)";
+            //PieChart3.Series = Piechart3;
+
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
@@ -230,6 +363,7 @@ namespace RMAInforme
         }
 
         public Func<ChartPoint, string> PointLabel { get; set; }
+        public Func<ChartPoint, string> PointLabelCart { get; set; }
     }
 }
 
