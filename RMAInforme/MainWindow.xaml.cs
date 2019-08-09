@@ -46,9 +46,6 @@ namespace RMAInforme
         private string FechaInicial;
         private string FechaFinal;
         private string periodoEstadisticas;
-        private string nombreRelevante1;
-        private string nombreRelevante2;
-        private string nombreRelevante3;
         private SnapshotBusqueda[] SnapShotArray = new SnapshotBusqueda[6];
         private int currentIndex = -1;
         private int arrayItemsCount;
@@ -1102,15 +1099,11 @@ namespace RMAInforme
                 int valor = listaFiltrada.Where(w => w.ArticuloItem == item).Count();
                 IQueryable<Cambio> itemIQ = listaFiltrada.Where(w => w.ArticuloItem == item).Select(s => s).Take(1);
                 Cambio itemS = itemIQ.Single();
-                string itemCut = itemS.DescripcionItem;
-                if (itemCut.Length > 12)
-                {
-                    itemCut = itemCut.Remove(12);
-                }
+                string itemCat = itemS.CategoriaItem;
 
                 Chart1WildSerie.Add(new ColumnSeries
                 {
-                    Title = itemCut,
+                    Title = itemCat + " " + item,
                     Values = new ChartValues<double> { valor },
                     LabelPoint = PointLabelCart,
                     Foreground = Brushes.Black,

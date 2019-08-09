@@ -22,7 +22,7 @@
                 <RowDefinition Height="72"/>
             </Grid.RowDefinitions>
 
-            <GroupBox Header="Top 10 hardware con mas registros en el período" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
+            <GroupBox Header="Top 10 articulos con mas registros en el período" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
                 <Grid Grid.Column="0" Grid.Row="1" Background="Transparent">
 
                     <lvc:CartesianChart Name="cartHardware" LegendLocation="Right" FontSize="11" FontFamily="Consolas">
@@ -37,7 +37,7 @@
                 </Grid>
             </GroupBox>
 
-            <GroupBox Grid.Column="1" Header="Modelos con mas registros en el período" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
+            <GroupBox Grid.Column="1" Header="Top 10 modelos con mas registros en el período" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
                 <Grid Grid.Column="1" Grid.Row="1" Background="Transparent">
                     
                     <lvc:CartesianChart Name="cartModelos" Series="{Binding SeriesCollection}" LegendLocation="Right" FontSize="11" FontFamily="Consolas">
@@ -52,7 +52,7 @@
             </GroupBox>
 
 
-            <GroupBox Grid.Column="2" Header="Productos con mas registros en el período" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
+            <GroupBox Grid.Column="2" Header="Top 10 productos con mas registros en el período" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
                 <Grid Grid.Column="2" Grid.Row="1" Background="Transparent">
 
                     <lvc:CartesianChart Name="cartProductos" Series="{Binding SeriesCollection}" LegendLocation="Right" FontSize="11" FontFamily="Consolas">
