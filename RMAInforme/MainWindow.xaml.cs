@@ -12,6 +12,9 @@ using System.Reflection;
 using MaterialDesignThemes.Wpf;
 using System.Collections.Generic;
 using System.Globalization;
+using LiveCharts;
+using System.Windows.Media;
+using LiveCharts.Wpf;
 
 namespace RMAInforme
 {
@@ -27,7 +30,7 @@ namespace RMAInforme
         private DateTime? periodoInicialSeleccionado;
         private DateTime? periodoFinalSeleccionado;
         private string sectorSeleccionado;
-        private string nombreServidor = "LT-DAN";
+        private string nombreServidor = "BUBBA";
         private int keywordINT;
         private string stringBusqueda;
         private string estadoSeleccionado;
@@ -39,9 +42,6 @@ namespace RMAInforme
         private int cantidadTotalItem;
         private int cantidadTodosFechaBusqueda;
         private int cantidadTotalTodos;
-        private int cantidadRelevante1;
-        private int cantidadRelevante2;
-        private int cantidadRelevante3;
         private string campoChart3;
         private string FechaInicial;
         private string FechaFinal;
@@ -52,6 +52,7 @@ namespace RMAInforme
         private SnapshotBusqueda[] SnapShotArray = new SnapshotBusqueda[6];
         private int currentIndex = -1;
         private int arrayItemsCount;
+        SeriesCollection Chart3Serie;
 
         public MainWindow()
         {
@@ -389,158 +390,171 @@ namespace RMAInforme
         private void FiltrarKeyword()
         {
             string keyword = tbKeyword.Text;
-            switch (campoSeleccionado)
+
+            try
             {
+                switch (campoSeleccionado)
+                {
 
-                case "ARTICULO":
-                    if (precisionSeleccionada == "EXACTA")
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.ArticuloItem == keyword).Select(s => s);
-                    }
-                    else
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.ArticuloItem.Contains(keyword)).Select(s => s);
-                    }
-                    break;
+                    case "ARTICULO":
+                        if (precisionSeleccionada == "EXACTA")
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.ArticuloItem == keyword).Select(s => s);
+                        }
+                        else
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.ArticuloItem.Contains(keyword)).Select(s => s);
+                        }
+                        break;
 
-                case "CATEGORIA":
-                    if (precisionSeleccionada == "EXACTA")
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.CategoriaItem == keyword).Select(s => s);
-                    }
-                    else
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.CategoriaItem.Contains(keyword)).Select(s => s);
-                    }
-                    break;
+                    case "CATEGORIA":
+                        if (precisionSeleccionada == "EXACTA")
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.CategoriaItem == keyword).Select(s => s);
+                        }
+                        else
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.CategoriaItem.Contains(keyword)).Select(s => s);
+                        }
+                        break;
 
-                case "CODIGO DE FALLA":
-                    if (precisionSeleccionada == "EXACTA")
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.CodigoFalla == keyword).Select(s => s);
-                    }
-                    else
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.CodigoFalla.Contains(keyword)).Select(s => s);
-                    }
-                    break;
+                    case "CODIGO DE FALLA":
+                        if (precisionSeleccionada == "EXACTA")
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.CodigoFalla == keyword).Select(s => s);
+                        }
+                        else
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.CodigoFalla.Contains(keyword)).Select(s => s);
+                        }
+                        break;
 
-                case "DESCRIPCION DE FALLA":
-                    if (precisionSeleccionada == "EXACTA")
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.DescripcionFalla == keyword).Select(s => s);
-                    }
-                    else
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.DescripcionFalla.Contains(keyword)).Select(s => s);
-                    }
-                    break;
+                    case "DESCRIPCION DE FALLA":
+                        if (precisionSeleccionada == "EXACTA")
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.DescripcionFalla == keyword).Select(s => s);
+                        }
+                        else
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.DescripcionFalla.Contains(keyword)).Select(s => s);
+                        }
+                        break;
 
-                case "DESCRIPCION DE ITEM":
-                    if (precisionSeleccionada == "EXACTA")
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.DescripcionItem == keyword).Select(s => s);
-                    }
-                    else
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.DescripcionItem.Contains(keyword)).Select(s => s);
-                    }
-                    break;
+                    case "DESCRIPCION DE ITEM":
+                        if (precisionSeleccionada == "EXACTA")
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.DescripcionItem == keyword).Select(s => s);
+                        }
+                        else
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.DescripcionItem.Contains(keyword)).Select(s => s);
+                        }
+                        break;
 
-                case "ESTADO DE CAMBIO":
-                    if (precisionSeleccionada == "EXACTA")
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.EstadoCambio == keyword).Select(s => s);
-                    }
-                    else
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.EstadoCambio.Contains(keyword)).Select(s => s);
-                    }
-                    break;
+                    case "ESTADO DE CAMBIO":
+                        if (precisionSeleccionada == "EXACTA")
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.EstadoCambio == keyword).Select(s => s);
+                        }
+                        else
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.EstadoCambio.Contains(keyword)).Select(s => s);
+                        }
+                        break;
 
-                case "ID DE CAMBIO":
-                    ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.IdCambio == keywordINT).Select(s => s);
-                    break;
+                    case "ID DE CAMBIO":
+                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.IdCambio == keywordINT).Select(s => s);
+                        break;
 
-                case "LEGAJO":
-                    if (precisionSeleccionada == "EXACTA")
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Legajo == keyword).Select(s => s);
-                    }
-                    else
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Legajo.Contains(keyword)).Select(s => s);
-                    }
-                    break;
+                    case "LEGAJO":
+                        if (precisionSeleccionada == "EXACTA")
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Legajo == keyword).Select(s => s);
+                        }
+                        else
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Legajo.Contains(keyword)).Select(s => s);
+                        }
+                        break;
 
-                case "MODELO":
-                    if (precisionSeleccionada == "EXACTA")
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Modelo == keyword).Select(s => s);
-                    }
-                    else
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Modelo.Contains(keyword)).Select(s => s);
-                    }
-                    break;
+                    case "MODELO":
+                        if (precisionSeleccionada == "EXACTA")
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Modelo == keyword).Select(s => s);
+                        }
+                        else
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Modelo.Contains(keyword)).Select(s => s);
+                        }
+                        break;
 
-                case "NUMERO DE PEDIDO":
-                    if (precisionSeleccionada == "EXACTA")
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.NumeroPedido == keyword).Select(s => s);
-                    }
-                    else
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.NumeroPedido.Contains(keyword)).Select(s => s);
-                    }
-                    break;
+                    case "NUMERO DE PEDIDO":
+                        if (precisionSeleccionada == "EXACTA")
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.NumeroPedido == keyword).Select(s => s);
+                        }
+                        else
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.NumeroPedido.Contains(keyword)).Select(s => s);
+                        }
+                        break;
 
-                case "OBSERVACIONES":
-                    if (precisionSeleccionada == "EXACTA")
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Observaciones == keyword).Select(s => s);
-                    }
-                    else
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Observaciones.Contains(keyword)).Select(s => s);
-                    }
-                    break;
+                    case "OBSERVACIONES":
+                        if (precisionSeleccionada == "EXACTA")
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Observaciones == keyword).Select(s => s);
+                        }
+                        else
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Observaciones.Contains(keyword)).Select(s => s);
+                        }
+                        break;
 
-                case "PRODUCTO":
-                    if (precisionSeleccionada == "EXACTA")
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Producto == keyword).Select(s => s);
-                    }
-                    else
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Producto.Contains(keyword)).Select(s => s);
-                    }
-                    break;
+                    case "PRODUCTO":
+                        if (precisionSeleccionada == "EXACTA")
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Producto == keyword).Select(s => s);
+                        }
+                        else
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Producto.Contains(keyword)).Select(s => s);
+                        }
+                        break;
 
-                case "TECNICO":
-                    if (precisionSeleccionada == "EXACTA")
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Tecnico == keyword).Select(s => s);
-                    }
-                    else
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Tecnico.Contains(keyword)).Select(s => s);
-                    }
-                    break;
+                    case "TECNICO":
+                        if (precisionSeleccionada == "EXACTA")
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Tecnico == keyword).Select(s => s);
+                        }
+                        else
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Tecnico.Contains(keyword)).Select(s => s);
+                        }
+                        break;
 
-                case "VERSION":
-                    if (precisionSeleccionada == "EXACTA")
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.VersionItem == keyword).Select(s => s);
-                    }
-                    else
-                    {
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.VersionItem.Contains(keyword)).Select(s => s);
-                    }
-                    break;
+                    case "VERSION":
+                        if (precisionSeleccionada == "EXACTA")
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.VersionItem == keyword).Select(s => s);
+                        }
+                        else
+                        {
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.VersionItem.Contains(keyword)).Select(s => s);
+                        }
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
+                }
+            }
+            catch (System.ArgumentNullException)
+            {
+                var MessageDialog = new MessageDialog
+                {
+                    Titulo = { Text = "Oops!" },
+                    Mensaje = { Text = "No se pudo conectar con el servidor." }
+                };
+                DialogHost.Show(MessageDialog, "mainDialogHost");
             }
         }
 
@@ -974,7 +988,7 @@ namespace RMAInforme
             {
 
                 case "HOY":
-                    periodoEstadisticas = "EN EL DIA DE HOY";
+                    periodoEstadisticas = "DIA DE HOY";
                     break;
 
                 case "COMPLETO":
@@ -987,7 +1001,7 @@ namespace RMAInforme
 
 
                 default:
-                    periodoEstadisticas = "EN EL MES DE " + periodo;
+                    periodoEstadisticas = "MES DE " + periodo + " DE " + DateTime.Today.Year;
                     break;
             }
 
@@ -1071,7 +1085,100 @@ namespace RMAInforme
                 return;
             }
 
-            DialogHost.Show(new StatsWildcard());
+            PointLabelCart = chartPoint => string.Format("{0}", chartPoint.Y);
+
+            IQueryable<Cambio> listaFiltrada;
+            listaFiltrada = ListaResultadoBusqueda.Where(w => w.EstadoCambio == "APROBADO");
+            listaFiltrada = listaFiltrada.Where(w => w.SectorCambio == "PRODUCCION");
+
+            List<string> relevantes1 = listaFiltrada
+                    .GroupBy(g => g.ArticuloItem)
+                    .OrderByDescending(o => o.Count())
+                    .Take(10)
+                    .Select(s => s.Key).ToList();
+            SeriesCollection Chart1WildSerie = new SeriesCollection();
+            foreach (var item in relevantes1)
+            {
+                int valor = listaFiltrada.Where(w => w.ArticuloItem == item).Count();
+                IQueryable<Cambio> itemIQ = listaFiltrada.Where(w => w.ArticuloItem == item).Select(s => s).Take(1);
+                Cambio itemS = itemIQ.Single();
+                string itemCut = itemS.DescripcionItem;
+                if (itemCut.Length > 12)
+                {
+                    itemCut = itemCut.Remove(12);
+                }
+
+                Chart1WildSerie.Add(new ColumnSeries
+                {
+                    Title = itemCut,
+                    Values = new ChartValues<double> { valor },
+                    LabelPoint = PointLabelCart,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 10,
+                    LabelsPosition = BarLabelPosition.Parallel,
+                    DataLabels = true
+                });
+            }
+
+
+            List<string> relevantes2 = listaFiltrada
+                    .GroupBy(g => g.Modelo)
+                    .OrderByDescending(o => o.Count())
+                    .Take(10)
+                    .Select(s => s.Key).ToList();
+            SeriesCollection Chart2WildSerie = new SeriesCollection();
+            foreach (var item in relevantes2)
+            {
+                int valor = listaFiltrada.Where(w => w.Modelo == item).Count();
+                string itemCut = item;
+                if (item.Length > 12)
+                {
+                    itemCut = itemCut.Remove(12);
+                }
+
+                Chart2WildSerie.Add(new ColumnSeries
+                {
+                    Title = itemCut,
+                    Values = new ChartValues<double> { valor },
+                    LabelPoint = PointLabelCart,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 10,
+                    LabelsPosition = BarLabelPosition.Parallel,
+                    DataLabels = true
+                });
+            }
+
+            List<string> relevantes3 = listaFiltrada
+                    .GroupBy(g => g.Producto)
+                    .OrderByDescending(o => o.Count())
+                    .Take(10)
+                    .Select(s => s.Key).ToList();
+            SeriesCollection Chart3WildSerie = new SeriesCollection();
+            foreach (var item in relevantes3)
+            {
+                int valor = listaFiltrada.Where(w => w.Producto == item).Count();
+                string itemCut = item;
+                if (item.Length > 12)
+                {
+                    itemCut = itemCut.Remove(12);
+                }
+
+                Chart3WildSerie.Add(new ColumnSeries
+                {
+                    Title = itemCut,
+                    Values = new ChartValues<double> { valor },
+                    LabelPoint = PointLabelCart,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 10,
+                    LabelsPosition = BarLabelPosition.Parallel,
+                    DataLabels = true
+                });
+            }
+
+            DialogHost.Show(new StatsWildcard(Chart1WildSerie, Chart2WildSerie, Chart3WildSerie, periodoEstadisticas));
         }
 
         private void CargarValoresArticulo()
@@ -1085,47 +1192,34 @@ namespace RMAInforme
             List<string> relevantes = listaMismo
                     .GroupBy(g => g.DescripcionFalla)
                     .OrderByDescending(o => o.Count())
-                    .Take(3)
+                    .Take(10)
                     .Select(s => s.Key).ToList();
 
-            if (relevantes.Count < 3)
+            PointLabelCart = chartPoint => string.Format("{0}", chartPoint.Y);
+            Chart3Serie = new SeriesCollection();
+
+            foreach (var item in relevantes)
             {
-                int Length = (3 - relevantes.Count);
-                for (int i = 0; i < Length; i++)
+                int valor = listaMismo.Where(w => w.DescripcionFalla == item).Count();
+
+                string itemCut = item;
+
+                if (item.Length > 12)
                 {
-                    relevantes.Add("N/A");
+                    itemCut = item.Remove(12);
                 }
-            }
 
-            nombreRelevante1 = relevantes[0];
-            nombreRelevante2 = relevantes[1];
-            nombreRelevante3 = relevantes[2];
-
-            if (nombreRelevante1 == "N/A")
-            {
-                cantidadRelevante1 = 0;
-            }
-            else
-            {
-                cantidadRelevante1 = listaMismo.Where(w => w.DescripcionFalla == nombreRelevante1).Count();
-            }
-
-            if (nombreRelevante2 == "N/A")
-            {
-                cantidadRelevante2 = 0;
-            }
-            else
-            {
-                cantidadRelevante2 = listaMismo.Where(w => w.DescripcionFalla == nombreRelevante2).Count();
-            }
-
-            if (nombreRelevante3 == "N/A")
-            {
-                cantidadRelevante3 = 0;
-            }
-            else
-            {
-                cantidadRelevante3 = listaMismo.Where(w => w.DescripcionFalla == nombreRelevante3).Count();
+                Chart3Serie.Add(new ColumnSeries
+                {
+                    Title = itemCut,
+                    Values = new ChartValues<double> { valor },
+                    LabelPoint = PointLabelCart,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 10,
+                    LabelsPosition = BarLabelPosition.Parallel,
+                    DataLabels = true
+                });
             }
 
             campoChart3 = "FALLAS";
@@ -1142,47 +1236,34 @@ namespace RMAInforme
             List<string> relevantes = listaMismo
                     .GroupBy(g => g.Modelo)
                     .OrderByDescending(o => o.Count())
-                    .Take(3)
+                    .Take(10)
                     .Select(s => s.Key).ToList();
 
-            if (relevantes.Count < 3)
+            PointLabelCart = chartPoint => string.Format("{0}", chartPoint.Y);
+            Chart3Serie = new SeriesCollection();
+
+            foreach (var item in relevantes)
             {
-                int Length = (3 - relevantes.Count);
-                for (int i = 0; i < Length; i++)
+                int valor = listaMismo.Where(w => w.Modelo == item).Count();
+
+                string itemCut = item;
+
+                if (item.Length > 12)
                 {
-                    relevantes.Add("N/A");
+                    itemCut = item.Remove(12);
                 }
-            }
 
-            nombreRelevante1 = relevantes[0];
-            nombreRelevante2 = relevantes[1];
-            nombreRelevante3 = relevantes[2];
-
-            if (nombreRelevante1 == "N/A")
-            {
-                cantidadRelevante1 = 0;
-            }
-            else
-            {
-                cantidadRelevante1 = listaMismo.Where(w => w.Modelo == nombreRelevante1).Count();
-            }
-
-            if (nombreRelevante2 == "N/A")
-            {
-                cantidadRelevante2 = 0;
-            }
-            else
-            {
-                cantidadRelevante2 = listaMismo.Where(w => w.Modelo == nombreRelevante2).Count();
-            }
-
-            if (nombreRelevante3 == "N/A")
-            {
-                cantidadRelevante3 = 0;
-            }
-            else
-            {
-                cantidadRelevante3 = listaMismo.Where(w => w.Modelo == nombreRelevante3).Count();
+                Chart3Serie.Add(new ColumnSeries
+                {
+                    Title = itemCut,
+                    Values = new ChartValues<double> { valor },
+                    LabelPoint = PointLabelCart,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 10,
+                    LabelsPosition = BarLabelPosition.Parallel,
+                    DataLabels = true
+                });
             }
 
             campoChart3 = "MODELOS";
@@ -1199,47 +1280,34 @@ namespace RMAInforme
             List<string> relevantes = listaMismo
                     .GroupBy(g => g.CategoriaItem)
                     .OrderByDescending(o => o.Count())
-                    .Take(3)
+                    .Take(10)
                     .Select(s => s.Key).ToList();
 
-            if (relevantes.Count < 3)
+            PointLabelCart = chartPoint => string.Format("{0}", chartPoint.Y);
+            Chart3Serie = new SeriesCollection();
+
+            foreach (var item in relevantes)
             {
-                int Length = (3 - relevantes.Count);
-                for (int i = 0; i < Length; i++)
+                int valor = listaMismo.Where(w => w.CategoriaItem == item).Count();
+
+                string itemCut = item;
+
+                if (item.Length > 12)
                 {
-                    relevantes.Add("N/A");
+                    itemCut = item.Remove(12);
                 }
-            }
 
-            nombreRelevante1 = relevantes[0];
-            nombreRelevante2 = relevantes[1];
-            nombreRelevante3 = relevantes[2];
-
-            if (nombreRelevante1 == "N/A")
-            {
-                cantidadRelevante1 = 0;
-            }
-            else
-            {
-                cantidadRelevante1 = listaMismo.Where(w => w.CategoriaItem == nombreRelevante1).Count();
-            }
-
-            if (nombreRelevante2 == "N/A")
-            {
-                cantidadRelevante2 = 0;
-            }
-            else
-            {
-                cantidadRelevante2 = listaMismo.Where(w => w.CategoriaItem == nombreRelevante2).Count();
-            }
-
-            if (nombreRelevante3 == "N/A")
-            {
-                cantidadRelevante3 = 0;
-            }
-            else
-            {
-                cantidadRelevante3 = listaMismo.Where(w => w.CategoriaItem == nombreRelevante3).Count();
+                Chart3Serie.Add(new ColumnSeries
+                {
+                    Title = itemCut,
+                    Values = new ChartValues<double> { valor },
+                    LabelPoint = PointLabelCart,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 10,
+                    LabelsPosition = BarLabelPosition.Parallel,
+                    DataLabels = true
+                });
             }
 
             campoChart3 = "CATEGORIAS";
@@ -1256,47 +1324,34 @@ namespace RMAInforme
             List<string> relevantes = listaMismo
                     .GroupBy(g => g.Modelo)
                     .OrderByDescending(o => o.Count())
-                    .Take(3)
+                    .Take(10)
                     .Select(s => s.Key).ToList();
 
-            if (relevantes.Count < 3)
+            PointLabelCart = chartPoint => string.Format("{0}", chartPoint.Y);
+            Chart3Serie = new SeriesCollection();
+
+            foreach (var item in relevantes)
             {
-                int Length = (3 - relevantes.Count);
-                for (int i = 0; i < Length; i++)
+                int valor = listaMismo.Where(w => w.Modelo == item).Count();
+
+                string itemCut = item;
+
+                if (item.Length > 12)
                 {
-                    relevantes.Add("N/A");
+                    itemCut = item.Remove(12);
                 }
-            }
 
-            nombreRelevante1 = relevantes[0];
-            nombreRelevante2 = relevantes[1];
-            nombreRelevante3 = relevantes[2];
-
-            if (nombreRelevante1 == "N/A")
-            {
-                cantidadRelevante1 = 0;
-            }
-            else
-            {
-                cantidadRelevante1 = listaMismo.Where(w => w.Modelo == nombreRelevante1).Count();
-            }
-
-            if (nombreRelevante2 == "N/A")
-            {
-                cantidadRelevante2 = 0;
-            }
-            else
-            {
-                cantidadRelevante2 = listaMismo.Where(w => w.Modelo == nombreRelevante2).Count();
-            }
-
-            if (nombreRelevante3 == "N/A")
-            {
-                cantidadRelevante3 = 0;
-            }
-            else
-            {
-                cantidadRelevante3 = listaMismo.Where(w => w.Modelo == nombreRelevante3).Count();
+                Chart3Serie.Add(new ColumnSeries
+                {
+                    Title = itemCut,
+                    Values = new ChartValues<double> { valor },
+                    LabelPoint = PointLabelCart,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 10,
+                    LabelsPosition = BarLabelPosition.Parallel,
+                    DataLabels = true
+                });
             }
 
             campoChart3 = "MODELOS";
@@ -1319,47 +1374,34 @@ namespace RMAInforme
             List<string> relevantes = listaMismo
                     .GroupBy(g => g.Producto)
                     .OrderByDescending(o => o.Count())
-                    .Take(3)
+                    .Take(10)
                     .Select(s => s.Key).ToList();
 
-            if (relevantes.Count < 3)
+            PointLabelCart = chartPoint => string.Format("{0}", chartPoint.Y);
+            Chart3Serie = new SeriesCollection();
+
+            foreach (var item in relevantes)
             {
-                int Length = (3 - relevantes.Count);
-                for (int i = 0; i < Length; i++)
+                int valor = listaMismo.Where(w => w.Producto == item).Count();
+
+                string itemCut = item;
+
+                if (item.Length > 12)
                 {
-                    relevantes.Add("N/A");
+                    itemCut = item.Remove(12);
                 }
-            }
 
-            nombreRelevante1 = relevantes[0];
-            nombreRelevante2 = relevantes[1];
-            nombreRelevante3 = relevantes[2];
-
-            if (nombreRelevante1 == "N/A")
-            {
-                cantidadRelevante1 = 0;
-            }
-            else
-            {
-                cantidadRelevante1 = listaMismo.Where(w => w.Producto == nombreRelevante1).Count();
-            }
-
-            if (nombreRelevante2 == "N/A")
-            {
-                cantidadRelevante2 = 0;
-            }
-            else
-            {
-                cantidadRelevante2 = listaMismo.Where(w => w.Producto == nombreRelevante2).Count();
-            }
-
-            if (nombreRelevante3 == "N/A")
-            {
-                cantidadRelevante3 = 0;
-            }
-            else
-            {
-                cantidadRelevante3 = listaMismo.Where(w => w.Producto == nombreRelevante3).Count();
+                Chart3Serie.Add(new ColumnSeries
+                {
+                    Title = itemCut,
+                    Values = new ChartValues<double> { valor },
+                    LabelPoint = PointLabelCart,
+                    Foreground = Brushes.Black,
+                    FontFamily = new FontFamily("Consolas"),
+                    FontSize = 10,
+                    LabelsPosition = BarLabelPosition.Parallel,
+                    DataLabels = true
+                });
             }
 
             campoChart3 = "PRODUCTOS";
@@ -1397,7 +1439,7 @@ namespace RMAInforme
                 return;
             }
 
-            DialogHost.Show(new StatsWindow(stringBusqueda, cantidadResultadoBusqueda, cantidadTotalItem, cantidadTodosFechaBusqueda, cantidadTotalTodos, cantidadRelevante1, cantidadRelevante2, cantidadRelevante3, nombreRelevante1, nombreRelevante2, nombreRelevante3, campoChart3, periodoEstadisticas));
+            DialogHost.Show(new StatsWindow(stringBusqueda, cantidadResultadoBusqueda, cantidadTotalItem, cantidadTodosFechaBusqueda, cantidadTotalTodos, Chart3Serie, campoChart3, periodoEstadisticas));
         }
 
         private void SetBackForwardButtonsStatus()
@@ -1468,6 +1510,9 @@ namespace RMAInforme
             public IQueryable<Cambio> ResultadoBusqueda { get; set; }
 
         }
+
+        public Func<ChartPoint, string> PointLabelCart { get; set; }
+
     }
 }
 

@@ -25,9 +25,9 @@
             <GroupBox Header="Top 10 hardware con mas registros en el período" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
                 <Grid Grid.Column="0" Grid.Row="1" Background="Transparent">
 
-                    <lvc:CartesianChart Name="cartHardware" LegendLocation="Left" FontSize="11" FontFamily="Consolas">
+                    <lvc:CartesianChart Name="cartHardware" LegendLocation="Right" FontSize="11" FontFamily="Consolas">
                         <lvc:CartesianChart.AxisX>
-                            <lvc:Axis ></lvc:Axis>
+                            <lvc:Axis Title="REGISTROS" ></lvc:Axis>
                         </lvc:CartesianChart.AxisX>
                         <lvc:CartesianChart.AxisY>
                             <lvc:Axis ></lvc:Axis>
@@ -40,9 +40,9 @@
             <GroupBox Grid.Column="1" Header="Modelos con mas registros en el período" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
                 <Grid Grid.Column="1" Grid.Row="1" Background="Transparent">
                     
-                    <lvc:CartesianChart Name="cartModelos" Series="{Binding SeriesCollection}" LegendLocation="Left" FontSize="11" FontFamily="Consolas">
+                    <lvc:CartesianChart Name="cartModelos" Series="{Binding SeriesCollection}" LegendLocation="Right" FontSize="11" FontFamily="Consolas">
                         <lvc:CartesianChart.AxisX>
-                            <lvc:Axis ></lvc:Axis>
+                            <lvc:Axis Title="REGISTROS" ></lvc:Axis>
                         </lvc:CartesianChart.AxisX>
                         <lvc:CartesianChart.AxisY>
                             <lvc:Axis  ></lvc:Axis>
@@ -55,9 +55,9 @@
             <GroupBox Grid.Column="2" Header="Productos con mas registros en el período" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
                 <Grid Grid.Column="2" Grid.Row="1" Background="Transparent">
 
-                    <lvc:CartesianChart Name="cartProductos" Series="{Binding SeriesCollection}" LegendLocation="Left" FontSize="11" FontFamily="Consolas">
+                    <lvc:CartesianChart Name="cartProductos" Series="{Binding SeriesCollection}" LegendLocation="Right" FontSize="11" FontFamily="Consolas">
                         <lvc:CartesianChart.AxisX>
-                            <lvc:Axis ></lvc:Axis>
+                            <lvc:Axis Title="REGISTROS" ></lvc:Axis>
                         </lvc:CartesianChart.AxisX>
                         <lvc:CartesianChart.AxisY>
                             <lvc:Axis  ></lvc:Axis>
@@ -69,6 +69,7 @@
             
         </Grid>
 
+            <Label Name="lblPeriodo" Content="PERIODO: " FontWeight="Bold" VerticalAlignment="Bottom" FontSize="18" Margin="5,0,120,10" Foreground="DimGray"></Label>
         <Button Name="btnSave" Content="GUARDAR" Click="BtnSave_Click" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Right" Margin="5,5,10,10" VerticalAlignment="Bottom" FontFamily="Consolas" />
 
     </Grid>

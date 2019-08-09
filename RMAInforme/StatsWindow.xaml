@@ -49,10 +49,10 @@
 
             <GroupBox Grid.Column="2" Header="Más relevantes" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="5">
                 <Grid Grid.Column="2" Grid.Row="1" Background="Transparent">
-                    <TextBlock x:Name="Chart3Label" Text="ccc" Margin="5" FontWeight="Bold"  TextWrapping="Wrap" FontSize="11"/>
+                    <TextBlock x:Name="Chart3Label" Text="ccc" Margin="5" FontWeight="Bold" TextWrapping="Wrap" FontSize="11"/>
                     <lvc:CartesianChart Name="cartProductos" Grid.Column="1" Grid.Row="0" Series="{Binding SeriesCollection}" LegendLocation="Right" Margin="5,50,5,5" FontSize="11" FontFamily="Consolas">
                         <lvc:CartesianChart.AxisX>
-                            <lvc:Axis Labels="{x:Null}" />
+                            <lvc:Axis Labels="REGISTROS" />
                         </lvc:CartesianChart.AxisX>
                         <lvc:CartesianChart.AxisY>
                             <lvc:Axis />

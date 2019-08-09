@@ -15,14 +15,19 @@ namespace RMAInforme
 {
     public partial class StatsWildcard : UserControl
     {
-        //public StatsWildcard(string keyword, int cantidadResultadoBusqueda, int cantidadTotalItem, int cantidadTodosFechaBusqueda, int cantidadTotalTodos, int cantidadRelevante1, int cantidadRelevante2, int cantidadRelevante3, string nombreRelevante1, string nombreRelevante2, string nombreRelevante3, string campoChart3, string FechaInicial, string FechaFinal)
-        public StatsWildcard()
+        private SeriesCollection Chart1WildSeries;
+        private SeriesCollection Chart2WildSeries;
+        private SeriesCollection Chart3WildSeries;
+        private string Periodo;
+        public StatsWildcard(SeriesCollection chart1WildSeries, SeriesCollection chart2WildSeries, SeriesCollection chart3WildSeries, string periodo)
         {
             InitializeComponent();
 
-            PointLabel = chartPoint => string.Format("{0}", chartPoint.Y);
-
-
+            this.Chart1WildSeries = chart1WildSeries;
+            this.Chart2WildSeries = chart2WildSeries;
+            this.Chart3WildSeries = chart3WildSeries;
+            this.Periodo = periodo;
+            lblPeriodo.Content = "MOSTRANDO ESTADISTICAS PARA EL PERIODO " + Periodo;
             CargarChart1();
             CargarChart2();
             CargarChart3();
@@ -33,297 +38,16 @@ namespace RMAInforme
 
         private void CargarChart1()
         {
-            Labels = new[] { "MB 2448", "PA 3759", "MB 1225", "PA 2976", "CO 4588", "CA 5856", "FL 8556", "SKD 1258", "SKD TOP 3716", "MB 2178" };
-            //Formatter = value => value.ToString("N");
-            Formatter = value => value.ToString("n");
-
-            SeriesCollection SeriesCollection1 = new SeriesCollection
-            {
-                new ColumnSeries
-                {
-                    Title = Labels[0],
-                    Values = new ChartValues<double> { 128 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-
-                new ColumnSeries
-                {
-                    Title = Labels[1],
-                    Values = new ChartValues<double> { 114 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-
-                new ColumnSeries
-                {
-                    Title = Labels[2],
-                    Values = new ChartValues<double> { 92 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-
-                new ColumnSeries
-                {
-                    Title = Labels[3],
-                    Values = new ChartValues<double> { 46 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-
-                new ColumnSeries
-                {
-                    Title = Labels[4],
-                    Values = new ChartValues<double> { 12 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-
-                new ColumnSeries
-                {
-                    Title = Labels[5],
-                    Values = new ChartValues<double> { 12 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-
-                new ColumnSeries
-                {
-                    Title = Labels[6],
-                    Values = new ChartValues<double> { 11 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-
-                new ColumnSeries
-                {
-                    Title = Labels[7],
-                    Values = new ChartValues<double> { 5 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-
-                new ColumnSeries
-                {
-                    Title = Labels[8],
-                    Values = new ChartValues<double> { 3 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-
-            };
-
-
-            cartHardware.Series = SeriesCollection1;
-            DataContext = this;
-
+            cartHardware.Series = Chart1WildSeries;
         }
         private void CargarChart2()
         {
-            Labels = new[] { "EF21", "R9", "SPANKY", "READY H2", "BITSY XQ", "XS1" };
-            //Formatter = value => value.ToString("N");
-            Formatter = value => value.ToString("n");
-
-            SeriesCollection SeriesCollection2 = new SeriesCollection
-            {
-                new ColumnSeries
-                {
-                    Title = Labels[0],
-                    Values = new ChartValues<double> { 212 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-
-                new ColumnSeries
-                {
-                    Title = Labels[1],
-                    Values = new ChartValues<double> { 145 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-
-                new ColumnSeries
-                {
-                    Title = Labels[2],
-                    Values = new ChartValues<double> { 88 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-
-                new ColumnSeries
-                {
-                    Title = Labels[3],
-                    Values = new ChartValues<double> { 61 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-
-                new ColumnSeries
-                {
-                    Title = Labels[4],
-                    Values = new ChartValues<double> { 36 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-
-                new ColumnSeries
-                {
-                    Title = Labels[5],
-                    Values = new ChartValues<double> { 28 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-
-             };
-
-
-            cartModelos.Series = SeriesCollection2;
-            DataContext = this;
+            cartModelos.Series = Chart2WildSeries;
         }
 
         private void CargarChart3()
         {
-            Labels = new[] { "NOTEBOOK", "ALL IN ONE", "PC", "TABLET", "MINI PC", "2 EN 1"};
-            //Formatter = value => value.ToString("N");
-            Formatter = value => value.ToString("n");
-
-            SeriesCollection SeriesCollection3 = new SeriesCollection
-            {
-                new ColumnSeries
-                {
-                    Title = Labels[0],
-                    Values = new ChartValues<double> { 183 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-
-                new ColumnSeries
-                {
-                    Title = Labels[1],
-                    Values = new ChartValues<double> { 110 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-
-                new ColumnSeries
-                {
-                    Title = Labels[2],
-                    Values = new ChartValues<double> { 92 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-
-                new ColumnSeries
-                {
-                    Title = Labels[3],
-                    Values = new ChartValues<double> { 56 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-
-                new ColumnSeries
-                {
-                    Title = Labels[4],
-                    Values = new ChartValues<double> { 38 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-
-                new ColumnSeries
-                {
-                    Title = Labels[5],
-                    Values = new ChartValues<double> { 24 },
-                    LabelPoint = PointLabel,
-                    Foreground = Brushes.White,
-                    FontFamily = new FontFamily("Consolas"),
-                    FontSize = 11,
-                    LabelsPosition = BarLabelPosition.Parallel,
-                    DataLabels = true
-                },
-            };
-
-            cartProductos.Series = SeriesCollection3;
-            DataContext = this;
+            cartProductos.Series = Chart3WildSeries;
         }
 
 
@@ -368,12 +92,3 @@ namespace RMAInforme
         }
     }
 }
-////adding series will update and animate the chart automatically
-//SeriesCollection.Add(new ColumnSeries
-//{
-//    Title = "2016",
-//    Values = new ChartValues<double> { 11, 56, 42 }
-//});
-
-////also adding values updates and animates the chart automatically
-//SeriesCollection[1].Values.Add(48d);
