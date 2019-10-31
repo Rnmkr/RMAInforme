@@ -1,15 +1,10 @@
-﻿using RMAInforme.DataAccessLayer;
-using System;
-using System.Linq;
+﻿using System;
 using System.Windows;
 using LiveCharts;
-using LiveCharts.Wpf;
-using LiveCharts.Defaults;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.IO;
 using System.Windows.Controls;
-using System.Collections.Generic;
 
 namespace RMAInforme
 {

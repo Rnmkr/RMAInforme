@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        mc:Ignorable="d"
-        Width="1000"
-        Height="500" >
+        mc:Ignorable="d" Width="1000" Height="500">
 
-        <ScrollViewer>
-    <Grid>
+    <!--<ScrollViewer HorizontalScrollBarVisibility="Visible">-->
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid Width="1000" Height="500">
+
             <Grid Name="grillita" Background="WhiteSmoke">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -67,7 +67,8 @@
             </Grid>
 
             <Button Name="btnSave" Content="GUARDAR" Click="BtnSave_Click" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Right" Margin="5,5,10,10" VerticalAlignment="Bottom" FontFamily="Consolas" />
-    </Grid>
-        </ScrollViewer>
-    
+        </Grid>
+    </ScrollViewer>
+    <!--</ScrollViewer>-->
+
 </UserControl>

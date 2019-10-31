@@ -903,12 +903,12 @@ namespace RMAInforme
                     DialogHost.Show(MessageDialog, "mainDialogHost");
 
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     var MessageDialog = new MessageDialog
                     {
                         Titulo = { Text = "Oops!" },
-                        Mensaje = { Text = "Ocurrió un error intentando guardar el archivo." }
+                        Mensaje = { Text = "Ocurrió un error intentando guardar el archivo." + " " + e.ToString()}
                     };
                     DialogHost.Show(MessageDialog, "mainDialogHost");
                 }

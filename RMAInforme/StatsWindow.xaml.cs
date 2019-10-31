@@ -1,6 +1,4 @@
-﻿using RMAInforme.DataAccessLayer;
-using System;
-using System.Linq;
+﻿using System;
 using System.Windows;
 using LiveCharts;
 using LiveCharts.Wpf;
@@ -8,12 +6,11 @@ using LiveCharts.Defaults;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.IO;
-using System.Windows.Controls;
-using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace RMAInforme
 {
-    public partial class StatsWindow : UserControl
+    public partial class StatsWindow : System.Windows.Controls.UserControl
     {
         private int cantidadResultadoBusqueda;
         private int cantidadTotalItem;
@@ -28,6 +25,14 @@ namespace RMAInforme
         public StatsWindow(string keyword, int cantidadResultadoBusqueda, int cantidadTotalItem, int cantidadTodosFechaBusqueda, int cantidadTotalTodos, SeriesCollection chart3Serie, string campoChart3, string periodoEstadisticas)
         {
             InitializeComponent();
+
+            int primaryWidth = Screen.PrimaryScreen.Bounds.Width;
+
+            if (primaryWidth < 1367)
+            {
+                this.MaxWidth = 720;
+                this.MaxHeight = 480;
+            }
 
             this.cantidadResultadoBusqueda = cantidadResultadoBusqueda;
             this.cantidadTotalItem = cantidadTotalItem;
@@ -144,11 +149,11 @@ namespace RMAInforme
                 try
                 {
                     RenderTargetBitmap(filename);
-                    MessageBox.Show("El archivo se guardó en: " + Environment.NewLine + filename, "Estadisticas de búsqueda", MessageBoxButton.OK, MessageBoxImage.Information);
+                    System.Windows.MessageBox.Show("El archivo se guardó en: " + Environment.NewLine + filename, "Estadisticas de búsqueda", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Error guardando el archivo: " + Environment.NewLine + filename, "Estadisticas de búsqueda", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    System.Windows.MessageBox.Show("Error guardando el archivo: " + Environment.NewLine + filename, "Estadisticas de búsqueda", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }
