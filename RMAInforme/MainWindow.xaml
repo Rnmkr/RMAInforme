@@ -61,15 +61,15 @@
 
                     <DatePicker Name="dpFinal" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" IsEnabled="False" materialDesign:HintAssist.Hint="FINAL"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="140" Margin="525,0,0,5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Height="40"/>
 
-                    <Button Name="btnCancelarCambio" Width="64" Height="64" HorizontalAlignment="Right" Click="BtnCancelarCambioAsync_Click" VerticalAlignment="Center" Margin="0,0,149,0" >
+                    <Button Name="btnCancelarCambio" Width="43" Height="35" HorizontalAlignment="Left" Click="BtnCancelarCambioAsync_Click" VerticalAlignment="Center" Margin="675,50,0,5" Padding="2" HorizontalContentAlignment="Center" >
                         <materialDesign:PackIcon Kind="Cancel" Opacity="1" Width="32" Height="32" />
                     </Button>
 
-                    <Button Name="btnEstadisticas" Width="64" Height="64" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,79,0" Click="BtnEstadisticas_Click" >
+                    <Button Name="btnEstadisticas" Width="45" Height="35" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="770,50,0,5" Click="BtnEstadisticas_Click" Padding="0" >
                         <materialDesign:PackIcon Kind="ChartPie" Opacity="1" Width="32" Height="32" />
                     </Button>
 
-                    <Button Name="btnExportarPlanilla" Width="64" Height="64" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" Click="BtnExportarPlanilla_Click" >
+                    <Button Name="btnExportarPlanilla" Width="42" Height="35" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="723,50,0,5" Click="BtnExportarPlanilla_Click" Padding="0" >
                         <materialDesign:PackIcon Kind="FileExcel" Opacity="1" Width="32" Height="32" />
                     </Button>
 
