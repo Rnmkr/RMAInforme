@@ -15,6 +15,8 @@ using System.Globalization;
 using LiveCharts;
 using System.Windows.Media;
 using LiveCharts.Wpf;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace RMAInforme
 {
@@ -58,6 +60,7 @@ namespace RMAInforme
             mainWindow.Title = "INFORME RMA" + " / " + Assembly.GetExecutingAssembly().GetName().Version;
 
             CompletarCombos();
+
         }
 
         private void CompletarCombos()
@@ -83,22 +86,45 @@ namespace RMAInforme
             cbEstado.ItemsSource = ListaEstados;
         }
 
-        private void BtnBuscar_Click(object sender, RoutedEventArgs e)
+        private async void BtnBuscar_Click(object sender, RoutedEventArgs e)
         {
-            IniciarBusqueda();
+            //IniciarBusqueda();
+
+            var progressDialog = new ProgressDialog();
+            await Task.Run(async () => {
+                MessageBox.Show("pepe, rompe pepe!");
+                }); ;
+                await IniciarBusqueda();
+
+            //await DialogHost.Show(progressDialog, "mainDialogHost");
+            //var x2 = await App.Current.Dispatcher.InvokeAsync(async () => IniciarBusqueda());
+
+            //var progressDialog = new ProgressDialog();
+            //DialogHost.Show(progressDialog, "mainDialogHost",
+            //    new DialogOpenedEventHandler(async (object sndr, DialogOpenedEventArgs args) =>
+            //        {
+            //            DialogSession session = args.Session;
+            //            await 
+            //            session.Close();
+            //        }));
         }
 
-        private void TbSearchBox_KeyDown(object sender, KeyEventArgs e)
+        private void CerrarDialogo()
+        {
+            dHost.IsOpen = false;
+        }
+        private async void TbSearchBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                IniciarBusqueda();
+                await IniciarBusqueda();
             }
         }
 
-        private void IniciarBusqueda()
+        private async Task IniciarBusqueda()
         {
-            if (ComprobarOpciones())
+            bool esValido = await ComprobarOpciones();
+            if (esValido)
             {
                 using (new WaitCursor())
                 {
@@ -118,7 +144,7 @@ namespace RMAInforme
                         {
                             try
                             {
-                                BuscarBaseDatos();
+                                await BuscarBaseDatos();
                             }
                             catch (System.ArgumentNullException)
                             {
@@ -130,17 +156,17 @@ namespace RMAInforme
                     }
                     else
                     {
-                        BuscarLocal();
+                        await BuscarLocal();
                     }
 
                     if (keyword != "*")
                     {
-                        FiltrarKeyword();
+                        await FiltrarKeyword();
                     }
 
                     if (ListaResultadoBusqueda != null)
                     {
-                        FiltrarSector();
+                        await FiltrarSector();
                     }
                     else
                     {
@@ -149,12 +175,13 @@ namespace RMAInforme
                             Titulo = { Text = "Oops!" },
                             Mensaje = { Text = "No hay resultados con ese keyword." }
                         };
-                        DialogHost.Show(MessageDialog, "mainDialogHost");
+
+                        await DialogHost.Show(MessageDialog, "mainDialogHost");
                     }
 
                     if (ListaResultadoBusqueda != null)
                     {
-                        FiltrarEstado();
+                        await FiltrarEstado();
                     }
                     else
                     {
@@ -163,7 +190,8 @@ namespace RMAInforme
                             Titulo = { Text = "Oops!" },
                             Mensaje = { Text = "No hay resultados con ese sector." }
                         };
-                        DialogHost.Show(MessageDialog, "mainDialogHost");
+
+                        await DialogHost.Show(MessageDialog, "mainDialogHost");
                         return;
                     }
 
@@ -174,7 +202,7 @@ namespace RMAInforme
                             Titulo = { Text = "Oops!" },
                             Mensaje = { Text = "No hay resultados con ese estado." }
                         };
-                        DialogHost.Show(MessageDialog, "mainDialogHost");
+                        await DialogHost.Show(MessageDialog, "mainDialogHost");
                         return;
                     }
 
@@ -182,11 +210,14 @@ namespace RMAInforme
 
                     if (cantidadResultadoBusqueda > 0)
                     {
-                        CrearNuevoSnapshot();
-                        AsignarLista();
+                        await CrearNuevoSnapshot();
+                        await AsignarLista();
+
                     }
                     else
                     {
+
+
                         var MessageDialog = new MessageDialog
                         {
                             Titulo = { Text = "Oops!" },
@@ -195,16 +226,16 @@ namespace RMAInforme
 
                         tbStatusBarText.Text = "0 registros encontrados.";
 
-                        DialogHost.Show(MessageDialog, "mainDialogHost");
-
+                        await DialogHost.Show(MessageDialog, "mainDialogHost");
 
                         return;
                     }
                 }
             }
+
         }
 
-        private bool ComprobarOpciones()
+        private async Task<bool> ComprobarOpciones()
         {
             if (cbCampo.SelectedValue == null)
             {
@@ -213,7 +244,7 @@ namespace RMAInforme
                     Titulo = { Text = "Oops!" },
                     Mensaje = { Text = "Seleccione un campo para la búsqueda." }
                 };
-                DialogHost.Show(MessageDialog, "mainDialogHost");
+                await DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
             }
 
@@ -224,7 +255,7 @@ namespace RMAInforme
                     Titulo = { Text = "Oops!" },
                     Mensaje = { Text = "Seleccione la presición para la búsqueda." }
                 };
-                DialogHost.Show(MessageDialog, "mainDialogHost");
+                await DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
             }
 
@@ -235,7 +266,7 @@ namespace RMAInforme
                     Titulo = { Text = "Oops!" },
                     Mensaje = { Text = "Seleccione origen de datos para la búsqueda." }
                 };
-                DialogHost.Show(MessageDialog, "mainDialogHost");
+                await DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
             }
 
@@ -246,7 +277,7 @@ namespace RMAInforme
                     Titulo = { Text = "Oops!" },
                     Mensaje = { Text = "Seleccione periodo para la búsqueda." }
                 };
-                DialogHost.Show(MessageDialog, "mainDialogHost");
+                await DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
             }
 
@@ -257,7 +288,7 @@ namespace RMAInforme
                     Titulo = { Text = "Oops!" },
                     Mensaje = { Text = "Seleccione periodo para la búsqueda." }
                 };
-                DialogHost.Show(MessageDialog, "mainDialogHost");
+                await DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
             }
 
@@ -268,7 +299,7 @@ namespace RMAInforme
                     Titulo = { Text = "Oops!" },
                     Mensaje = { Text = "La fecha inicial no puede ser mayor a la final." }
                 };
-                DialogHost.Show(MessageDialog, "mainDialogHost");
+                await DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
             }
 
@@ -280,7 +311,7 @@ namespace RMAInforme
                     Titulo = { Text = "Oops!" },
                     Mensaje = { Text = "Seleccione un sector para la búsqueda." }
                 };
-                DialogHost.Show(MessageDialog, "mainDialogHost");
+                await DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
             }
 
@@ -291,7 +322,7 @@ namespace RMAInforme
                     Titulo = { Text = "Oops!" },
                     Mensaje = { Text = "Seleccione estado para la búsqueda." }
                 };
-                DialogHost.Show(MessageDialog, "mainDialogHost");
+                await DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
             }
 
@@ -304,7 +335,7 @@ namespace RMAInforme
                     Titulo = { Text = "Oops!" },
                     Mensaje = { Text = "Ingrese un valor o 'keyword' para la búsqueda." }
                 };
-                DialogHost.Show(MessageDialog, "mainDialogHost");
+                await DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
             }
             tbKeyword.Text = tbKeyword.Text.ToUpper();
@@ -323,7 +354,7 @@ namespace RMAInforme
                         Titulo = { Text = "Oops!" },
                         Mensaje = { Text = "El ID de cambio debe ser en formato numérico." }
                     };
-                    DialogHost.Show(MessageDialog, "mainDialogHost");
+                    await DialogHost.Show(MessageDialog, "mainDialogHost");
                     return false;
                 }
             }
@@ -343,7 +374,7 @@ namespace RMAInforme
                         Titulo = { Text = "Oops!" },
                         Mensaje = { Text = "El código de falla debe ser en formato numérico." }
                     };
-                    DialogHost.Show(MessageDialog, "mainDialogHost");
+                    await DialogHost.Show(MessageDialog, "mainDialogHost");
                     return false;
                 }
             }
@@ -363,7 +394,7 @@ namespace RMAInforme
                         Titulo = { Text = "Oops!" },
                         Mensaje = { Text = "El legajo debe ser en formato numérico." }
                     };
-                    DialogHost.Show(MessageDialog, "mainDialogHost");
+                    await DialogHost.Show(MessageDialog, "mainDialogHost");
                     return false;
                 }
             }
@@ -371,320 +402,358 @@ namespace RMAInforme
             return true;
         }
 
-        private void BuscarBaseDatos()
+        private async Task BuscarBaseDatos()
         {
-            context = new PRDB();
-            ListaResultadoBusqueda = context.Cambio.Where(w => w.FechaCambio >= periodoInicialSeleccionado && w.FechaCambio <= periodoFinalSeleccionado).Select(s => s);
-            cantidadTodosFechaBusqueda = ListaResultadoBusqueda.Count();
+            await Task.Run(() =>
+            {
+                context = new PRDB();
+                ListaResultadoBusqueda = context.Cambio.Where(w => w.FechaCambio >= periodoInicialSeleccionado && w.FechaCambio <= periodoFinalSeleccionado).Select(s => s);
+                cantidadTodosFechaBusqueda = ListaResultadoBusqueda.Count();
+            });
+
         }
 
-        private void BuscarLocal()
+        private async Task BuscarLocal()
         {
-            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.FechaCambio >= periodoInicialSeleccionado && w.FechaCambio <= periodoFinalSeleccionado).Select(s => s);
-            cantidadTodosFechaBusqueda = ListaResultadoBusqueda.Count();
+            await Task.Run(() =>
+            {
+                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.FechaCambio >= periodoInicialSeleccionado && w.FechaCambio <= periodoFinalSeleccionado).Select(s => s);
+                cantidadTodosFechaBusqueda = ListaResultadoBusqueda.Count();
+            });
         }
 
-        private void FiltrarKeyword()
+        private async Task FiltrarKeyword()
         {
             string keyword = tbKeyword.Text;
-
-            try
+            await Task.Run(() =>
             {
-                switch (campoSeleccionado)
+                try
                 {
+                    switch (campoSeleccionado)
+                    {
 
-                    case "ARTICULO":
-                        if (precisionSeleccionada == "EXACTA")
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.ArticuloItem == keyword).Select(s => s);
-                        }
-                        else
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.ArticuloItem.Contains(keyword)).Select(s => s);
-                        }
+                        case "ARTICULO":
+                            if (precisionSeleccionada == "EXACTA")
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.ArticuloItem == keyword).Select(s => s);
+                            }
+                            else
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.ArticuloItem.Contains(keyword)).Select(s => s);
+                            }
+                            break;
+
+                        case "CATEGORIA":
+                            if (precisionSeleccionada == "EXACTA")
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.CategoriaItem == keyword).Select(s => s);
+                            }
+                            else
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.CategoriaItem.Contains(keyword)).Select(s => s);
+                            }
+                            break;
+
+                        case "CODIGO DE FALLA":
+                            if (precisionSeleccionada == "EXACTA")
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.CodigoFalla == keyword).Select(s => s);
+                            }
+                            else
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.CodigoFalla.Contains(keyword)).Select(s => s);
+                            }
+                            break;
+
+                        case "DESCRIPCION DE FALLA":
+                            if (precisionSeleccionada == "EXACTA")
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.DescripcionFalla == keyword).Select(s => s);
+                            }
+                            else
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.DescripcionFalla.Contains(keyword)).Select(s => s);
+                            }
+                            break;
+
+                        case "DESCRIPCION DE ITEM":
+                            if (precisionSeleccionada == "EXACTA")
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.DescripcionItem == keyword).Select(s => s);
+                            }
+                            else
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.DescripcionItem.Contains(keyword)).Select(s => s);
+                            }
+                            break;
+
+                        case "ESTADO DE CAMBIO":
+                            if (precisionSeleccionada == "EXACTA")
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.EstadoCambio == keyword).Select(s => s);
+                            }
+                            else
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.EstadoCambio.Contains(keyword)).Select(s => s);
+                            }
+                            break;
+
+                        case "ID DE CAMBIO":
+                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.IdCambio == keywordINT).Select(s => s);
+                            break;
+
+                        case "LEGAJO":
+                            if (precisionSeleccionada == "EXACTA")
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Legajo == keyword).Select(s => s);
+                            }
+                            else
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Legajo.Contains(keyword)).Select(s => s);
+                            }
+                            break;
+
+                        case "MODELO":
+                            if (precisionSeleccionada == "EXACTA")
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Modelo == keyword).Select(s => s);
+                            }
+                            else
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Modelo.Contains(keyword)).Select(s => s);
+                            }
+                            break;
+
+                        case "NUMERO DE PEDIDO":
+                            if (precisionSeleccionada == "EXACTA")
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.NumeroPedido == keyword).Select(s => s);
+                            }
+                            else
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.NumeroPedido.Contains(keyword)).Select(s => s);
+                            }
+                            break;
+
+                        case "OBSERVACIONES":
+                            if (precisionSeleccionada == "EXACTA")
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Observaciones == keyword).Select(s => s);
+                            }
+                            else
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Observaciones.Contains(keyword)).Select(s => s);
+                            }
+                            break;
+
+                        case "PRODUCTO":
+                            if (precisionSeleccionada == "EXACTA")
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Producto == keyword).Select(s => s);
+                            }
+                            else
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Producto.Contains(keyword)).Select(s => s);
+                            }
+                            break;
+
+                        case "TECNICO":
+                            if (precisionSeleccionada == "EXACTA")
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Tecnico == keyword).Select(s => s);
+                            }
+                            else
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Tecnico.Contains(keyword)).Select(s => s);
+                            }
+                            break;
+
+                        case "VERSION":
+                            if (precisionSeleccionada == "EXACTA")
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.VersionItem == keyword).Select(s => s);
+                            }
+                            else
+                            {
+                                ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.VersionItem.Contains(keyword)).Select(s => s);
+                            }
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+                catch (System.ArgumentNullException)
+                {
+                    var MessageDialog = new MessageDialog
+                    {
+                        Titulo = { Text = "Oops!" },
+                        Mensaje = { Text = "No se pudo conectar con el servidor." }
+                    };
+                    DialogHost.Show(MessageDialog, "mainDialogHost");
+                }
+            });
+        }
+
+        private async Task FiltrarSector()
+        {
+            await Task.Run(() =>
+            {
+                switch (sectorSeleccionado)
+                {
+                    case "PRODUCCION":
+                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.SectorCambio == "PRODUCCION").Select(s => s);
                         break;
 
-                    case "CATEGORIA":
-                        if (precisionSeleccionada == "EXACTA")
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.CategoriaItem == keyword).Select(s => s);
-                        }
-                        else
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.CategoriaItem.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "CODIGO DE FALLA":
-                        if (precisionSeleccionada == "EXACTA")
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.CodigoFalla == keyword).Select(s => s);
-                        }
-                        else
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.CodigoFalla.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "DESCRIPCION DE FALLA":
-                        if (precisionSeleccionada == "EXACTA")
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.DescripcionFalla == keyword).Select(s => s);
-                        }
-                        else
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.DescripcionFalla.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "DESCRIPCION DE ITEM":
-                        if (precisionSeleccionada == "EXACTA")
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.DescripcionItem == keyword).Select(s => s);
-                        }
-                        else
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.DescripcionItem.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "ESTADO DE CAMBIO":
-                        if (precisionSeleccionada == "EXACTA")
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.EstadoCambio == keyword).Select(s => s);
-                        }
-                        else
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.EstadoCambio.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "ID DE CAMBIO":
-                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.IdCambio == keywordINT).Select(s => s);
-                        break;
-
-                    case "LEGAJO":
-                        if (precisionSeleccionada == "EXACTA")
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Legajo == keyword).Select(s => s);
-                        }
-                        else
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Legajo.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "MODELO":
-                        if (precisionSeleccionada == "EXACTA")
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Modelo == keyword).Select(s => s);
-                        }
-                        else
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Modelo.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "NUMERO DE PEDIDO":
-                        if (precisionSeleccionada == "EXACTA")
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.NumeroPedido == keyword).Select(s => s);
-                        }
-                        else
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.NumeroPedido.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "OBSERVACIONES":
-                        if (precisionSeleccionada == "EXACTA")
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Observaciones == keyword).Select(s => s);
-                        }
-                        else
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Observaciones.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "PRODUCTO":
-                        if (precisionSeleccionada == "EXACTA")
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Producto == keyword).Select(s => s);
-                        }
-                        else
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Producto.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "TECNICO":
-                        if (precisionSeleccionada == "EXACTA")
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Tecnico == keyword).Select(s => s);
-                        }
-                        else
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.Tecnico.Contains(keyword)).Select(s => s);
-                        }
-                        break;
-
-                    case "VERSION":
-                        if (precisionSeleccionada == "EXACTA")
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.VersionItem == keyword).Select(s => s);
-                        }
-                        else
-                        {
-                            ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.VersionItem.Contains(keyword)).Select(s => s);
-                        }
+                    case "SERVICIO TECNICO":
+                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.SectorCambio == "SERVICIO TECNICO").Select(s => s);
                         break;
 
                     default:
                         break;
                 }
-            }
-            catch (System.ArgumentNullException)
+            });
+        }
+
+        private async Task FiltrarEstado()
+        {
+            await Task.Run(() =>
             {
-                var MessageDialog = new MessageDialog
+                switch (estadoSeleccionado)
                 {
-                    Titulo = { Text = "Oops!" },
-                    Mensaje = { Text = "No se pudo conectar con el servidor." }
-                };
-                DialogHost.Show(MessageDialog, "mainDialogHost");
-            }
+                    case "APROBADO":
+                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.EstadoCambio == "APROBADO").Select(s => s);
+                        break;
+
+                    case "CANCELADO":
+                        ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.EstadoCambio == "CANCELADO").Select(s => s);
+                        break;
+
+                    default:
+                        break;
+                }
+            });
         }
 
-        private void FiltrarSector()
+        private async Task AsignarLista()
         {
-            switch (sectorSeleccionado)
+            await Task.Run(() =>
             {
-                case "PRODUCCION":
-                    ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.SectorCambio == "PRODUCCION").Select(s => s);
-                    break;
+                cantidadResultadoBusqueda = ListaResultadoBusqueda.Count(); //
+                dgListaCambios.ItemsSource = ListaResultadoBusqueda.ToList();
+                stringBusqueda = tbKeyword.Text;
 
-                case "SERVICIO TECNICO":
-                    ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.SectorCambio == "SERVICIO TECNICO").Select(s => s);
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        private void FiltrarEstado()
-        {
-            switch (estadoSeleccionado)
-            {
-                case "APROBADO":
-                    ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.EstadoCambio == "APROBADO").Select(s => s);
-                    break;
-
-                case "CANCELADO":
-                    ListaResultadoBusqueda = ListaResultadoBusqueda.Where(w => w.EstadoCambio == "CANCELADO").Select(s => s);
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        private void AsignarLista()
-        {
-            cantidadResultadoBusqueda = ListaResultadoBusqueda.Count(); //
-            dgListaCambios.ItemsSource = ListaResultadoBusqueda.ToList();
-            stringBusqueda = tbKeyword.Text;
-
-            if (cantidadResultadoBusqueda == 1)
-            {
-                tbStatusBarText.Text = cantidadResultadoBusqueda + " registro encontrado.";
-            }
-            else
-            {
-                tbStatusBarText.Text = cantidadResultadoBusqueda + " registros encontrados.";
-            }
-        }
-
-        private void CrearNuevoSnapshot()
-        {
-            using (new WaitCursor())
-            {
-                if (currentIndex >= 5)
+                if (cantidadResultadoBusqueda == 1)
                 {
-                    for (int i = 0; i < 5; i++)
-                    {
-                        SnapShotArray[i] = SnapShotArray[i + 1];
-                    }
-
-                    currentIndex = 5;
-                    SnapShotArray[5] = GetSnapShot();
+                    tbStatusBarText.Text = cantidadResultadoBusqueda + " registro encontrado.";
                 }
                 else
                 {
-                    currentIndex += 1;
-                    SnapShotArray[currentIndex] = GetSnapShot();
+                    tbStatusBarText.Text = cantidadResultadoBusqueda + " registros encontrados.";
+                }
+            });
+        }
 
-                    arrayItemsCount = SnapShotArray.Count(c => c != null) - 1;
-
-                    if (currentIndex < arrayItemsCount)
+        private async Task CrearNuevoSnapshot()
+        {
+            await Task.Run(async () =>
+            {
+                using (new WaitCursor())
+                {
+                    if (currentIndex >= 5)
                     {
-                        for (int i = currentIndex; i < 5; i++)
+                        for (int i = 0; i < 5; i++)
                         {
-                            SnapShotArray[i + 1] = null;
+                            SnapShotArray[i] = SnapShotArray[i + 1];
                         }
+
+                        currentIndex = 5;
+                        SnapShotArray[5] = await GetSnapShot();
+                    }
+                    else
+                    {
+                        currentIndex += 1;
+                        SnapShotArray[currentIndex] = await GetSnapShot();
+
+                        arrayItemsCount = SnapShotArray.Count(c => c != null) - 1;
+
+                        if (currentIndex < arrayItemsCount)
+                        {
+                            for (int i = currentIndex; i < 5; i++)
+                            {
+                                SnapShotArray[i + 1] = null;
+                            }
+                        }
+
+                        arrayItemsCount = SnapShotArray.Count(c => c != null) - 1;
                     }
 
-                    arrayItemsCount = SnapShotArray.Count(c => c != null) - 1;
+
+                }
+            });
+            await SetBackForwardButtonsStatus();
+        }
+
+        private async Task<SnapshotBusqueda> GetSnapShot()
+        {
+            //    SnapshotBusqueda x = await Task.Run(() =>
+            //    {
+            //    var snapshot = new SnapshotBusqueda
+            //    {
+            //        //Keyword = tbKeyword.Text,
+            //        //Campo = cbCampo.SelectedValue,
+            //        //Estado = cbEstado.SelectedValue,
+            //        //FechaInicial = dpInicial.SelectedDate,
+            //        //FechaFinal = dpFinal.SelectedDate,
+            //        //Periodo = cbPeriodo.SelectedValue,
+            //        //Presicion = cbPresicion.SelectedValue,
+            //        //Origen = cbOrigenDatos.SelectedValue,
+            //        //Sector = cbSector.SelectedValue,
+            //        //ResultadoBusqueda = ListaResultadoBusqueda
+
+            //    });
+
+            //    );
+            //    SnapshotBusqueda snapshot = null;
+            //    return snapshot;
+            //    );
+
+            //}
+            //    return x;
+            //);
+
+            var x = new SnapshotBusqueda { Campo = "1", Estado = "2", FechaFinal = DateTime.Now, FechaInicial = DateTime.Now, Keyword = "3", Origen = "4", Periodo = "5", Presicion = "6", ResultadoBusqueda = null, Sector = "" };
+            return x;
+        }
+
+        private async Task SetSnapShot(int index)
+        {
+            await Task.Run(() =>
+            {
+
+                try
+                {
+                    SnapshotBusqueda sba = SnapShotArray[index];
+                    tbKeyword.Text = sba.Keyword;
+                    cbCampo.SelectedValue = sba.Campo;
+                    cbOrigenDatos.SelectedValue = sba.Origen;
+                    cbEstado.SelectedValue = sba.Estado;
+                    cbPeriodo.SelectedValue = sba.Periodo;
+                    cbPresicion.SelectedValue = sba.Presicion;
+                    cbSector.SelectedValue = sba.Sector;
+                    dpInicial.SelectedDate = sba.FechaInicial;
+                    dpFinal.SelectedDate = sba.FechaFinal;
+                    ListaResultadoBusqueda = sba.ResultadoBusqueda;
+                }
+                catch (Exception e)
+                {
+
+                    MessageBox.Show(e.ToString() + " index: " + index.ToString());
                 }
 
-                SetBackForwardButtonsStatus();
-
-            }
-        }
-
-        private SnapshotBusqueda GetSnapShot()
-        {
-            var snapshot = new SnapshotBusqueda
-            {
-                Keyword = tbKeyword.Text,
-                Campo = cbCampo.SelectedValue,
-                Estado = cbEstado.SelectedValue,
-                FechaInicial = dpInicial.SelectedDate,
-                FechaFinal = dpFinal.SelectedDate,
-                Periodo = cbPeriodo.SelectedValue,
-                Presicion = cbPresicion.SelectedValue,
-                Origen = cbOrigenDatos.SelectedValue,
-                Sector = cbSector.SelectedValue,
-                ResultadoBusqueda = ListaResultadoBusqueda
-            };
-
-            return snapshot;
-        }
-
-        private void SetSnapShot(int index)
-        {
-            try
-            {
-                SnapshotBusqueda sba = SnapShotArray[index];
-                tbKeyword.Text = sba.Keyword;
-                cbCampo.SelectedValue = sba.Campo;
-                cbOrigenDatos.SelectedValue = sba.Origen;
-                cbEstado.SelectedValue = sba.Estado;
-                cbPeriodo.SelectedValue = sba.Periodo;
-                cbPresicion.SelectedValue = sba.Presicion;
-                cbSector.SelectedValue = sba.Sector;
-                dpInicial.SelectedDate = sba.FechaInicial;
-                dpFinal.SelectedDate = sba.FechaFinal;
-                ListaResultadoBusqueda = sba.ResultadoBusqueda;
-            }
-            catch (Exception e)
-            {
-
-                MessageBox.Show(e.ToString() + " index: " + index.ToString());
-            }
-
-            AsignarLista();
-            SetBackForwardButtonsStatus();
+            });
+            await AsignarLista();
+            await SetBackForwardButtonsStatus();
         }
 
         private void CbPeriodo_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -734,9 +803,9 @@ namespace RMAInforme
 
             public WaitCursor()
             {
-                _previousCursor = Mouse.OverrideCursor;
+                //_previousCursor = Mouse.OverrideCursor;
 
-                Mouse.OverrideCursor = Cursors.Wait;
+                //Mouse.OverrideCursor = Cursors.Wait;
             }
 
             public void Dispose()
@@ -807,17 +876,17 @@ namespace RMAInforme
                     Titulo = { Text = "Oops!" },
                     Mensaje = { Text = "Seleccione un cambio primero." }
                 };
-                var x = await DialogHost.Show(MessageDialog);
+                await DialogHost.Show(MessageDialog);
                 return;
             }
             else
             {
-                parametroCambioEstado = await DialogHost.Show(new PasswordWindow());
+                parametroCambioEstado = DialogHost.Show(new PasswordWindow());
             }
-            CambiarEstado(parametroCambioEstado);
+            await CambiarEstado(parametroCambioEstado);
         }
 
-        private void CambiarEstado(object result)
+        private async Task CambiarEstado(object result)
         {
             if ((string)result == ContraseñaCambio)
             {
@@ -841,8 +910,8 @@ namespace RMAInforme
                     Titulo = { Text = "Oops!" },
                     Mensaje = { Text = "El estado se cambió correctamente." }
                 };
-                DialogHost.Show(MessageDialog);
-                BuscarBaseDatos();
+                await DialogHost.Show(MessageDialog);
+                await BuscarBaseDatos();
             }
             else
             {
@@ -851,7 +920,7 @@ namespace RMAInforme
                     Titulo = { Text = "Oops!" },
                     Mensaje = { Text = "Contraseña incorrecta. No se realizaron cambios." }
                 };
-                DialogHost.Show(MessageDialog);
+                await DialogHost.Show(MessageDialog);
             }
         }
 
@@ -908,7 +977,7 @@ namespace RMAInforme
                     var MessageDialog = new MessageDialog
                     {
                         Titulo = { Text = "Oops!" },
-                        Mensaje = { Text = "Ocurrió un error intentando guardar el archivo." + " " + e.ToString()}
+                        Mensaje = { Text = "Ocurrió un error intentando guardar el archivo." + " " + e.ToString() }
                     };
                     DialogHost.Show(MessageDialog, "mainDialogHost");
                 }
@@ -1435,48 +1504,51 @@ namespace RMAInforme
             DialogHost.Show(new StatsWindow(stringBusqueda, cantidadResultadoBusqueda, cantidadTotalItem, cantidadTodosFechaBusqueda, cantidadTotalTodos, Chart3Serie, campoChart3, periodoEstadisticas));
         }
 
-        private void SetBackForwardButtonsStatus()
+        private async Task SetBackForwardButtonsStatus()
         {
-            if (currentIndex == 0)
+            await Task.Run(() =>
             {
-                btnBack.IsEnabled = false;
-            }
-            else
-            {
-                btnBack.IsEnabled = true;
-            }
+                if (currentIndex == 0)
+                {
+                    btnBack.IsEnabled = false;
+                }
+                else
+                {
+                    btnBack.IsEnabled = true;
+                }
 
-            if (currentIndex == arrayItemsCount)
-            {
-                btnForward.IsEnabled = false;
-            }
-            else
-            {
-                btnForward.IsEnabled = true;
-            }
+                if (currentIndex == arrayItemsCount)
+                {
+                    btnForward.IsEnabled = false;
+                }
+                else
+                {
+                    btnForward.IsEnabled = true;
+                }
+            });
         }
 
-        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        private async void BtnBack_Click(object sender, RoutedEventArgs e)
         {
             using (new WaitCursor())
             {
                 currentIndex -= 1;
 
-                SetSnapShot(currentIndex);
+                await SetSnapShot(currentIndex);
 
-                SetBackForwardButtonsStatus();
+                await SetBackForwardButtonsStatus();
             }
         }
 
-        private void BtnForward_Click(object sender, RoutedEventArgs e)
+        private async void BtnForward_Click(object sender, RoutedEventArgs e)
         {
             using (new WaitCursor())
             {
                 currentIndex += 1;
 
-                SetSnapShot(currentIndex);
+                await SetSnapShot(currentIndex);
 
-                SetBackForwardButtonsStatus();
+                await SetBackForwardButtonsStatus();
             }
         }
 

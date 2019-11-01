@@ -27,11 +27,15 @@ namespace RMAInforme
             InitializeComponent();
 
             int primaryWidth = Screen.PrimaryScreen.Bounds.Width;
+            int primaryHeight= Screen.PrimaryScreen.Bounds.Width; //puede estar rotada la pantalla, pero la toma como normal...
 
-            if (primaryWidth < 1367)
+            if (primaryWidth < 1367 || primaryHeight < 769)
             {
                 this.MaxWidth = 720;
                 this.MaxHeight = 480;
+                //scrViewer.Visibility = Visibility.Visible;
+                scrViewer.HorizontalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Visible;
+                scrViewer.VerticalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Visible;
             }
 
             this.cantidadResultadoBusqueda = cantidadResultadoBusqueda;

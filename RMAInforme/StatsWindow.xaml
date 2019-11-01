@@ -7,8 +7,8 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d" Width="1000" Height="500">
 
-    <!--<ScrollViewer HorizontalScrollBarVisibility="Visible">-->
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+    
+    <ScrollViewer x:Name="scrViewer" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
         <Grid Width="1000" Height="500">
 
             <Grid Name="grillita" Background="WhiteSmoke">

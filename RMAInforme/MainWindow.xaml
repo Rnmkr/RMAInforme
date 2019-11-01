@@ -10,7 +10,7 @@
 
     <Grid>
 
-        <materialDesign:DialogHost CloseOnClickAway="True" Identifier="mainDialogHost">
+        <materialDesign:DialogHost Name="dHost" CloseOnClickAway="True" Identifier="mainDialogHost">
 
             <Grid>
 
