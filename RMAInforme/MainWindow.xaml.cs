@@ -728,22 +728,7 @@ namespace RMAInforme
             }
         }
 
-        public class WaitCursor : IDisposable
-        {
-            private Cursor _previousCursor;
 
-            public WaitCursor()
-            {
-                _previousCursor = Mouse.OverrideCursor;
-
-                Mouse.OverrideCursor = Cursors.Wait;
-            }
-
-            public void Dispose()
-            {
-                Mouse.OverrideCursor = _previousCursor;
-            }
-        }
 
         public bool PingServer(string ServerHostName)
         {
@@ -908,7 +893,7 @@ namespace RMAInforme
                     var MessageDialog = new MessageDialog
                     {
                         Titulo = { Text = "Oops!" },
-                        Mensaje = { Text = "Ocurrió un error intentando guardar el archivo." + " " + e.ToString()}
+                        Mensaje = { Text = "Ocurrió un error intentando guardar el archivo." + " " + e.ToString() }
                     };
                     DialogHost.Show(MessageDialog, "mainDialogHost");
                 }
@@ -1506,6 +1491,10 @@ namespace RMAInforme
 
         public Func<ChartPoint, string> PointLabelCart { get; set; }
 
+        private async void btnVerLogs_Click(object sender, RoutedEventArgs e)
+        {
+            parametroCambioEstado = await DialogHost.Show(new LogsWindow(null));
+        }
     }
 }
 

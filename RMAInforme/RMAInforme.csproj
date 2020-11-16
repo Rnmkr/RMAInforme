@@ -109,6 +109,9 @@
     </ApplicationDefinition>
     <Compile Include="DataAccessLayer\Cambio.cs" />
     <Compile Include="DataAccessLayer\PRDB.cs" />
+    <Compile Include="LogsWindow.xaml.cs">
+      <DependentUpon>LogsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MessageDialog.xaml.cs">
       <DependentUpon>MessageDialog.xaml</DependentUpon>
     </Compile>
@@ -126,6 +129,11 @@
     <Compile Include="StatsWindow.xaml.cs">
       <DependentUpon>StatsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WaitCursor.cs" />
+    <Page Include="LogsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
