@@ -97,13 +97,12 @@ namespace RMAInforme
             {
                 string[] rutasServer = Directory.GetDirectories(serverPedidoRootPath, "*", SearchOption.TopDirectoryOnly);
                 this.numeros = rutasServer.Select(Path.GetFileName).ToArray();
-                if (this.numeros.Length > 0)
+                if (this.numeros != null)
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         lbNumbers.ItemsSource = numeros;
                     });
-
                 }
 
                 foreach (var rutaServer in rutasServer)
@@ -136,7 +135,6 @@ namespace RMAInforme
                         if (File.Exists(supObsFileServer))
                         {
                             File.Copy(supObsFileServer, supObsLocal, true);
-                            obsLog = Environment.NewLine + File.ReadAllText(supObsLocal);
                         }
 
                         //copio archivo log 'censurado'
@@ -191,12 +189,16 @@ namespace RMAInforme
 
             tbBit.Text = "SELECCIONE UN NUMERO PARA VER EL REGISTRO DE BURNINTEST.";
 
-            if (string.IsNullOrWhiteSpace(obsLog))
+            if (File.Exists("archivo de obs de supervisor"))
+            {
+                obsLog += File.ReadAllText(rutaArchivoSupObsLocal);
+            }
+            else
             {
                 obsLog = Environment.NewLine + "NO SE ENCONTRARON OBSERVACIONES DEL SUPERVISOR.";
             }
 
-            tbPx.Text = "CON PIXELES: " + pixelCount.ToString();
+            tbPx.Text = "CON PIXELES DAÑADOS: " + pixelCount.ToString();
             tbRepa.Text = "REPARADAS: " + reparadasCount.ToString();
             tbObsView.Text = obsLog;
         }
