@@ -27,7 +27,7 @@
             <RowDefinition
                 Height="56" />
             <RowDefinition
-                Height="48" />
+                Height="56" />
         </Grid.RowDefinitions>
 
         <Grid
@@ -89,6 +89,7 @@
                 FontWeight="Bold">
                 <Grid>
                     <TextBox
+                        BorderThickness="0"
                         TextWrapping="Wrap"
                         Style="{x:Null}"
                         IsReadOnly="True"
@@ -121,9 +122,9 @@
         </TabControl>
 
         <TextBox
-            Background="LightYellow"
+
             Style="{x:Null}"
-            Margin="0,2,2,0"
+            Margin="0,2,0,0"
             VerticalScrollBarVisibility="Auto"
             HorizontalScrollBarVisibility="Auto"
             IsReadOnly="True"
@@ -133,7 +134,7 @@
             TextWrapping="Wrap"
             Name="tbObsView"
             FontFamily="Consolas" />
-        <TextBlock
+        <!--<TextBlock
             Padding="1"
             Margin="4,4,0,0"
             Text="OBSERVACIONES"
@@ -143,7 +144,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             FontWeight="Bold"
-            FontSize="10" />
+            FontSize="10" />-->
 
 
         <StackPanel
@@ -183,11 +184,13 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
                 <RadioButton
+                    Name="rbSaveAll"
                     Margin="2"
-                    Content="Completo"
+                    Content="Todos"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center" />
                 <RadioButton
+                    Name="rbSaveSelected"
                     IsChecked="True"
                     Margin="2"
                     Content="Seleccionado"
@@ -198,10 +201,10 @@
                 ToolTip="Guardar Logs"
                 Grid.Row="4"
                 Grid.Column="1"
-                Margin="8,0,0,2"
+                Margin="8,0,2,0"
                 Name="btnSaveBit"
-                Width="32"
-                Height="32"
+                Width="48"
+                Height="48"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Click="btnSaveBit_Click"
@@ -209,8 +212,8 @@
                 <materialDesign:PackIcon
                     Kind="ContentSave"
                     Opacity="1"
-                    Width="16"
-                    Height="16" />
+                    Width="32"
+                    Height="32" />
             </Button>
         </StackPanel>
 
