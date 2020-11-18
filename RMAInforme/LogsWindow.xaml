@@ -25,9 +25,7 @@
             <RowDefinition
                 Height="*" />
             <RowDefinition
-                Height="56" />
-            <RowDefinition
-                Height="56" />
+                Height="auto" />
         </Grid.RowDefinitions>
 
         <Grid
@@ -64,15 +62,16 @@
         </Grid>
 
         <ListBox
+            BorderThickness="1"
+            BorderBrush="#FFACACAC"
             SelectionMode="Single"
             SelectionChanged="lbNumbers_SelectionChanged"
-            Margin="0,0,0,0"
+            Margin="2"
             Grid.RowSpan="4"
             Name="lbNumbers"
             Grid.Column="0"
             Grid.Row="1"
-            FontWeight="Bold"
-            FontSize="14">
+            FontWeight="Bold">
             <!--<ListBoxItem>000001</ListBoxItem>
             <ListBoxItem>000002</ListBoxItem>
             <ListBoxItem>000003</ListBoxItem>
@@ -80,7 +79,7 @@
             <ListBoxItem>000005</ListBoxItem>-->
         </ListBox>
         <TabControl
-            Margin="0,4,0,0"
+            Margin="2"
             Grid.Column="1"
             Grid.Row="0"
             Grid.RowSpan="3">
@@ -102,11 +101,13 @@
                         FontFamily="Consolas" />
                 </Grid>
             </TabItem>
+
             <TabItem
                 Header="BURNINTEST"
                 FontWeight="Bold">
                 <Grid>
                     <TextBox
+                        BorderThickness="0"
                         TextWrapping="Wrap"
                         Style="{x:Null}"
                         IsReadOnly="True"
@@ -119,12 +120,54 @@
                         FontWeight="Normal" />
                 </Grid>
             </TabItem>
+            <TabItem
+                Header="OBSERVACIONES"
+                FontWeight="Bold">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="*" />
+                        <RowDefinition
+                            Height="120" />
+                    </Grid.RowDefinitions>
+                    <TextBox
+                        BorderThickness="0"
+                        Grid.Row="0"
+                        TextWrapping="Wrap"
+                        Style="{x:Null}"
+                        IsReadOnly="True"
+                        IsReadOnlyCaretVisible="False"
+                        VerticalScrollBarVisibility="Auto"
+                        HorizontalScrollBarVisibility="Auto"
+                        ScrollViewer.CanContentScroll="True"
+                        Name="tbObs"
+                        FontFamily="Consolas"
+                        FontWeight="Normal" />
+                    <TextBox
+                        Background="LightYellow"
+                        Margin="0,5,0,0"
+                        BorderThickness="0"
+                        Grid.Row="1"
+                        TextWrapping="Wrap"
+                        Style="{x:Null}"
+                        IsReadOnly="True"
+                        IsReadOnlyCaretVisible="False"
+                        VerticalScrollBarVisibility="Auto"
+                        HorizontalScrollBarVisibility="Auto"
+                        ScrollViewer.CanContentScroll="True"
+                        Name="tbSupObs"
+                        FontFamily="Consolas"
+                        FontWeight="Normal" />
+                    <Separator Grid.Row="1"
+                        VerticalAlignment="Top" />
+                </Grid>
+            </TabItem>
         </TabControl>
 
-        <TextBox
+        <!--<TextBox
 
             Style="{x:Null}"
-            Margin="0,2,0,0"
+            Margin="2"
             VerticalScrollBarVisibility="Auto"
             HorizontalScrollBarVisibility="Auto"
             IsReadOnly="True"
@@ -133,7 +176,7 @@
             Grid.Row="3"
             TextWrapping="Wrap"
             Name="tbObsView"
-            FontFamily="Consolas" />
+            FontFamily="Consolas" />-->
         <!--<TextBlock
             Padding="1"
             Margin="4,4,0,0"
@@ -180,7 +223,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Center">
             <StackPanel
-                Orientation="Vertical"
+                Orientation="Horizontal"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
                 <RadioButton
@@ -203,8 +246,8 @@
                 Grid.Column="1"
                 Margin="8,0,2,0"
                 Name="btnSaveBit"
-                Width="48"
-                Height="48"
+                Width="24"
+                Height="24"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Click="btnSaveBit_Click"
@@ -212,8 +255,8 @@
                 <materialDesign:PackIcon
                     Kind="ContentSave"
                     Opacity="1"
-                    Width="32"
-                    Height="32" />
+                    Width="16"
+                    Height="16" />
             </Button>
         </StackPanel>
 

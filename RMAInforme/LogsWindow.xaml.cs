@@ -19,6 +19,7 @@ namespace RMAInforme
         private string manualTestLog;
         private string burnintestLog;
         private string obsLog;
+        private string supObsLog;
         private int pixelCount = 0;
         private int reparadasCount = 0;
         private List<string> numeros;
@@ -42,7 +43,7 @@ namespace RMAInforme
             {
                 this.numeroPedido = _numeroPedido.ToUpper();
                 tbKeyword.Text = this.numeroPedido;
-                SearchLogs();
+                tbKeyword.SelectAll();
             }
         }
 
@@ -213,18 +214,19 @@ namespace RMAInforme
 
             if (File.Exists(supObsLocal))
             {
-                obsLog = File.ReadAllText(supObsLocal);
+                supObsLog = File.ReadAllText(supObsLocal);
             }
             else
             {
-                obsLog = "No se encontraron observaciones del supervisor.";
+                supObsLog = "No se encontraron observaciones del supervisor para el pedido.";
             }
 
             Application.Current.Dispatcher.Invoke(() =>
             {
-                tbLog.Text = "Seleccione un numero para ver el registro de test manual.";
-                tbBit.Text = "Seleccione un numero para ver el registro de burnintest.";
-                tbObsView.Text = obsLog;
+                tbLog.Text = "Seleccione un número para ver el registro de test manual.";
+                tbBit.Text = "Seleccione un número para ver el registro de Burnintest.";
+                tbObs.Text = "Seleccione un número para ver las observaciones del técnico.";
+                tbSupObs.Text = supObsLog;
                 tbPx.Text = "Equipos con pixeles dañados: " + pixelCount.ToString();
                 tbRepa.Text = "Reparaciones: " + reparadasCount.ToString();
             });
@@ -255,7 +257,7 @@ namespace RMAInforme
             }
             else
             {
-                manualTestLog = "No se encontró un log de test manual para este numero.";
+                manualTestLog = "No se encontró un log de test manual para este número.";
             }
 
             if (File.Exists(rutaArchivoBitLocal))
@@ -264,7 +266,7 @@ namespace RMAInforme
             }
             else
             {
-                burnintestLog = "No se encontró un log de burnintest para este numero.";
+                burnintestLog = "No se encontró un log de Burnintest para este número.";
             }
 
             if (File.Exists(rutaArchivoObsLocal))
@@ -273,13 +275,13 @@ namespace RMAInforme
             }
             else
             {
-                obsLog += "No se encontraron observaciones para este numero.";
+                obsLog += "No se encontraron observaciones del técnico para este número.";
             }
             Application.Current.Dispatcher.Invoke(() =>
             {
                 tbLog.Text = manualTestLog;
                 tbBit.Text = burnintestLog;
-                tbObsView.Text = obsLog;
+                tbObs.Text = obsLog;
                 tbPx.Text = "Equipos con pixeles dañados: " + pixelCount.ToString();
                 tbRepa.Text = "Reparaciones: " + reparadasCount.ToString();
             });

@@ -1493,7 +1493,14 @@ namespace RMAInforme
 
         private async void btnVerLogs_Click(object sender, RoutedEventArgs e)
         {
-            parametroCambioEstado = await DialogHost.Show(new LogsWindow(null));
+            string selected = null; 
+            if (dgListaCambios.SelectedItem != null)
+            {
+                var i = (Cambio)dgListaCambios.SelectedItem;
+                selected = i.NumeroPedido.Substring(0, 8);
+                
+            }
+            await DialogHost.Show(new LogsWindow(selected));
         }
     }
 }
