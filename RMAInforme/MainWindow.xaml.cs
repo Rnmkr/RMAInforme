@@ -1,20 +1,20 @@
-﻿using System.Windows;
-using RMAInforme.DataAccessLayer;
-using System.Linq;
-using System.Windows.Input;
-using System;
-using System.Net.NetworkInformation;
-using System.Windows.Controls;
-using System.Net;
-using ClosedXML.Excel;
-using System.Data;
-using System.Reflection;
-using MaterialDesignThemes.Wpf;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using ClosedXML.Excel;
 using LiveCharts;
-using System.Windows.Media;
 using LiveCharts.Wpf;
+using MaterialDesignThemes.Wpf;
+using RMAInforme.DataAccessLayer;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
+using System.Linq;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace RMAInforme
 {
@@ -30,23 +30,21 @@ namespace RMAInforme
         private DateTime? periodoInicialSeleccionado;
         private DateTime? periodoFinalSeleccionado;
         private string sectorSeleccionado;
-        private string nombreServidor = "BUBBA";
+        private readonly string nombreServidor = "BUBBA";
         private int keywordINT;
         private string stringBusqueda;
         private string estadoSeleccionado;
         private Cambio cambioSeleccionado;
         private int cantidadResultadoBusqueda;
         private object parametroCambioEstado;
-        private string ContraseñaCambio = "EXO1010_";
+        private readonly string ContraseñaCambio = "EXO1010_";
         private PRDB context;
         private int cantidadTotalItem;
         private int cantidadTodosFechaBusqueda;
         private int cantidadTotalTodos;
         private string campoChart3;
-        private string FechaInicial;
-        private string FechaFinal;
         private string periodoEstadisticas;
-        private SnapshotBusqueda[] SnapShotArray = new SnapshotBusqueda[6];
+        private readonly SnapshotBusqueda[] SnapShotArray = new SnapshotBusqueda[6];
         private int currentIndex = -1;
         private int arrayItemsCount;
         SeriesCollection Chart3Serie;
@@ -792,7 +790,7 @@ namespace RMAInforme
                     Titulo = { Text = "Oops!" },
                     Mensaje = { Text = "Seleccione un cambio primero." }
                 };
-                var x = await DialogHost.Show(MessageDialog);
+                await DialogHost.Show(MessageDialog);
                 return;
             }
             else
@@ -865,10 +863,12 @@ namespace RMAInforme
         private void ExportarLista()
         {
 
-            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.FileName = "Resultados de Búsqueda";
-            dlg.DefaultExt = ".xslx";
-            dlg.Filter = "Documentos Excel (.xlsx)|*.xlsx";
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog
+            {
+                FileName = "Resultados de Búsqueda",
+                DefaultExt = ".xslx",
+                Filter = "Documentos Excel (.xlsx)|*.xlsx"
+            };
 
             Nullable<bool> result = dlg.ShowDialog();
 
@@ -943,7 +943,8 @@ namespace RMAInforme
 
                 foreach (PropertyInfo pi in oProps)
                 {
-                    dr[pi.Name] = pi.GetValue(rec, null) == null ? DBNull.Value : pi.GetValue(rec, null);
+                    //dr[pi.Name] = pi.GetValue(rec, null) == null ? DBNull.Value : pi.GetValue(rec, null);
+                    dr[pi.Name] = pi.GetValue(rec, null) ?? DBNull.Value;
                 }
 
                 dtReturn.Rows.Add(dr);
@@ -1493,12 +1494,12 @@ namespace RMAInforme
 
         private async void btnVerLogs_Click(object sender, RoutedEventArgs e)
         {
-            string selected = null; 
+            string selected = null;
             if (dgListaCambios.SelectedItem != null)
             {
                 var i = (Cambio)dgListaCambios.SelectedItem;
                 selected = i.NumeroPedido.Substring(0, 8);
-                
+
             }
             await DialogHost.Show(new LogsWindow(selected));
         }

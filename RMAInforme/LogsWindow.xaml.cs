@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -23,8 +22,8 @@ namespace RMAInforme
         private int pixelCount = 0;
         private int reparadasCount = 0;
         private List<string> numeros;
-        private string serverLogsRootPath = @"\\bubba\ea2100dc89ae9fe21fa9b08ab1bf18662dca1e53a3eebd7d03afebcaf5d57515$";
-        private string localTempPath = Path.Combine(Path.GetTempPath(), "RMAInforme");
+        private readonly string serverLogsRootPath = @"\\bubba\ea2100dc89ae9fe21fa9b08ab1bf18662dca1e53a3eebd7d03afebcaf5d57515$";
+        private readonly string localTempPath = Path.Combine(Path.GetTempPath(), "RMAInforme");
         private string localPedidoRootPath;
         private string serverPedidoRootPath;
         private string pedidoEnFormaDeRuta;

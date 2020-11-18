@@ -1,12 +1,12 @@
-﻿using System;
-using System.Windows;
-using LiveCharts;
-using LiveCharts.Wpf;
+﻿using LiveCharts;
 using LiveCharts.Defaults;
+using LiveCharts.Wpf;
+using System;
+using System.IO;
+using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.IO;
-using System.Windows.Forms;
 
 namespace RMAInforme
 {
@@ -42,7 +42,7 @@ namespace RMAInforme
             this.periodoEstadisticas = periodoEstadisticas;
             this.Chart3Serie = chart3Serie;
             this.keyword = keyword;
-            
+
             PointLabel = chartPoint => string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation, Brushes.Black);
 
 
@@ -134,10 +134,12 @@ namespace RMAInforme
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
-            dlg.FileName = "Estadísticas de busqueda"; // Default file name
-            dlg.DefaultExt = ".png"; // Default file extension
-            dlg.Filter = "Archivo de imagen (.png)|*.png"; // Filter files by extension
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog
+            {
+                FileName = "Estadísticas de busqueda", // Default file name
+                DefaultExt = ".png", // Default file extension
+                Filter = "Archivo de imagen (.png)|*.png" // Filter files by extension
+            };
 
             Nullable<bool> result = dlg.ShowDialog();
 
