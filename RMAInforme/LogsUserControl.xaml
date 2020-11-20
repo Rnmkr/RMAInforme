@@ -1,14 +1,16 @@
 ﻿<UserControl
-    x:Class="RMAInforme.LogsWindow"
+    x:Class="RMAInforme.LogsUserControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="clr-namespace:RMAInforme"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:local="clr-namespace:RMAInforme"
     mc:Ignorable="d"
-    Height="600"
-    Width="800">
+    Width="800"
+    Height="480"
+    d:DesignHeight="450"
+    d:DesignWidth="800">
     <Grid
         Background="White">
         <Grid.ColumnDefinitions>
@@ -19,6 +21,8 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition
+                Height="24" />
+            <RowDefinition
                 Height="auto" />
             <RowDefinition
                 Height="*" />
@@ -28,9 +32,19 @@
                 Height="auto" />
         </Grid.RowDefinitions>
 
+        <Border
+            Background="#FF673AB7"
+            Grid.ColumnSpan="2" />
+        <TextBlock
+            Foreground="White"
+            Margin="8,0,0,0"
+            Grid.ColumnSpan="2"
+            Text="BUSQUEDA DE REGISTROS DE TEST"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center" />
         <Grid
             Grid.Column="0"
-            Grid.Row="0"
+            Grid.Row="1"
             Margin="4"
             VerticalAlignment="Top">
 
@@ -66,10 +80,10 @@
             SelectionMode="Single"
             SelectionChanged="lbNumbers_SelectionChanged"
             Margin="2"
-            Grid.RowSpan="4"
+            Grid.RowSpan="2"
             Name="lbNumbers"
             Grid.Column="0"
-            Grid.Row="1"
+            Grid.Row="2"
             FontWeight="Bold">
             <!--<ListBoxItem>000001</ListBoxItem>
             <ListBoxItem>000002</ListBoxItem>
@@ -80,7 +94,7 @@
         <TabControl
             Margin="2"
             Grid.Column="1"
-            Grid.Row="0"
+            Grid.Row="1"
             Grid.RowSpan="3">
             <TabItem
                 Header="TEST MANUAL"
@@ -131,7 +145,7 @@
                     </Grid.RowDefinitions>
                     <TextBox
                         BorderThickness="0"
-                        Grid.Row="0"
+                        Grid.Row="1"
                         TextWrapping="Wrap"
                         Style="{x:Null}"
                         IsReadOnly="True"
@@ -146,7 +160,7 @@
                         Background="LightYellow"
                         Margin="0,5,0,0"
                         BorderThickness="0"
-                        Grid.Row="1"
+                        Grid.Row="2"
                         TextWrapping="Wrap"
                         Style="{x:Null}"
                         IsReadOnly="True"
@@ -157,7 +171,8 @@
                         Name="tbSupObs"
                         FontFamily="Consolas"
                         FontWeight="Normal" />
-                    <Separator Grid.Row="1"
+                    <Separator
+                        Grid.Row="2"
                         VerticalAlignment="Top" />
                 </Grid>
             </TabItem>
@@ -172,7 +187,7 @@
             IsReadOnly="True"
             IsReadOnlyCaretVisible="False"
             Grid.Column="1"
-            Grid.Row="3"
+           Grid.Row="4"
             TextWrapping="Wrap"
             Name="tbObsView"
             FontFamily="Consolas" />-->
@@ -182,7 +197,7 @@
             Text="OBSERVACIONES"
             Background="WhiteSmoke"
             Grid.Column="1"
-            Grid.Row="3"
+           Grid.Row="4"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             FontWeight="Bold"
@@ -190,8 +205,9 @@
 
 
         <StackPanel
-            Grid.Row="4"
-            Grid.Column="1"
+            Grid.Row="5"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
             Orientation="Horizontal"
             HorizontalAlignment="Left"
             VerticalAlignment="Center">
@@ -200,7 +216,7 @@
                 Name="tbRepa"
                 Margin="4,0,8,0"
                 Grid.Column="1"
-                Grid.Row="2"
+                Grid.Row="3"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 FontWeight="Bold" />
@@ -209,7 +225,7 @@
                 Name="tbPx"
                 Margin="8,0,0,0"
                 Grid.Column="1"
-                Grid.Row="2"
+                Grid.Row="3"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 FontWeight="Bold" />
@@ -217,7 +233,7 @@
         <StackPanel
             Margin="2"
             Orientation="Horizontal"
-            Grid.Row="4"
+            Grid.Row="5"
             Grid.Column="1"
             HorizontalAlignment="Right"
             VerticalAlignment="Center">
@@ -241,7 +257,7 @@
             </StackPanel>
             <Button
                 ToolTip="Guardar Logs"
-                Grid.Row="4"
+                Grid.Row="5"
                 Grid.Column="1"
                 Margin="8,0,2,0"
                 Name="btnSaveBit"

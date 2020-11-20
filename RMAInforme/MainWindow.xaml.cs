@@ -83,7 +83,10 @@ namespace RMAInforme
 
         private void BtnBuscar_Click(object sender, RoutedEventArgs e)
         {
+            pbar.IsIndeterminate = true;
+
             IniciarBusqueda();
+
         }
 
         private void TbSearchBox_KeyDown(object sender, KeyEventArgs e)
@@ -148,6 +151,7 @@ namespace RMAInforme
                             Mensaje = { Text = "No hay resultados con ese keyword." }
                         };
                         DialogHost.Show(MessageDialog, "mainDialogHost");
+
                     }
 
                     if (ListaResultadoBusqueda != null)
@@ -156,6 +160,8 @@ namespace RMAInforme
                     }
                     else
                     {
+
+
                         var MessageDialog = new MessageDialog
                         {
                             Titulo = { Text = "Oops!" },
@@ -163,10 +169,13 @@ namespace RMAInforme
                         };
                         DialogHost.Show(MessageDialog, "mainDialogHost");
                         return;
+
                     }
 
                     if (ListaResultadoBusqueda == null)
                     {
+
+
                         var MessageDialog = new MessageDialog
                         {
                             Titulo = { Text = "Oops!" },
@@ -174,6 +183,7 @@ namespace RMAInforme
                         };
                         DialogHost.Show(MessageDialog, "mainDialogHost");
                         return;
+
                     }
 
                     cantidadResultadoBusqueda = ListaResultadoBusqueda.Count();
@@ -185,6 +195,8 @@ namespace RMAInforme
                     }
                     else
                     {
+
+
                         var MessageDialog = new MessageDialog
                         {
                             Titulo = { Text = "Oops!" },
@@ -197,15 +209,19 @@ namespace RMAInforme
 
 
                         return;
+
                     }
                 }
             }
+
+
         }
 
         private bool ComprobarOpciones()
         {
             if (cbCampo.SelectedValue == null)
             {
+
                 var MessageDialog = new MessageDialog
                 {
                     Titulo = { Text = "Oops!" },
@@ -213,10 +229,12 @@ namespace RMAInforme
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
+
             }
 
             if (cbPresicion.SelectedValue == null)
             {
+
                 var MessageDialog = new MessageDialog
                 {
                     Titulo = { Text = "Oops!" },
@@ -224,10 +242,12 @@ namespace RMAInforme
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
+
             }
 
             if (cbOrigenDatos.SelectedValue == null)
             {
+
                 var MessageDialog = new MessageDialog
                 {
                     Titulo = { Text = "Oops!" },
@@ -235,10 +255,12 @@ namespace RMAInforme
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
+
             }
 
             if (dpInicial.SelectedDate == null)
             {
+
                 var MessageDialog = new MessageDialog
                 {
                     Titulo = { Text = "Oops!" },
@@ -246,10 +268,12 @@ namespace RMAInforme
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
+
             }
 
             if (dpFinal.SelectedDate == null)
             {
+
                 var MessageDialog = new MessageDialog
                 {
                     Titulo = { Text = "Oops!" },
@@ -257,10 +281,12 @@ namespace RMAInforme
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
+
             }
 
             if (dpInicial.SelectedDate > dpFinal.SelectedDate)
             {
+
                 var MessageDialog = new MessageDialog
                 {
                     Titulo = { Text = "Oops!" },
@@ -268,11 +294,13 @@ namespace RMAInforme
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
+
             }
 
 
             if (cbSector.SelectedValue == null)
             {
+
                 var MessageDialog = new MessageDialog
                 {
                     Titulo = { Text = "Oops!" },
@@ -280,10 +308,12 @@ namespace RMAInforme
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
+
             }
 
             if (cbEstado.SelectedValue == null)
             {
+
                 var MessageDialog = new MessageDialog
                 {
                     Titulo = { Text = "Oops!" },
@@ -291,12 +321,14 @@ namespace RMAInforme
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
+
             }
 
-
+            //=/
             string keyword = tbKeyword.Text;
             if (string.IsNullOrWhiteSpace(keyword))
             {
+
                 var MessageDialog = new MessageDialog
                 {
                     Titulo = { Text = "Oops!" },
@@ -304,8 +336,12 @@ namespace RMAInforme
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
                 return false;
+
             }
+
+
             tbKeyword.Text = tbKeyword.Text.ToUpper();
+
 
             if (cbCampo.SelectedValue.ToString() == "ID DE CAMBIO")
             {
@@ -316,6 +352,7 @@ namespace RMAInforme
                 }
                 catch (FormatException)
                 {
+
                     var MessageDialog = new MessageDialog
                     {
                         Titulo = { Text = "Oops!" },
@@ -323,6 +360,7 @@ namespace RMAInforme
                     };
                     DialogHost.Show(MessageDialog, "mainDialogHost");
                     return false;
+
                 }
             }
 
@@ -336,6 +374,7 @@ namespace RMAInforme
                 }
                 catch (FormatException)
                 {
+
                     var MessageDialog = new MessageDialog
                     {
                         Titulo = { Text = "Oops!" },
@@ -343,6 +382,7 @@ namespace RMAInforme
                     };
                     DialogHost.Show(MessageDialog, "mainDialogHost");
                     return false;
+
                 }
             }
 
@@ -356,6 +396,7 @@ namespace RMAInforme
                 }
                 catch (FormatException)
                 {
+
                     var MessageDialog = new MessageDialog
                     {
                         Titulo = { Text = "Oops!" },
@@ -363,6 +404,7 @@ namespace RMAInforme
                     };
                     DialogHost.Show(MessageDialog, "mainDialogHost");
                     return false;
+
                 }
             }
 
@@ -544,12 +586,14 @@ namespace RMAInforme
             }
             catch (System.ArgumentNullException)
             {
+
                 var MessageDialog = new MessageDialog
                 {
                     Titulo = { Text = "Oops!" },
                     Mensaje = { Text = "No se pudo conectar con el servidor." }
                 };
                 DialogHost.Show(MessageDialog, "mainDialogHost");
+
             }
         }
 
@@ -595,12 +639,19 @@ namespace RMAInforme
 
             if (cantidadResultadoBusqueda == 1)
             {
+
                 tbStatusBarText.Text = cantidadResultadoBusqueda + " registro encontrado.";
+
             }
             else
             {
+
                 tbStatusBarText.Text = cantidadResultadoBusqueda + " registros encontrados.";
+
             }
+
+            pbar.Visibility = Visibility.Hidden;
+
         }
 
         private void CrearNuevoSnapshot()
@@ -725,8 +776,6 @@ namespace RMAInforme
                     break;
             }
         }
-
-
 
         public bool PingServer(string ServerHostName)
         {
@@ -1501,7 +1550,7 @@ namespace RMAInforme
                 selected = i.NumeroPedido.Substring(0, 8);
 
             }
-            await DialogHost.Show(new LogsWindow(selected));
+            await DialogHost.Show(new LogsUserControl(selected));
         }
     }
 }

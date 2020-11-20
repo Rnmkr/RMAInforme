@@ -6,412 +6,469 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    Background="{DynamicResource MaterialDesignPaper}"
+    TextElement.FontWeight="Medium"
+    TextElement.FontSize="14"
+    FontFamily="{materialDesign:MaterialDesignFont}"
     mc:Ignorable="d"
     Title="REGISTROS RMA"
-    Width="1366"
-    Height="480"
-    MinHeight="480"
-    MinWidth="480"
     WindowStartupLocation="CenterScreen"
     WindowState="Maximized">
 
-    <Grid>
+    <materialDesign:DialogHost
+        CloseOnClickAway="True"
+        Identifier="mainDialogHost">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="auto" />
+                <RowDefinition
+                    Height="*" />
+                <RowDefinition
+                    Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="*" />
+                <ColumnDefinition
+                    Width="*" />
+            </Grid.ColumnDefinitions>
 
-        <materialDesign:DialogHost
-            CloseOnClickAway="True"
-            Identifier="mainDialogHost">
-
-            <Grid>
-
+            <Grid Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="auto" />
+                    <ColumnDefinition
+                        Width="auto" />
+                    <ColumnDefinition
+                        Width="*" />
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition
-                        Height="90" />
                     <RowDefinition
                         Height="*" />
                     <RowDefinition
-                        Height="26" />
+                        Height="*" />
                 </Grid.RowDefinitions>
 
-                <Grid
+                <Button
                     Grid.Row="0"
-                    Background="#FFE6E6E6">
-
-                    <StackPanel
-                        VerticalAlignment="Center"
-                        Margin="10,0,0,0"
-                        HorizontalAlignment="Left">
-
-                        <Button
-                            Name="btnBack"
-                            IsEnabled="False"
-                            Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                            Margin="0 0 0 5"
-                            Width="32"
-                            Height="32"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Click="BtnBack_Click">
-                            <materialDesign:PackIcon
-                                Kind="ArrowBack"
-                                Height="24"
-                                Width="24" />
-                        </Button>
-
-                        <Button
-                            Name="btnForward"
-                            IsEnabled="False"
-                            Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                            Margin="0 5 0 0"
-                            Width="32"
-                            Height="32"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Click="BtnForward_Click">
-                            <materialDesign:PackIcon
-                                Kind="ArrowRight"
-                                Height="24"
-                                Width="24" />
-                        </Button>
-
-                    </StackPanel>
+                    ToolTip="Resultado anterior"
+                    Margin="4"
+                    Name="btnBack"
+                    IsEnabled="False"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                    Width="48"
+                    Height="48"
+                    Click="BtnBack_Click"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <materialDesign:PackIcon
+                        Kind="ArrowBack"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Width="Auto"
+                        Height="Auto" />
+                </Button>
+                <Button
+                    Grid.Row="1"
+                    ToolTip="Resultado siguiente"
+                    Margin="2"
+                    Name="btnForward"
+                    IsEnabled="False"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                    Width="48"
+                    Height="48"
+                    Click="BtnForward_Click"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <materialDesign:PackIcon
+                        Kind="ArrowRight"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Width="Auto"
+                        Height="Auto" />
+                </Button>
 
 
-                    <Grid
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Margin="55,7,0,0"
-                        Width="160">
+                <StackPanel
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Margin="0"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+                    <TextBox
+                        Margin="4"
+                        x:Name="tbKeyword"
+                        ToolTip="Colocar un asterisco ( * ) para buscar todos los registros."
+                        KeyDown="TbSearchBox_KeyDown"
+                        materialDesign:HintAssist.Hint="BUSCAR..."
+                        Style="{StaticResource MaterialDesignFilledTextFieldTextBox}"
+                        FontWeight="Bold"
+                        Width="202"
+                        Height="66" />
 
-                        <TextBox
-                            x:Name="tbKeyword"
-                            Grid.Column="0"
-                            ToolTip="Colocar un asterisco ( * ) para buscar todos los registros."
-                            KeyDown="TbSearchBox_KeyDown"
-                            materialDesign:HintAssist.Hint="KEYWORD"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            FontWeight="Bold" />
+                    <Button
+                        Padding="0"
+                        Margin="4"
+                        x:Name="btnBuscar"
+                        ToolTip="Mostrar estadísticas de cambios"
+                        Click="BtnBuscar_Click"
+                        Height="66"
+                        Width="66"
+                        FontSize="12">
+                        <materialDesign:PackIcon
+                            Kind="Magnify"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Width="48"
+                            Height="48" />
+                    </Button>
+                </StackPanel>
 
-                        <Button
-                            x:Name="btnBuscar"
-                            IsDefault="True"
-                            Click="BtnBuscar_Click"
-                            Style="{DynamicResource MaterialDesignToolButton}"
-                            Height="24"
-                            Width="24"
-                            HorizontalAlignment="Right"
+                <StackPanel
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="4"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Left">
+
+                    <Button
+                        Padding="0"
+                        Margin="2"
+                        ToolTip="Cancelar un cambio"
+                        Name="btnCancelarCambio"
+                        Click="BtnCancelarCambioAsync_Click"
+                        Height="66"
+                        Width="66"
+                        FontSize="12">
+                        <StackPanel
+                            Orientation="Vertical"
+                            HorizontalAlignment="Center"
                             VerticalAlignment="Center">
                             <materialDesign:PackIcon
-                                Kind="Magnify"
-                                Opacity=".56" />
-                        </Button>
+                                Kind="Delete"
+                                Width="31"
+                                Height="31"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
+                            <TextBlock
+                                Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                Text="Cancelar"
+                                FontSize="10"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
 
-                    </Grid>
+                    <Button
+                        Padding="0"
+                        Margin="2"
+                        Name="btnEstadisticas"
+                        ToolTip="Mostrar estadísticas de cambios"
+                        Click="BtnEstadisticas_Click"
+                        Height="66"
+                        Width="66"
+                        FontSize="12">
+                        <StackPanel
+                            Orientation="Vertical"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                            <materialDesign:PackIcon
+                                Kind="ChartPie"
+                                Width="31"
+                                Height="31"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
+                            <TextBlock
+                                Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                Text="Estadísticas"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                FontSize="10" />
+                        </StackPanel>
+                    </Button>
 
+                    <Button
+                        Padding="0"
+                        Margin="2"
+                        Name="btnExportarPlanilla"
+                        ToolTip="Exportar búsqueda a archivo excel"
+                        Click="BtnExportarPlanilla_Click"
+                        Height="66"
+                        Width="66"
+                        FontSize="12">
+                        <StackPanel
+                            Orientation="Vertical"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                            <materialDesign:PackIcon
+                                Kind="FileExcel"
+                                Width="31"
+                                Height="31"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
+                            <TextBlock
+                                Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                Text="Exportar"
+                                FontSize="10"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button
+                        Padding="0"
+                        Margin="2"
+                        Name="btnVerLogs"
+                        ToolTip="Ver registros de Test"
+                        Click="btnVerLogs_Click"
+                        Height="66"
+                        Width="66"
+                        FontSize="12">
+                        <StackPanel
+                            Orientation="Vertical"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                            <materialDesign:PackIcon
+                                Kind="ReadMore"
+                                Width="31"
+                                Height="31"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
+                            <TextBlock
+                                Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                Text="Logs"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                FontSize="10" />
+                        </StackPanel>
+                    </Button>
+
+                </StackPanel>
+
+
+                <StackPanel
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Margin="0"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center">
                     <ComboBox
+                        Margin="2"
                         Name="cbCampo"
-                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                        Style="{StaticResource MaterialDesignFilledComboBox}"
                         materialDesign:HintAssist.Hint="CAMPO"
+                        Width="160"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Bottom"
-                        Margin="55,0,0,5"
-                        HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Center"
-                        Padding="0,6"
-                        Width="160" />
-
+                        FontWeight="Bold"
+                        Height="66"
+                        VerticalAlignment="Center" />
                     <ComboBox
-                        Name="cbPresicion"
-                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                        materialDesign:HintAssist.Hint="PRESICION"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Width="140"
-                        Margin="225,5,0,0"
-                        HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Center" />
-
-                    <ComboBox
-                        Name="cbOrigenDatos"
-                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                        SelectionChanged="CbOrigenDatos_SelectionChanged"
-                        materialDesign:HintAssist.Hint="ORIGEN DE DATOS"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Bottom"
-                        Width="140"
-                        Margin="225,0,0,5"
-                        HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Center" />
-
-                    <ComboBox
+                        Margin="2"
+                        Width="160"
                         Name="cbPeriodo"
-                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                        Style="{StaticResource MaterialDesignFilledComboBox}"
                         SelectionChanged="CbPeriodo_SelectionChanged"
                         materialDesign:HintAssist.Hint="PERIODO"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Width="140"
-                        Margin="675,5,0,0"
-                        HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Center" />
-
-                    <ComboBox
-                        Name="cbEstado"
-                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                        materialDesign:HintAssist.Hint="ESTADO"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Bottom"
-                        Width="140"
-                        Margin="375,0,0,5"
-                        HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Center" />
-
-                    <ComboBox
-                        Name="cbSector"
-                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                        materialDesign:HintAssist.Hint="SECTOR"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Width="140"
-                        Margin="375,5,0,0"
-                        HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Center" />
+                        FontWeight="Bold"
+                        Height="66"
+                        VerticalAlignment="Center" />
 
                     <DatePicker
+                        IsEnabled="False"
+                        Margin="3,2,3,2"
                         Name="dpInicial"
-                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
-                        IsEnabled="False"
+                        Width="158"
                         materialDesign:HintAssist.Hint="INICIAL"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Width="140"
-                        Margin="525,5,0,0"
-                        HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Center"
-                        Height="40" />
-
+                        Style="{StaticResource MaterialDesignFilledDatePicker}"
+                        VerticalAlignment="Stretch" />
                     <DatePicker
-                        Name="dpFinal"
-                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                         IsEnabled="False"
+                        Margin="3,2,3,2"
+                        Name="dpFinal"
+                        Width="158"
                         materialDesign:HintAssist.Hint="FINAL"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Bottom"
-                        Width="140"
-                        Margin="525,0,0,5"
-                        HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Center"
-                        Height="40" />
+                        Style="{StaticResource MaterialDesignFilledDatePicker}"
+                        VerticalAlignment="Stretch" />
 
-                    <Button
-                        Name="btnCancelarCambio"
-                        Width="43"
-                        Height="35"
-                        HorizontalAlignment="Left"
-                        Click="BtnCancelarCambioAsync_Click"
+                </StackPanel>
+
+                <StackPanel
+                    Margin="0"
+                    Orientation="Horizontal"
+                    Grid.Row="1"
+                    Grid.Column="2">
+                    <ComboBox
+                        Margin="2"
+                        Name="cbPresicion"
+                        Style="{StaticResource MaterialDesignFilledComboBox}"
+                        materialDesign:HintAssist.Hint="PRESICION"
+                        Width="160"
+                        FontWeight="Bold"
                         VerticalAlignment="Center"
-                        Margin="675,50,0,5"
-                        Padding="2"
-                        HorizontalContentAlignment="Center">
-                        <materialDesign:PackIcon
-                            Kind="Cancel"
-                            Opacity="1"
-                            Width="32"
-                            Height="32" />
-                    </Button>
-
-                    <Button
-                        Name="btnEstadisticas"
-                        Width="45"
-                        Height="35"
-                        HorizontalAlignment="Left"
+                        Height="66" />
+                    <ComboBox
+                        Margin="2"
+                        Name="cbEstado"
+                        Style="{StaticResource MaterialDesignFilledComboBox}"
+                        materialDesign:HintAssist.Hint="ESTADO"
+                        Width="160"
+                        FontWeight="Bold"
                         VerticalAlignment="Center"
-                        Margin="770,50,0,5"
-                        Click="BtnEstadisticas_Click"
-                        Padding="0">
-                        <materialDesign:PackIcon
-                            Kind="ChartPie"
-                            Opacity="1"
-                            Width="32"
-                            Height="32" />
-                    </Button>
-
-                    <Button
-                        Name="btnExportarPlanilla"
-                        Width="42"
-                        Height="35"
-                        HorizontalAlignment="Left"
+                        Height="66" />
+                    <ComboBox
+                        Margin="2"
+                        Name="cbSector"
+                        Style="{StaticResource MaterialDesignFilledComboBox}"
+                        materialDesign:HintAssist.Hint="SECTOR"
+                        Width="160"
+                        FontWeight="Bold"
                         VerticalAlignment="Center"
-                        Margin="723,50,0,5"
-                        Click="BtnExportarPlanilla_Click"
-                        Padding="0">
-                        <materialDesign:PackIcon
-                            Kind="FileExcel"
-                            Opacity="1"
-                            Width="32"
-                            Height="32" />
-                    </Button>
+                        Height="66" />
 
-                    <Button
-                        Name="btnVerLogs"
-                        Width="45"
-                        Height="35"
-                        HorizontalAlignment="Left"
+                    <ComboBox
+                        Margin="2"
+                        Name="cbOrigenDatos"
+                        Style="{StaticResource MaterialDesignFilledComboBox}"
+                        SelectionChanged="CbOrigenDatos_SelectionChanged"
+                        materialDesign:HintAssist.Hint="ORIGEN DE DATOS"
+                        Width="160"
+                        FontWeight="Bold"
                         VerticalAlignment="Center"
-                        Margin="820,50,0,5"
-                        Click="btnVerLogs_Click"
-                        Padding="0">
-                        <materialDesign:PackIcon
-                            Foreground="Yellow"
-                            Kind="ReadMore"
-                            Opacity="1"
-                            Width="32"
-                            Height="32" />
-                    </Button>
-
-                </Grid>
-
-                <Grid
-                    Grid.Row="1">
-
-                    <DataGrid
-                        Name="dgListaCambios"
-                        SelectionChanged="DgListaCambios_SelectionChanged">
-
-                        <DataGrid.Columns>
-
-                            <DataGridTextColumn
-                                Header="ID de Cambio"
-                                Binding="{Binding IdCambio}" />
-
-                            <DataGridTextColumn
-                                Header="Legajo"
-                                Binding="{Binding Legajo}" />
-
-                            <DataGridTextColumn
-                                Header="Tecnico"
-                                Binding="{Binding Tecnico}" />
-
-                            <DataGridTextColumn
-                                Header="Fecha de Cambio"
-                                Binding="{Binding FechaCambio}" />
-
-                            <DataGridTextColumn
-                                Header="Número de Pedido"
-                                Binding="{Binding NumeroPedido}" />
-
-                            <DataGridTextColumn
-                                Header="Producto"
-                                Binding="{Binding Producto}" />
-
-                            <DataGridTextColumn
-                                Header="Modelo"
-                                Binding="{Binding Modelo}" />
-
-                            <DataGridTextColumn
-                                Header="Artículo"
-                                Binding="{Binding ArticuloItem}" />
-
-                            <DataGridTextColumn
-                                Header="Categoría"
-                                Binding="{Binding CategoriaItem}" />
-
-                            <DataGridTextColumn
-                                Header="Descripción"
-                                Binding="{Binding DescripcionItem}" />
-
-                            <DataGridTextColumn
-                                Header="Versión"
-                                Binding="{Binding VersionItem}" />
-
-                            <DataGridTextColumn
-                                Header="Sector"
-                                Binding="{Binding SectorCambio}" />
-
-                            <DataGridTextColumn
-                                Header="Codigo de Falla"
-                                Binding="{Binding CodigoFalla}" />
-
-                            <DataGridTextColumn
-                                Header="Descripción de Falla"
-                                Binding="{Binding DescripcionFalla}" />
-
-                            <DataGridTextColumn
-                                Header="Observaciones"
-                                Binding="{Binding Observaciones}" />
-
-                            <DataGridTextColumn
-                                Header="Estado"
-                                Binding="{Binding EstadoCambio}" />
-
-                            <DataGridTextColumn
-                                Header="Supervisor"
-                                Binding="{Binding SupervisorModificacion}" />
-
-                            <DataGridTextColumn
-                                Header="Fecha de Modificación"
-                                Binding="{Binding FechaModificacion}" />
-
-                        </DataGrid.Columns>
-
-                    </DataGrid>
-
-                </Grid>
-
-                <StatusBar
-                    Grid.Row="2"
-                    Background="WhiteSmoke"
-                    VerticalAlignment="Bottom"
-                    Height="26">
-
-                    <TextBlock
-                        Name="tbStatusBarText"
-                        Style="{StaticResource MaterialDesignBody2TextBlock}"
-                        Text="Configure las opciones y realice una búsqueda." />
-
-                </StatusBar>
-
-
-
-
-                <!--<StackPanel Background="WhiteSmoke"  Height="66" VerticalAlignment="Top"/>
-                <DataGrid x:Name="DataGrid" Margin="0,71,0,36" IsReadOnly="True" FontFamily="Consolas" FontSize="14" SelectionChanged="DataGrid_SelectionChanged"/>
-                <Button x:Name="ButtonSearch" VerticalAlignment="Top" Margin="595,10,0,0" Click="ButtonSearch_Click" Height="54" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="54">
-                    <materialDesign:PackIcon Kind="Search" Height="24" Width="24" />
-                </Button>
-                <ComboBox x:Name="ComboBoxColumna" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="COLUMNA" Height="26" Margin="267,40,0,0" VerticalAlignment="Top" Width="200" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <TextBox x:Name="TextBoxSearchString" materialDesign:HintAssist.Hint="BUSCAR..." HorizontalAlignment="Left" Height="26" Margin="267,9,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="200" GotFocus="SearchBox_GotFocus" LostFocus="SearchBox_LostFocus" FontFamily="Consolas" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" RenderTransformOrigin="1.97,0.462"/>
-                <ComboBox x:Name="ComboBoxTable" Visibility="Collapsed" materialDesign:HintAssist.Hint="COLUMNA" HorizontalAlignment="Left" Height="26" Margin="10,35,0,0" VerticalAlignment="Top" Width="200" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <DatePicker x:Name="DateInit" materialDesign:HintAssist.Hint="FECHA INICIAL" Margin="799,9,0,0" VerticalAlignment="Top" Height="26" FontFamily="Consolas" FontWeight="Bold" Text="Seleccionar" HorizontalAlignment="Left" Width="110" VerticalContentAlignment="Center" Padding="4,0,0,0" HorizontalContentAlignment="Stretch"/>
-                <DatePicker x:Name="DateEnd" Margin="799,38,0,0" VerticalAlignment="Top"  materialDesign:HintAssist.Hint="FECHA FINAL" Height="26" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="110" VerticalContentAlignment="Center" Padding="4,0,0,0" HorizontalContentAlignment="Stretch"/>
-                <RadioButton x:Name="RadioLocal" Visibility="Collapsed" Content="EN LISTA ACTUAL" Margin="284,35,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="130" Height="26"/>
-                <RadioButton x:Name="RadioGlobal" Visibility="Collapsed" Content="EN BASE DE DATOS" Margin="284,7,0,0" VerticalAlignment="Top" VerticalContentAlignment="Center" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Left" Width="130" Height="25"/>
-                <Button x:Name="Export" ToolTip="EXPORTAR RESULTADO DE BUSQUEDA EN FORMATO XLS" Margin="0,6,10,0" IsEnabled="False" VerticalAlignment="Top" Height="54" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Right" Width="54" Click="Export_Click">
-                    <materialDesign:PackIcon Kind="FileExcel" Height="24" Width="24" />
-                </Button>
-                <Button x:Name="Cancel" Margin="0,6,128,0" IsEnabled="False" VerticalAlignment="Top" Height="54" ToolTip="CAMBIAR ESTADO DE REGISTRO" FontFamily="Consolas" HorizontalAlignment="Right" Width="54" Click="Cancel_Click" FontWeight="Bold" FontSize="11">
-                    <materialDesign:PackIcon Kind="RemoveCircle" Height="24" Width="24" />
-                </Button>
-                <StatusBar Name="StatusBarResult" Margin="0,0,0,5" Height="24" VerticalAlignment="Bottom">
-                    <StatusBarItem BorderThickness="1" BorderBrush="SteelBlue">
-                        <TextBlock Name="TextBlockStatusResult" FontFamily="Consolas" FontWeight="Bold" />
-                    </StatusBarItem>
-                </StatusBar>
-                <CheckBox Name="CheckToday" Checked="CheckToday_Checked" Unchecked="CheckToday_Unchecked" Content="HOY" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Top" Margin="419,37,0,0" Width="48" FontWeight="Bold" FontFamily="Consolas" VerticalContentAlignment="Center" Height="24"/>
-                <ComboBox x:Name="ComboBoxMeses" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="PERIODO" Height="26" Margin="659,38,0,0" VerticalAlignment="Top" Width="130" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <ComboBox x:Name="ComboBoxOrigen" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="ORIGEN DE DATOS" Height="26" Margin="659,9,0,0" VerticalAlignment="Top" Width="130" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <CheckBox Name="CheckEver" Content="INICIO A FIN BASE DATOS" Visibility="Collapsed" Checked="CheckEver_Checked"  Unchecked="CheckEver_Unchecked" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="419,7,0,0" Width="176" FontWeight="Bold" FontFamily="Consolas" VerticalContentAlignment="Center" Height="25"/>
-                <ComboBox x:Name="ComboBoxSector" Visibility="Collapsed" materialDesign:HintAssist.Hint="SECTOR" HorizontalAlignment="Left" IsEnabled="False" Height="28" Margin="539,34,0,0" VerticalAlignment="Top" Width="150" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" SelectionChanged="ComboBoxSector_SelectionChanged"/>
-                <ComboBox x:Name="ComboBoxSectores" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="SECTOR" Height="26" Margin="919,38,0,0" VerticalAlignment="Top" Width="130" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <ComboBox x:Name="ComboBoxPrecision" HorizontalAlignment="Left" materialDesign:HintAssist.Hint="PRESICION" Height="26" Margin="919,6,0,0" VerticalAlignment="Top" Width="130" FontFamily="Consolas" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <CheckBox Name="CheckEqual" Visibility="Collapsed" IsChecked="True" Content="BUSQUEDA EXACTA" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="549,7,0,0" Width="125" FontWeight="Bold" FontFamily="Consolas" VerticalContentAlignment="Center" Height="25"/>
-
-                <Button x:Name="Stats" ToolTip="VER ESTADISTICAS SOBRE LA BUSQUEDA" Margin="0,6,69,0" IsEnabled="False" VerticalAlignment="Top" Height="54" FontFamily="Consolas" FontWeight="Bold" HorizontalAlignment="Right" Width="54" Click="Stats_Click">
-                    <materialDesign:PackIcon Kind="ChartPie" Height="24" Width="24" />
-                </Button>-->
+                        Height="66" />
+                </StackPanel>
             </Grid>
 
-        </materialDesign:DialogHost>
 
-    </Grid>
+            <!--</Grid>-->
+            <!--
+            <ContentControl
+                Name="ccMain"
+                Grid.Row="1" />-->
 
+            <DataGrid
+                Grid.ColumnSpan="2"
+                Margin="0"
+                Grid.Row="1"
+                Name="dgListaCambios"
+                SelectionChanged="DgListaCambios_SelectionChanged"
+                FontSize="12">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Header="ID de Cambio"
+                        Binding="{Binding IdCambio}"
+                        Width="auto" />
+                    <DataGridTextColumn
+                        Header="Legajo"
+                        Binding="{Binding Legajo}"
+                        Width="auto" />
+                    <DataGridTextColumn
+                        Header="Tecnico"
+                        Binding="{Binding Tecnico}"
+                        Width="auto" />
+                    <DataGridTextColumn
+                        Header="Fecha de Cambio"
+                        Binding="{Binding FechaCambio}"
+                        Width="auto" />
+                    <DataGridTextColumn
+                        Header="Número de Pedido"
+                        Binding="{Binding NumeroPedido}"
+                        Width="auto" />
+                    <DataGridTextColumn
+                        Header="Producto"
+                        Binding="{Binding Producto}"
+                        Width="auto" />
+                    <DataGridTextColumn
+                        Header="Modelo"
+                        Binding="{Binding Modelo}"
+                        Width="auto" />
+                    <DataGridTextColumn
+                        Header="Artículo"
+                        Binding="{Binding ArticuloItem}"
+                        Width="auto" />
+                    <DataGridTextColumn
+                        Header="Categoría"
+                        Binding="{Binding CategoriaItem}"
+                        Width="auto" />
+                    <DataGridTextColumn
+                        Header="Descripción"
+                        Binding="{Binding DescripcionItem}"
+                        Width="auto" />
+                    <DataGridTextColumn
+                        Header="Versión"
+                        Binding="{Binding VersionItem}"
+                        Width="auto" />
+                    <DataGridTextColumn
+                        Header="Sector"
+                        Binding="{Binding SectorCambio}"
+                        Width="auto" />
+                    <DataGridTextColumn
+                        Header="Codigo de Falla"
+                        Binding="{Binding CodigoFalla}"
+                        Width="auto" />
+                    <DataGridTextColumn
+                        Header="Descripción de Falla"
+                        Binding="{Binding DescripcionFalla}"
+                        Width="auto" />
+                    <DataGridTextColumn
+                        Header="Observaciones"
+                        Binding="{Binding Observaciones}"
+                        Width="auto" />
+                    <DataGridTextColumn
+                        Header="Estado"
+                        Binding="{Binding EstadoCambio}"
+                        Width="auto" />
+                    <DataGridTextColumn
+                        Header="Supervisor"
+                        Binding="{Binding SupervisorModificacion}"
+                        Width="auto" />
+                    <DataGridTextColumn
+                        Header="Fecha de Modificación"
+                        Binding="{Binding FechaModificacion}"
+                        Width="auto" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+
+            <StatusBar
+                Grid.Row="2"
+                Background="WhiteSmoke"
+                VerticalAlignment="Bottom">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition
+                            Width="*" />
+                        <ColumnDefinition
+                            Width="204" />
+                    </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Column="0"
+                    Name="tbStatusBarText"
+                    Style="{StaticResource MaterialDesignBody2TextBlock}"
+                    Text="Configure las opciones y realice una búsqueda."
+                    FontSize="12"
+                    FontFamily="Consolas"
+                    FontWeight="Bold"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center" />
+                </Grid>
+            </StatusBar>
+            <ProgressBar
+                Grid.Row="2"
+                Grid.Column="1"
+                x:Name="pbar"
+                IsIndeterminate="False"
+                Margin="4"
+                Height="12"
+                Width="200"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center" />
+        </Grid>
+
+    </materialDesign:DialogHost>
 </Window>

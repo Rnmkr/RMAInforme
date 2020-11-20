@@ -11,9 +11,9 @@ using System.Windows.Input;
 namespace RMAInforme
 {
     /// <summary>
-    /// Interaction logic for LogsWindow.xaml
+    /// Interaction logic for LogsUserControl.xaml
     /// </summary>
-    public partial class LogsWindow : UserControl
+    public partial class LogsUserControl : UserControl
     {
         private string manualTestLog;
         private string burnintestLog;
@@ -29,12 +29,12 @@ namespace RMAInforme
         private string pedidoEnFormaDeRuta;
         private string numeroPedido;
 
-        public LogsWindow()
+        public LogsUserControl()
         {
             InitializeComponent();
         }
 
-        public LogsWindow(string _numeroPedido)
+        public LogsUserControl(string _numeroPedido)
         {
             InitializeComponent();
 
@@ -184,7 +184,7 @@ namespace RMAInforme
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        MessageBox.Show(e.Message);
+                        Console.WriteLine(e.Message);
                     });
                 }
 
